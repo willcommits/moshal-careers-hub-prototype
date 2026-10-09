@@ -101,17 +101,15 @@ nav{position:relative}
 .tip .count{min-width:18px;height:18px;padding:0 5px;border-radius:999px;background:rgba(255,255,255,.18);font-size:11px;font-weight:500;display:inline-flex;align-items:center;justify-content:center;font-variant-numeric:tabular-nums}
 .tip .count.urgent{background:var(--sb-amber);color:#3F2C00}
 .foot{flex:none;border-top:1px solid var(--sb-line);padding:14px 10px}
-.prog{position:relative;overflow:hidden;display:flex;align-items:center;gap:12px;padding:14px 14px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08)}
-.prog .mk{display:block;width:22px;height:25px;color:#fff;flex:none}
-.prog .mk svg,.prog .wm svg{display:block;width:100%;height:100%}
-.prog .mk svg path,.prog .wm svg path{fill:currentColor}
-.prog .tx{display:flex;flex-direction:column;gap:3px;min-width:0}
-.prog .ey{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--sb-muted);white-space:nowrap}
-.prog b{font-size:12px;font-weight:500;color:var(--sb-text);line-height:1.3;white-space:normal}
-.prog .wm{position:absolute;right:-18px;bottom:-22px;width:86px;height:96px;color:#fff;opacity:.05;pointer-events:none}
-:host([rail]) .prog{padding:8px 0;gap:0;background:none;border:0;justify-content:center;overflow:visible}
-:host([rail]) .prog .tx,:host([rail]) .prog .wm{display:none}
-:host([rail]) .prog .mk{width:26px;height:29px}
+.help{display:flex;align-items:center;gap:12px;width:100%;padding:12px 14px;border:1px solid rgba(255,255,255,.1);border-radius:12px;background:rgba(255,255,255,.05);color:var(--sb-text);font:inherit;text-align:left;cursor:pointer;transition:background .15s,border-color .15s}
+.help:hover{background:rgba(255,255,255,.09);border-color:rgba(255,255,255,.2)}
+.help .ic{width:34px;height:34px;border-radius:10px;background:var(--sb-mark,var(--sb-accent));color:#0B2A3F;display:grid;place-items:center;flex:none}
+.help .ic svg{width:18px;height:18px}
+.help .tx{display:flex;flex-direction:column;gap:2px;min-width:0}
+.help b{font-size:13px;font-weight:500;color:var(--sb-text)}
+.help .tx span{font-size:12px;color:var(--sb-muted);white-space:nowrap}
+:host([rail]) .help{padding:6px 0;border:0;background:none;justify-content:center}
+:host([rail]) .help .tx{display:none}
 .who{display:flex;align-items:center;gap:12px;padding:4px var(--inset);white-space:nowrap}
 .who .av{width:34px;height:34px;border-radius:50%;background:var(--who,var(--sb-mark,var(--sb-accent-soft)));color:var(--who-ink,#0B2A3F);display:grid;place-items:center;font-size:12px;font-weight:500;flex:none}
 .who b{display:block;font-size:13px;font-weight:500;color:var(--sb-text)}
@@ -127,7 +125,7 @@ class MoshalSidebar extends HTMLElement {
   intro(){ const h = this.shadowRoot && this.shadowRoot.querySelector('.brand .hub'); if (!h) return; h.classList.remove('in'); void h.offsetWidth; h.classList.add('in'); }
 
   spark(){
-    return '<div class="prog"><span class="mk" aria-hidden="true">' + LOGO_MARK + '</span><span class="tx"><span class="ey">Moshal Program</span><b>Career Champion Programme 2027</b></span><span class="wm" aria-hidden="true">' + LOGO_MARK + '</span></div>';
+    return '<button class="help" type="button" title="Contact the careers team"><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.3-1 .9-1 1.7"/><path d="M12 17h.01"/></svg></span><span class="tx"><b>Need a hand?</b><span>Contact the careers team</span></span></button>';
   }
 
   constructor(){
@@ -175,6 +173,7 @@ class MoshalSidebar extends HTMLElement {
     if (this.getBoundingClientRect().width > 0) this._painted = true;
     const root = this.shadowRoot;
     root.querySelectorAll('.edge').forEach(b => b.addEventListener('click', (e) => { e.stopPropagation(); this.toggle(); }));
+    root.querySelectorAll('.help').forEach(b => b.addEventListener('click', (e) => { e.stopPropagation(); this.dispatchEvent(new CustomEvent('help', {bubbles:true})); }));
     root.querySelectorAll('.item').forEach(b => {
       b.addEventListener('click', (e) => { e.stopPropagation(); this.closeFlyout(); this.dispatchEvent(new CustomEvent('navigate', {detail:{key:b.dataset.key}, bubbles:true})); });
       b.addEventListener('pointerenter', () => { if (this.rail) this.showTip(b); });

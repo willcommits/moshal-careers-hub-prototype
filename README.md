@@ -62,10 +62,9 @@ type will differ from the branded original.
   year, Honours" marked on each targeted item. Champions post to everyone.
 - The sidebar header is the Moshal logo with "Careers Hub" under it, which settles into place
   once on sign-in: the letters draw together as they fade in, then a short rule in the Scholars
-  blue draws under them. The footer is a still programme card instead of the signed-in name,
-  which the account menu already shows: the Moshal mark, "Moshal Program" and "Career Champion
-  Programme 2027", with a faint watermark of the mark in the corner. Nothing in it moves. The
-  collapsed rail keeps the mark alone.
+  blue draws under them. The footer is a help card instead of the signed-in name, which the
+  account menu already shows: "Need a hand? Contact the careers team", with the icon in the
+  Scholars blue. In the prototype it confirms with a toast. The collapsed rail keeps the icon.
 
 ## Brand
 

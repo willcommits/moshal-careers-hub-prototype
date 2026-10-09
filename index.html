@@ -676,7 +676,6 @@ h1{font-size:22px}
 .login-hero img{height:34px;display:block;margin-bottom:36px}
 .login-hero h1{color:#fff;font-size:34px;line-height:1.18;margin:0 0 12px}
 .login-hero p{color:#CFE2F7;font-size:15px;margin:0 0 14px;max-width:46ch}
-.login-hero .prog{color:rgba(255,255,255,.72);font-size:13px;margin:28px 0 0}
 .journey{display:flex;align-items:center;margin-top:30px;font-size:12px;color:#CFE2F7}
 .journey span{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
 .journey i{width:9px;height:9px;border-radius:50%;display:inline-block;background:currentColor}
@@ -747,7 +746,7 @@ h1{font-size:22px}
 .login-form h1{font-size:22px}
 .login-form .field input{height:48px}
 .login-form > .btn{height:48px}
-.login-hero p,.login-hero .prog,.login-hero .journey{display:none}
+.login-hero p,.login-hero .journey{display:none}
 .login-hero h1{font-size:22px;margin:0}
 .login-hero img{margin-bottom:16px}
 .login-form .eyebrow,.login-form .subtitle,.login-form .tiny{display:none}
@@ -1189,7 +1188,7 @@ const STU_COUNT = 880;
 /* ---------- sign in: replicates frontend/src/features/LoginView.vue ---------- */
 const ACCOUNTS = [['thandiwe.mokoena@myuct.ac.za', 'scholar'], ['sipho.dlamini@wits.ac.za', 'champion'], ['naledi.khumalo@moshal.org', 'admin']];
 V.login = () => '<main class="login-layout"><section class="hero login-hero"><div class="hero-inner"><img src="brand/logo-horizontal-white.svg" alt="Moshal Program">' +
-  '<h1>Your next opportunity starts here.</h1><p class="prog">Career Champion Programme 2027</p><div class="journey" aria-label="The Moshal journey">' + JOURNEY.map(k => '<span><i style="color:' + STAGES[k].bg + '"></i><b>' + STAGES[k].label + '</b></span>').join('<em></em>') + '</div></div></section>' +
+  '<h1>Your next opportunity starts here.</h1><div class="journey" aria-label="The Moshal journey">' + JOURNEY.map(k => '<span><i style="color:' + STAGES[k].bg + '"></i><b>' + STAGES[k].label + '</b></span>').join('<em></em>') + '</div></div></section>' +
   '<form class="card login-form" onsubmit="event.preventDefault();signIn()"><span class="eyebrow">Welcome back</span><h1>Sign in to your portal</h1><p class="subtitle">Use the account provided by your Careers team.</p>' +
   (S.loginError ? '<div class="notice bad" role="alert">' + ICO.alert + S.loginError + '</div>' : '') +
   '<div class="field"><label for="li-email">Email</label><input id="li-email" type="email" autocomplete="username" required maxlength="254" value="' + (S.loginEmail === undefined ? ACCOUNTS[0][0] : S.loginEmail) + '"></div>' +
@@ -1689,6 +1688,7 @@ V.admin = () => {
 
 const sb = document.getElementById('sb');
 sb.addEventListener('navigate', e => nav(e.detail.key));
+sb.addEventListener('help', () => toast('The careers team will get back to you within a day.'));
 const PAGE_ROLE = {submit:'champion', subs:'champion', queue:'admin', admin:'admin', postres:'admin', postevent:'admin'};
 const title = (t, n) => '<div class="page-head' + (PAGE_ROLE[S.view] !== undefined ? (PAGE_ROLE[S.view] ? ' r-' + PAGE_ROLE[S.view] : '') : ' r-scholar') + '"><h1>' + t + '</h1>' + (n ? '<span class="n">' + n + '</span>' : '') + '</div>';
 document.addEventListener('click', () => { if (S.open) { S.open = null; render(); } });
