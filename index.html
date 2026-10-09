@@ -734,10 +734,15 @@ h1{font-size:22px}
 .login-form > .btn{width:100%;justify-content:center;height:46px;margin-top:22px}
 .login-form .tiny{font-size:12px;color:var(--muted);margin:14px 0 0}
 @media (max-width:900px){
-.login-layout{grid-template-columns:1fr;gap:16px;padding:16px;align-items:start;min-height:0}
-.login-hero{min-height:0;padding:26px 22px;border-radius:14px}
-.login-hero img{height:26px;margin-bottom:20px}
-.login-hero h1{font-size:24px}
+/* phone: one screen. The brand fills the background, the form rises from the bottom as a sheet. */
+.login-layout{display:flex;flex-direction:column;align-items:stretch;gap:0;padding:0;min-height:100vh;min-height:100dvh;background:linear-gradient(160deg,#1B4B89,#2362B4 55%,#2F74C8)}
+.login-hero{flex:1;min-height:0;padding:36px 26px 30px;border-radius:0;background:none;display:flex;align-items:flex-end}
+.login-hero img{height:28px;margin-bottom:22px}
+.login-hero h1{font-size:28px;line-height:1.15}
+.login-form{border:0;border-radius:24px 24px 0 0;padding:26px 22px calc(28px + env(safe-area-inset-bottom));box-shadow:0 -12px 40px rgba(15,42,71,.25)}
+.login-form h1{font-size:22px}
+.login-form .field input{height:48px}
+.login-form > .btn{height:48px}
 .login-hero p,.login-hero .prog,.login-hero .journey{display:none}
 .login-hero h1{font-size:22px;margin:0}
 .login-hero img{margin-bottom:16px}

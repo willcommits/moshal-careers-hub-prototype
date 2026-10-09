@@ -25,7 +25,8 @@ type will differ from the branded original.
 - It opens on a sign-in screen in the brand:
   the hero on the left, email and password on the right, "Sign in →". The form opens prefilled with
   Thandiwe's details and signs in as the scholar; the account menu switches role once inside, and
-  Sign out there returns to the form.
+  Sign out there returns to the form. On a phone it is one screen: the brand fills the background,
+  the logo and headline sit in the top half, and the form rises from the bottom as a white sheet.
 - It is a live prototype, not a picture. Every control does what it says: the Opportunities
   search and the study field, location and type dropdowns filter the list and read back as chips, and
   the sort sits on the list itself; the bookmark saves; Apply records the application and it
