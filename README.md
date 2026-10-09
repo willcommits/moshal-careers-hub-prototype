@@ -35,7 +35,7 @@ type will differ from the branded original.
   left empty and unfocused for a few seconds. Under reduced motion the plain placeholder shows.
 - It opens on a sign-in screen in the brand:
   the hero on the left, email and password on the right, "Sign in →". The form opens prefilled with
-  Thandiwe's details and signs in as the scholar; the account menu switches role once inside, and
+  Cassidy's details and signs in as the scholar; the account menu switches role once inside, and
   Sign out there returns to the form. On a phone it is one screen: the brand fills the background,
   the logo and headline sit in the top half, and the form rises from the bottom as a white sheet.
 - It is a live prototype, not a picture. Every control does what it says: the Opportunities
@@ -49,11 +49,11 @@ type will differ from the branded original.
   location, type, study field, closing date if one was given, and the description if one was
   written. The detail page keeps Apply, the facts and Save in a side rail so the action is visible
   without scrolling.
-- The account menu switches between Thandiwe (scholar), Sipho (career champion) and Naledi
+- The account menu switches between Cassidy (scholar), Mickey (career champion) and Leah
   (admin). The sidebar changes with the role, which is how all three sets of screens are reached.
   A champion sees the scholar's screens plus My listings. The programme team's sidebar has no
   scholar screens: Reporting and Flagged listings under "Programme team", and Opportunities,
-  Career resources and Events under "Content". Naledi lands on Reporting.
+  Career resources and Events under "Content". Leah lands on Reporting.
 - Posting is an action on the page, not a place in the sidebar. Champions and the programme team
   see a Post button in the Opportunities header; the programme team sees one on Career resources
   too. Those allowed can also edit what is there: a champion edits their own listings from the

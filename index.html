@@ -784,11 +784,11 @@ const FIELDS_OPT = ['Engineering & Technology','Commerce & Finance','Health Scie
 const LOCS = ['Cape Town','Johannesburg','Durban','Pretoria','Remote'];
 const OPP_TYPES = ['Graduate programme','Internship','Vacation work','Bursary','Learnership'];
 let OPPS = [
-  {id:1, title:'Graduate Software Engineer', org:'TechNova', type:'Graduate programme', field:'Engineering & Technology', loc:'Cape Town', closes:'30 Oct 2026', days:21, by:'Sipho Dlamini', saved:true, applied:false,
+  {id:1, title:'Graduate Software Engineer', org:'TechNova', type:'Graduate programme', field:'Engineering & Technology', loc:'Cape Town', closes:'30 Oct 2026', days:21, by:'Mickey Mpofu', saved:true, applied:false,
    desc:'Build digital solutions in an agile engineering team. Collaborate with developers, designers and product specialists in an inclusive graduate environment, with a mentor for your first year.'},
-  {id:2, title:'Finance Graduate Analyst', org:'CapeBridge', type:'Graduate programme', field:'Commerce & Finance', loc:'Cape Town', closes:'31 Oct 2026', days:22, by:'Sipho Dlamini', saved:false, applied:true,
+  {id:2, title:'Finance Graduate Analyst', org:'CapeBridge', type:'Graduate programme', field:'Commerce & Finance', loc:'Cape Town', closes:'31 Oct 2026', days:22, by:'Mickey Mpofu', saved:false, applied:true,
    desc:'A two-year rotation through corporate finance, treasury and risk, with study support towards CFA Level I.'},
-  {id:3, title:'Business Analyst Internship', org:'FutureLab', type:'Internship', field:'Commerce & Finance', loc:'Cape Town', closes:'15 Nov 2026', days:37, by:'Sipho Dlamini', saved:true, applied:false,
+  {id:3, title:'Business Analyst Internship', org:'FutureLab', type:'Internship', field:'Commerce & Finance', loc:'Cape Town', closes:'15 Nov 2026', days:37, by:'Mickey Mpofu', saved:true, applied:false,
    desc:'Ten-week paid internship working with client teams on process mapping and requirements gathering.'},
   {id:4, title:'Graduate Data Analyst', org:'Karoo Analytics', type:'Graduate programme', field:'Science', loc:'Johannesburg', closes:'20 Oct 2026', days:11, by:'Ayanda Zulu', saved:false, applied:false,
    desc:'An 18-month rotation through data engineering, analytics and client delivery teams. Start date February 2027.'},
@@ -796,15 +796,15 @@ let OPPS = [
    desc:'Six weeks of site work over December and January on a bridge rehabilitation project. Accommodation provided; counts towards ECSA practical training.'},
   {id:6, title:'Actuarial Science Bursary 2027', org:'Baobab Life', type:'Bursary', field:'Commerce & Finance', loc:'Johannesburg', closes:'18 Oct 2026', days:9, by:'Ayanda Zulu', saved:false, applied:false,
    desc:'Full-cost bursary covering tuition, accommodation and books, with vacation work in Johannesburg each year.'},
-  {id:7, title:'Clinical Research Assistant', org:'Umthunzi Health Trust', type:'Internship', field:'Health Sciences', loc:'Cape Town', closes:'28 Nov 2026', days:50, by:'Sipho Dlamini', saved:false, applied:false,
+  {id:7, title:'Clinical Research Assistant', org:'Umthunzi Health Trust', type:'Internship', field:'Health Sciences', loc:'Cape Town', closes:'28 Nov 2026', days:50, by:'Mickey Mpofu', saved:false, applied:false,
    desc:'Twelve hours a week supporting a TB vaccine trial in Khayelitsha: patient follow-up, data capture and sample logistics.'},
   {id:8, title:'Candidate Attorney 2027', org:'Ndlovu Attorneys', type:'Graduate programme', field:'Law', loc:'Johannesburg', closes:'24 Oct 2026', days:15, by:'Ayanda Zulu', saved:false, applied:false,
    desc:'Two years of articles across litigation, commercial and labour law, with one rotation at a legal aid clinic.'},
-  {id:9, title:'Mining Engineering Learnership', org:'Highveld Minerals', type:'Learnership', field:'Engineering & Technology', loc:'Pretoria', closes:'12 Dec 2026', days:64, by:'Sipho Dlamini', saved:false, applied:false,
+  {id:9, title:'Mining Engineering Learnership', org:'Highveld Minerals', type:'Learnership', field:'Engineering & Technology', loc:'Pretoria', closes:'12 Dec 2026', days:64, by:'Mickey Mpofu', saved:false, applied:false,
    desc:'Twelve-month learnership at an open-cast operation near eMalahleni, including blasting certificate preparation.'},
   {id:10, title:'Digital Marketing Intern', org:'Spaza Digital', type:'Internship', field:'Humanities', loc:'Remote', closes:'22 Oct 2026', days:13, by:'Ayanda Zulu', saved:false, applied:false,
    desc:'Three-month remote internship running social campaigns for township retailers. Laptop and data provided.'},
-  {id:11, title:'Electrical Engineering Bursary', org:'Lesedi Power', type:'Bursary', field:'Engineering & Technology', loc:'Johannesburg', closes:'8 Nov 2026', days:30, by:'Sipho Dlamini', saved:false, applied:false,
+  {id:11, title:'Electrical Engineering Bursary', org:'Lesedi Power', type:'Bursary', field:'Engineering & Technology', loc:'Johannesburg', closes:'8 Nov 2026', days:30, by:'Mickey Mpofu', saved:false, applied:false,
    desc:'Bursary for 2nd and 3rd year electrical engineering students, with one year of work-back per year funded.'},
   {id:12, title:'Policy Research Internship', org:'Ubuntu Policy Institute', type:'Internship', field:'Humanities', loc:'Pretoria', closes:'16 Nov 2026', days:38, by:'Ayanda Zulu', saved:false, applied:false,
    desc:'Six-month research internship on municipal service delivery, ending in a published brief with your name on it.'}
@@ -843,14 +843,14 @@ let MINE = [
   {id:3, title:'Finance Graduate Analyst', org:'CapeBridge', status:'broken', applied:3, posted:'12 Sep 2026', closes:'31 Oct 2026', check:'404 Not Found on 3 nights running'}
 ];
 let FLAGS = [
-  {id:11, title:'Finance Graduate Analyst', org:'CapeBridge', by:'Sipho Dlamini', why:'Link checker: 404 Not Found on 3 nights running', src:'link', when:'This morning'},
+  {id:11, title:'Finance Graduate Analyst', org:'CapeBridge', by:'Mickey Mpofu', why:'Link checker: 404 Not Found on 3 nights running', src:'link', when:'This morning'},
   {id:12, title:'Software Engineering Internship', org:'FutureLab', by:'Ayanda Zulu', why:'Reported by a scholar: "The application page says applications have closed."', src:'report', when:'Yesterday'},
   {id:13, title:'Data Science Graduate', org:'Nexa Group', by:'Kagiso Molefe', why:'Reported by a scholar: "Closing date on their site is 20 Oct, not 30 Oct."', src:'report', when:'2 days ago'}
 ];
 const ROLES = {
-  scholar:{name:'Thandiwe Mokoena', ini:'TM', sub:'Scholar · UCT · 3rd year', stage:'scholars', year:3, years:4},
-  champion:{name:'Sipho Dlamini', ini:'SD', sub:'Alumni · Career champion · Wits', stage:'alumni'},
-  admin:{name:'Naledi Khumalo', ini:'NK', sub:'Programme team · Admin', stage:'program'}
+  scholar:{name:'Cassidy Rinquest', ini:'CR', sub:'Scholar · UCT · 3rd year', stage:'scholars', year:3, years:4},
+  champion:{name:'Mickey Mpofu', ini:'MM', sub:'Alumni · Career champion · Wits', stage:'alumni'},
+  admin:{name:'Leah Isaacs', ini:'LI', sub:'Programme team · Admin', stage:'program'}
 };
 /* Each person wears the colour of their stage: Dreamer, Scholar, Alumni, Leader. Programme staff wear the Program's own blue. */
 const STAGES = {dreamers:{bg:'#79BE4D', ink:'#173404', label:'Dreamers'}, scholars:{bg:'#41C3FF', ink:'#0B2A3F', label:'Scholars'}, alumni:{bg:'#EBB22A', ink:'#3F2C00', label:'Alumni'}, leaders:{bg:'#E15546', ink:'#fff', label:'Leaders'}, program:{bg:'#2362B4', ink:'#FFFFFF', label:'Moshal Program'}};
@@ -1159,7 +1159,7 @@ function impactCard(){
 }
 const STU_COUNT = 880;
 /* ---------- sign in: replicates frontend/src/features/LoginView.vue ---------- */
-const ACCOUNTS = [['thandiwe.mokoena@myuct.ac.za', 'scholar'], ['sipho.dlamini@wits.ac.za', 'champion'], ['naledi.khumalo@moshal.org', 'admin']];
+const ACCOUNTS = [['cassidy.rinquest@myuct.ac.za', 'scholar'], ['mickey.mpofu@wits.ac.za', 'champion'], ['leah.isaacs@moshal.org', 'admin']];
 V.login = () => '<main class="login-layout"><section class="hero login-hero"><div class="hero-inner"><img src="brand/logo-horizontal-white.svg" alt="Moshal Program">' +
   '<h1>Your next opportunity starts here.</h1><div class="journey" aria-label="The Moshal journey">' + JOURNEY.map(k => '<span><i style="color:' + STAGES[k].bg + '"></i><b>' + STAGES[k].label + '</b></span>').join('<em></em>') + '</div></div></section>' +
   '<form class="card login-form" onsubmit="event.preventDefault();signIn()"><span class="eyebrow">Welcome back</span><h1>Sign in to your portal</h1><p class="subtitle">Use the account provided by your Careers team.</p>' +
@@ -1290,7 +1290,7 @@ const YEAR_SHORT = {'1st year':'1st','2nd year':'2nd','3rd year':'3rd','4th year
 const TYPES = ['Internship','Vacation work','Graduate programme','Bursary'];
 const FIELDS = ['Engineering','Commerce','Science','Health Sciences','Law','Humanities'];
 const THIS_YEAR = 2026;
-const FIRST = ['Thandiwe','Sipho','Ayanda','Kagiso','Naomi','Bongani','Zanele','Liam','Precious','Ruan','Amahle','Tumelo','Karabo','Nomvula','Lindiwe','Mpho','Tshepo','Aisha','Sibusiso','Nandi','Keegan','Palesa','Yusuf','Refilwe','Jabu','Chloe','Lerato','Thabo','Anele','Kyle'];
+const FIRST = ['Cassidy','Mickey','Ayanda','Kagiso','Naomi','Bongani','Zanele','Liam','Precious','Ruan','Amahle','Tumelo','Karabo','Nomvula','Lindiwe','Mpho','Tshepo','Aisha','Sibusiso','Nandi','Keegan','Palesa','Yusuf','Refilwe','Jabu','Chloe','Lerato','Thabo','Anele','Kyle'];
 const LAST = ['Mokoena','Dlamini','Zulu','Molefe','Petersen','Ndlovu','Mthembu','Jacobs','Mahlangu','van Wyk','Cele','Sithole','Mabena','Khoza','Ngcobo','Radebe','Maseko','Moosa','Gumede','Shabalala','Naidoo','Mofokeng','Ebrahim','Tau','Mkhize','Adams'];
 let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
 const pick = arr => arr[Math.floor(rnd() * arr.length)];
