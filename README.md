@@ -73,8 +73,8 @@ type will differ from the branded original.
 - The sidebar header is the Moshal logo with "Careers Hub" under it, which settles into place
   once on sign-in: the letters draw together as they fade in, then a short rule in the Scholars
   blue draws under them. The footer is a still brand card instead of the signed-in name, which
-  the account menu already shows: the Moshal mark, "Moshal Program" and "From campus to career",
-  with a faint watermark of the mark in the corner. The collapsed rail keeps the mark alone.
+  the account menu already shows: one line, "From campus to career", over a faint watermark of
+  the Moshal mark in the corner. It says what the platform is for. The collapsed rail hides it.
 
 ## Brand
 

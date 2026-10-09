@@ -101,14 +101,11 @@ nav{position:relative}
 .tip .count{min-width:18px;height:18px;padding:0 5px;border-radius:999px;background:rgba(255,255,255,.18);font-size:11px;font-weight:500;display:inline-flex;align-items:center;justify-content:center;font-variant-numeric:tabular-nums}
 .tip .count.urgent{background:var(--sb-amber);color:#3F2C00}
 .foot{flex:none;border-top:1px solid var(--sb-line);padding:14px 10px}
-.prog{position:relative;overflow:hidden;display:flex;align-items:center;gap:12px;padding:14px 14px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08)}
-.prog .mk{display:block;width:22px;height:25px;color:#fff;flex:none}
-.prog .mk svg,.prog .wm svg{display:block;width:100%;height:100%}
-.prog .mk svg path,.prog .wm svg path{fill:currentColor}
-.prog .tx{display:flex;flex-direction:column;gap:3px;min-width:0}
-.prog .ey{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--sb-muted);white-space:nowrap}
-.prog b{font-size:12px;font-weight:500;color:var(--sb-text);line-height:1.3;white-space:nowrap}
-.prog .wm{position:absolute;right:-18px;bottom:-22px;width:86px;height:96px;color:#fff;opacity:.05;pointer-events:none}
+.prog{position:relative;overflow:hidden;display:flex;align-items:center;min-height:62px;padding:14px 16px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08)}
+.prog b{position:relative;z-index:1;font-size:13px;font-weight:500;color:var(--sb-text);line-height:1.3;letter-spacing:.01em;white-space:nowrap}
+.prog .wm{position:absolute;right:-14px;bottom:-20px;width:88px;height:98px;color:#fff;opacity:.07;pointer-events:none}
+.prog .wm svg{display:block;width:100%;height:100%}
+.prog .wm svg path{fill:currentColor}
 :host([rail]) .foot{display:none}
 .who{display:flex;align-items:center;gap:12px;padding:4px var(--inset);white-space:nowrap}
 .who .av{width:34px;height:34px;border-radius:50%;background:var(--who,var(--sb-mark,var(--sb-accent-soft)));color:var(--who-ink,#0B2A3F);display:grid;place-items:center;font-size:12px;font-weight:500;flex:none}
@@ -125,7 +122,7 @@ class MoshalSidebar extends HTMLElement {
   intro(){ const h = this.shadowRoot && this.shadowRoot.querySelector('.brand .hub'); if (!h) return; h.classList.remove('in'); void h.offsetWidth; h.classList.add('in'); }
 
   spark(){
-    return '<div class="prog"><span class="mk" aria-hidden="true">' + LOGO_MARK + '</span><span class="tx"><span class="ey">Moshal Program</span><b>From campus to career</b></span><span class="wm" aria-hidden="true">' + LOGO_MARK + '</span></div>';
+    return '<div class="prog"><b>From campus to career</b><span class="wm" aria-hidden="true">' + LOGO_MARK + '</span></div>';
   }
 
   constructor(){
