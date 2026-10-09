@@ -64,7 +64,7 @@ const STYLE = `
 .brand .logo path{fill:currentColor}
 .brand .mark{display:none;height:26px;width:auto;color:var(--sb-accent)}
 .brand .mark path{fill:currentColor}
-:host([rail]) .brand{justify-content:center;padding:0}
+:host([rail]) .brand{justify-content:center;align-items:center;padding:0;gap:0}
 :host([rail]) .brand .logo{display:none}
 :host([rail]) .brand .mark{display:block}
 .edge{position:absolute;top:33px;right:-13px;z-index:7;width:26px;height:26px;border-radius:50%;border:1px solid var(--line,#E3EAF2);background:#fff;color:#6B7B8C;display:grid;place-items:center;cursor:pointer;box-shadow:0 1px 3px rgba(22,56,92,.12);padding:0}
@@ -109,9 +109,7 @@ nav{position:relative}
 .prog .ey{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--sb-muted);white-space:nowrap}
 .prog b{font-size:12px;font-weight:500;color:var(--sb-text);line-height:1.3;white-space:nowrap}
 .prog .wm{position:absolute;right:-18px;bottom:-22px;width:86px;height:96px;color:#fff;opacity:.05;pointer-events:none}
-:host([rail]) .prog{padding:8px 0;gap:0;background:none;border:0;justify-content:center;overflow:visible}
-:host([rail]) .prog .tx,:host([rail]) .prog .wm{display:none}
-:host([rail]) .prog .mk{width:26px;height:29px}
+:host([rail]) .foot{display:none}
 .who{display:flex;align-items:center;gap:12px;padding:4px var(--inset);white-space:nowrap}
 .who .av{width:34px;height:34px;border-radius:50%;background:var(--who,var(--sb-mark,var(--sb-accent-soft)));color:var(--who-ink,#0B2A3F);display:grid;place-items:center;font-size:12px;font-weight:500;flex:none}
 .who b{display:block;font-size:13px;font-weight:500;color:var(--sb-text)}
