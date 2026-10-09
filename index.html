@@ -14,7 +14,7 @@
  *     Dreamers green #79BE4D = done or live (applied, published, read); Leaders red #E15546 = broken or destructive.
  *   Everything else is neutral: white cards, one hairline, slate text.
  *   The four sub-brands are also audiences, and appear as the stages of one journey (Dreamers, Scholars, Alumni, Leaders):
- *     the strip on the sign-in hero, the colour of each person's avatar, the scholar's journey card and the champion's card.
+ *     the strip on the sign-in hero, the colour of each person's avatar, a four-dot chip beside the dashboard greeting, and the champion's card.
  * Type is Narkiss Block, Regular and Medium only.
  */
 @font-face{font-family:"Frank Ruhl Libre";src:url("brand/FrankRuhlLibre-Regular.ttf") format("truetype");font-weight:400;font-display:swap}
@@ -41,11 +41,6 @@ main.enter{animation:page .22s ease-out}@keyframes page{from{opacity:0;transform
 @media (hover:hover){.jc:hover,.row:hover,.event:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(22,56,92,.07)}}
 .sv.pop svg,.jacts .btn.pop svg{animation:pop .28s ease-out}@keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.3)}100%{transform:scale(1)}}
 #toast{animation:rise .2s ease-out}@keyframes rise{from{opacity:0;transform:translate(-50%,8px)}to{opacity:1;transform:translate(-50%,0)}}
-.jcard.play .jtrack .jrail em{animation:fill 1.4s cubic-bezier(.2,.8,.2,1) both .2s}
-.jcard.play .node.done i,.jcard.play .node.now i{animation:nodein .4s cubic-bezier(.2,.8,.2,1) both}
-.jcard.play .node:nth-child(2) i{animation-delay:.1s}.jcard.play .node:nth-child(3) i{animation-delay:.55s}.jcard.play .node:nth-child(4) i{animation-delay:1s}.jcard.play .node:nth-child(5) i{animation-delay:1.45s}
-.jcard.play .node.now span{animation:appear .3s ease-out both;animation-delay:1.3s}
-@keyframes nodein{from{transform:scale(.6);opacity:.4}to{transform:none;opacity:1}}
 @keyframes fill{from{transform:scaleX(0)}to{transform:scaleX(var(--to,1))}}
 @keyframes appear{from{opacity:0;transform:translateY(3px)}to{opacity:1;transform:none}}
 }
@@ -708,23 +703,10 @@ h1{font-size:22px}
 @keyframes jh2{0%,31%{left:0;opacity:0}33%{opacity:1}47%{opacity:1}48%,100%{left:100%;opacity:0}}
 @keyframes jh3{0%,55%{left:0;opacity:0}57%{opacity:1}71%{opacity:1}72%,100%{left:100%;opacity:0}}
 }
-.jcard{padding:16px 18px;margin-bottom:24px}
-.jcard .hd{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:14px}
-.jcard .t{font-size:15px;font-weight:500;color:var(--navy)}
-.jcard .n{font-size:12px;color:var(--muted)}
-.jtrack{position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));padding-top:4px}
-.jtrack .jrail{position:absolute;left:12.5%;right:12.5%;top:13px;height:2px;background:var(--line);border-radius:1px;overflow:hidden}
-.jtrack .jrail em{display:block;height:100%;background:linear-gradient(90deg,#79BE4D,#41C3FF 40%,#EBB22A 75%,#E15546);transform-origin:left;transform:scaleX(var(--to,0))}
-.node{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;gap:0}
-.node i{display:block;width:20px;height:20px;border-radius:50%;background:#fff;border:2px solid var(--line);box-sizing:border-box;position:relative;z-index:1}
-.node.done i,.node.now i{background:var(--c);border-color:var(--c)}
-.node.now i{box-shadow:0 0 0 5px color-mix(in srgb,var(--c) 22%,transparent)}
-.node.done i::after{content:"";position:absolute;left:6px;top:3px;width:4px;height:8px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg)}
-.node b{display:block;font-size:12px;margin-top:10px;font-weight:400;color:var(--muted)}
-.node span{display:block;font-size:11px;color:var(--faint);margin-top:2px}
-.node.now b{font-weight:500;color:var(--navy)}
-.node.now span{color:var(--brand)}
-.node.done span{color:var(--muted)}
+.jchip{display:inline-flex;align-items:center;gap:10px;font-size:13px;color:var(--muted);margin-left:4px}
+.jchip .dots{display:inline-flex;align-items:center;gap:5px}
+.jchip i{display:block;width:8px;height:8px;border-radius:50%;background:var(--line)}
+.jchip i.now{box-shadow:0 0 0 2px #fff,0 0 0 3.5px var(--brand-soft)}
 .impact{display:flex;justify-content:space-between;align-items:center;gap:18px;flex-wrap:wrap;padding:14px 18px;border-left:4px solid var(--alumni);border-radius:0 var(--r) var(--r) 0;margin-bottom:18px}
 .impact .t{display:block;font-size:15px;font-weight:500;color:var(--navy)}
 .impact .n{display:block;font-size:13px;color:var(--muted);margin-top:2px}
@@ -988,13 +970,12 @@ const V = {};
 V.overview = () => {
   const mine = forMe(OPPS), soon = mine.filter(o => o.days <= 14 && !o.applied), rec = mine.filter(o => !o.applied).slice(0, 3);
   const u = ROLES[S.role];
-  return '<div class="page-head only-d" data-role><div><h1>Welcome back, ' + u.name.split(' ')[0] + '</h1></div></div>' +
-    '<div class="page-head only-m"><div><h1>Your next chapter starts here</h1><p class="lead">Opportunities selected for scholars</p></div></div>' +
+  return '<div class="page-head only-d" data-role><h1>Welcome back, ' + u.name.split(' ')[0] + '</h1>' + journeyChip() + '</div>' +
+    '<div class="page-head only-m"><div><h1>Your next chapter starts here</h1><p class="lead">Opportunities selected for scholars</p></div>' + journeyChip() + '</div>' +
     '<section class="hero"><h2 class="only-d">Find the opportunity that’s right for you</h2><p class="only-d">Internships, graduate programmes and bursaries, shared by career champions.</p>' +
     '<h2 class="only-m">Explore your future</h2><p class="only-m">Graduate roles, internships and career support</p>' +
     '<form class="hero-search only-d" onsubmit="event.preventDefault();S.q=document.getElementById(\'hq\').value;nav(\'opps\')"><span class="search">' + ICO.search + '<input id="hq" placeholder="" aria-label="Search opportunities, employers or study fields" value="' + S.q + '" onfocus="ghostStop(true)" onkeydown="ghostStop(true)" oninput="ghostStop(true)" onblur="ghostResume()"><span class="ghost" aria-hidden="true"></span></span><button type="submit">Search</button></form>' +
     '<button class="hero-go only-m" onclick="nav(\'opps\')">Browse opportunities' + ICO.chevR + '</button></section>' +
-    journeyCard() +
     (soon.length ? '<button class="soonline" onclick="S.soon=true;nav(\'opps\')">' + ICO.clock + soon.length + ' close within 14 days · See them</button>' : '') +
     '<div class="page-head"><h2 style="margin:0">Recommended for you</h2><div class="acts"><button class="btn btn-ghost btn-sm" onclick="nav(\'opps\')">See all ' + ICO.chevR + '</button></div></div>' +
     jobList(rec, '');
@@ -1169,14 +1150,10 @@ V.queue = () => '<div class="page-head" data-role><h1>Flagged listings</h1>' + (
     '<div class="side"><button class="btn btn-ghost btn-sm" onclick="resolveFlag(' + f.id + ',false)">Dismiss</button><button class="btn btn-danger btn-sm" onclick="resolveFlag(' + f.id + ',true)">Unpublish</button></div></article>').join('') + '</div>'
     : '<div class="card empty">' + ICO.checkC + '<b>Nothing flagged</b><span>Reported listings and broken links will show up here.</span></div>');
 /* ---------- stage cards ---------- */
-function journeyCard(){
-  const u = ROLES[S.role];
-  if (u.stage === 'program') return '';
-  const at = JOURNEY.indexOf(u.stage), frac = u.stage === 'scholars' ? Math.min(1, (u.year - 1) / Math.max(1, u.years - 1)) : 0.5;
-  const progress = (at + frac) / (JOURNEY.length - 1);
-  const notes = {dreamers:['Done', 'You are here', 'After graduation', 'Give back'], scholars:['Done', 'You are here', 'After graduation', 'Give back'], alumni:['Done', 'Done', 'You are here', 'Give back']}[u.stage];
-  return '<section class="card jcard' + (S.view !== S.lastView ? ' play' : '') + '"><div class="hd"><span class="t">Your journey</span><span class="n">' + (u.stage === 'scholars' ? 'Scholar · ' + u.year + ordinal(u.year) + ' year of ' + u.years : 'Alumni · Career champion') + '</span></div>' +
-    '<div class="jtrack"><i class="jrail"><em style="--to:' + progress.toFixed(3) + '"></em></i>' + JOURNEY.map((k, i) => '<div class="node' + (i < at ? ' done' : i === at ? ' now' : '') + '" style="--c:' + STAGES[k].bg + '"><i></i><b>' + STAGES[k].label.replace(/s$/, '') + '</b><span>' + notes[i] + '</span></div>').join('') + '</div></section>';
+function journeyChip(){
+  const u = ROLES[S.role]; if (u.stage === 'program') return '';
+  const at = JOURNEY.indexOf(u.stage);
+  return '<span class="jchip" title="Dreamer · Scholar · Alumni · Leader"><span class="dots">' + JOURNEY.map((k, i) => '<i' + (i === at ? ' class="now"' : '') + ' style="' + (i <= at ? 'background:' + STAGES[k].bg : '') + '"></i>').join('') + '</span><span>' + (u.stage === 'scholars' ? u.year + ordinal(u.year) + ' year of ' + u.years : 'Career champion') + '</span></span>';
 }
 const ordinal = n => n === 1 ? 'st' : n === 2 ? 'nd' : n === 3 ? 'rd' : 'th';
 function impactCard(){

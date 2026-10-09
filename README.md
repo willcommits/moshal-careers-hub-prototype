@@ -22,13 +22,11 @@ type will differ from the branded original.
 ## The prototype
 
 - `index.html` is the whole app shell: every screen, plus Reporting.
-- The dashboard is four things, each different in kind: the greeting, the hero search, the
-  journey card and Recommended for you. The row of count tiles is gone, since the sidebar badges
-  already carry those numbers; the one fact that was new, how many listings close within 14 days,
-  is a single amber line above Recommended that links to the filtered list and disappears when
-  nothing is closing. The journey card is a track of four nodes, Dreamer to Leader, joined by a
-  line that fills to where the person is: reached stages are filled in their colour with a tick,
-  the current one has a soft ring, later ones are outlined. It draws itself in once on arrival.
+- The dashboard is three kinds of thing and a list: the greeting, the hero search, an amber line
+  saying how many listings close within 14 days (it links to the filtered list and hides when
+  nothing is closing), and Recommended for you. The row of count tiles is gone, since the sidebar
+  badges already carry those numbers. Beside the greeting sits a four-dot journey chip, Dreamer to
+  Leader with the person's stage lit and "3rd year of 4" after it: two words and four dots.
 - The dashboard search shows a ghost typing example searches when the field is empty: a phrase
   types out at a calm pace with a blinking caret, holds, clears, and the next one follows. It is
   drawn over the field, never as its value, so there is nothing to clear. Focusing the field or
@@ -108,7 +106,7 @@ The four sub-brands are also the programme's audiences, so they appear a second 
 **stages of one journey**: Dreamers, Scholars, Alumni, Leaders. That shows in four places and
 nowhere else: a strip at the foot of the sign-in hero; the colour of each person's avatar (a
 scholar on Scholars blue, a career champion on Alumni amber, programme staff on Program blue);
-a "Your journey" card on the dashboard with the person's stage lit; and a "Giving back"
+a four-dot journey chip beside the dashboard greeting with the person's stage lit; and a "Giving back"
 card on the champion's My listings with the Alumni rule. Lists, tags and events never take a
 stage colour, so the pages stay quiet.
 
