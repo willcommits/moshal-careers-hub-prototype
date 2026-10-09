@@ -1688,7 +1688,6 @@ V.admin = () => {
 
 const sb = document.getElementById('sb');
 sb.addEventListener('navigate', e => nav(e.detail.key));
-sb.addEventListener('help', () => toast('The careers team will get back to you within a day.'));
 const PAGE_ROLE = {submit:'champion', subs:'champion', queue:'admin', admin:'admin', postres:'admin', postevent:'admin'};
 const title = (t, n) => '<div class="page-head' + (PAGE_ROLE[S.view] !== undefined ? (PAGE_ROLE[S.view] ? ' r-' + PAGE_ROLE[S.view] : '') : ' r-scholar') + '"><h1>' + t + '</h1>' + (n ? '<span class="n">' + n + '</span>' : '') + '</div>';
 document.addEventListener('click', () => { if (S.open) { S.open = null; render(); } });
