@@ -57,8 +57,10 @@ b,strong{font-weight:500}
 .app{display:flex;min-height:100vh}
 moshal-sidebar{--surface:#16385C;--line:rgba(255,255,255,.12);--ink:#FFFFFF;--muted:rgba(255,255,255,.64);--brand:#FFFFFF;--brand-soft:rgba(255,255,255,.14);--page:rgba(255,255,255,.08);--navy:#0F2A47;--alumni:#EBB22A;--mark:#41C3FF}
 .content{flex:1;min-width:0;display:flex;flex-direction:column}
-.topbar{height:64px;background:var(--surface);border-bottom:1px solid var(--line);box-shadow:0 1px 0 rgba(22,56,92,.03);display:flex;align-items:center;gap:16px;padding:0 24px;position:sticky;top:0;z-index:20}
-.topbar .actions{margin-left:auto;display:flex;align-items:center;gap:8px}
+#chrome{position:sticky;top:0;z-index:20}
+.topbar{height:0;background:none;border:0;box-shadow:none;display:flex;align-items:center;gap:16px;padding:0;max-width:1160px;width:100%;overflow:visible;position:relative;z-index:20}
+.topbar .actions{position:absolute;top:26px;right:32px;display:flex;align-items:center;gap:8px;padding:3px;border-radius:999px;background:var(--page)}
+.page-head{padding-right:104px}
 .topbar .burger,.topbar .tlogo,.tabbar{display:none}
 .tlogo{height:22px}
 .scrim{position:fixed;inset:0;background:rgba(15,42,71,.45);z-index:65}
@@ -629,7 +631,9 @@ table.rt td.muted{color:var(--muted)}
 moshal-sidebar{position:fixed;top:0;bottom:0;left:0;z-index:70;transform:translateX(-102%);transition:transform .22s ease}
 .app.nav-open moshal-sidebar{transform:none;box-shadow:0 20px 60px rgba(15,42,71,.35)}
 body.nav-open{overflow:hidden}
-.topbar{height:56px;padding:0 12px;gap:10px}
+.topbar{height:56px;padding:0 12px;gap:10px;background:var(--surface);border-bottom:1px solid var(--line);max-width:none}
+.topbar .actions{position:static;margin-left:auto;padding:0;background:none}
+.page-head{padding-right:0}
 .topbar .burger{display:grid}
 .topbar .tlogo{display:block}
 main{padding:18px 16px 100px}
@@ -982,7 +986,7 @@ const V = {};
 V.overview = () => {
   const mine = forMe(OPPS), soon = mine.filter(o => o.days <= 14), rec = mine.filter(o => !o.applied).slice(0, 3);
   const u = ROLES[S.role];
-  return '<div class="page-head only-d" data-role><div><h1>Welcome back, ' + u.name.split(' ')[0] + '</h1><p class="lead">' + u.sub + '</p></div></div>' +
+  return '<div class="page-head only-d" data-role><div><h1>Welcome back, ' + u.name.split(' ')[0] + '</h1></div></div>' +
     '<div class="page-head only-m"><div><h1>Your next chapter starts here</h1><p class="lead">Opportunities selected for scholars</p></div></div>' +
     '<section class="hero"><h2 class="only-d">Find the opportunity that’s right for you</h2><p class="only-d">Internships, graduate programmes and bursaries, shared by career champions.</p>' +
     '<h2 class="only-m">Explore your future</h2><p class="only-m">Graduate roles, internships and career support</p>' +
@@ -1074,7 +1078,7 @@ V.postres = () => {
   if (S.coverFor !== (r ? r.id : 'new')) { S.cover = r ? (r.cover || '') : ''; S.coverFor = r ? r.id : 'new'; }
   const f = (id, label, ph, req, type, val) => '<div class="field" id="w-' + id + '"><label for="' + id + '">' + label + (req ? '<i class="req" aria-hidden="true">*</i>' : '') + '</label><input id="' + id + '" type="' + (type || 'text') + '" placeholder="' + ph + '" value="' + attr(val) + '"' + (req ? ' aria-required="true"' : '') + '><div class="err">This one is needed</div></div>';
   const tb = (label, cmd, val, title) => '<button type="button" class="rtb" title="' + (title || label) + '" aria-label="' + (title || label) + '" onmousedown="event.preventDefault()" onclick="rt(\'' + cmd + '\'' + (val ? ',\'' + val + '\'' : '') + ')">' + label + '</button>';
-  return '<div class="page-head" data-role><h1>' + (r ? 'Edit resource' : 'Post a resource') + '</h1></div><p class="sub">' + (r ? 'Scholars see the change as soon as you save.' : 'It appears in Career resources for every scholar as soon as you publish.') + ' Fields marked * are needed.</p>' +
+  return '<div class="page-head" data-role><h1>' + (r ? 'Edit resource' : 'Post a resource') + '</h1></div>' +
     '<form class="card form" onsubmit="event.preventDefault();publishResource()"><div class="grid2">' +
     f('r0', 'Title', 'Interview question bank', true, 'text', r && r.title) +
     '<div class="field" id="w-r1"><label for="r1">Section</label><select id="r1">' + RGROUPS.map(g => '<option' + (r && r.group === g ? ' selected' : '') + '>' + g + '</option>').join('') + '</select></div>' +
@@ -1114,7 +1118,7 @@ V.res = () => {
 V.postevent = () => {
   const e = S.editEv ? EVENTS.find(x => x.id === S.editEv) : null;
   const f = (id, label, ph, req, type, val) => '<div class="field" id="w-' + id + '"><label for="' + id + '">' + label + (req ? '<i class="req" aria-hidden="true">*</i>' : '') + '</label><input id="' + id + '" type="' + (type || 'text') + '" placeholder="' + ph + '" value="' + attr(val) + '"' + (req ? ' aria-required="true"' : '') + '><div class="err">This one is needed</div></div>';
-  return '<div class="page-head" data-role><h1>' + (e ? 'Edit event' : 'Add an event') + '</h1></div><p class="sub">' + (e ? 'Scholars who saved a place see the change straight away.' : 'It appears under Events & updates for every scholar as soon as you publish.') + ' Fields marked * are needed.</p>' +
+  return '<div class="page-head" data-role><h1>' + (e ? 'Edit event' : 'Add an event') + '</h1></div>' +
     '<form class="card form" onsubmit="event.preventDefault();publishEvent()"><div class="grid2">' +
     f('e0', 'Title', 'CV Masterclass', true, 'text', e && e.title) + f('e1', 'Date', '', true, 'date', e && eventDateISO(e)) +
     f('e2', 'Where and when', 'Online session · 15:00', true, 'text', e && e.when) + f('e3', 'Hosted by', 'Hosted by the Moshal careers team', false, 'text', e && e.who) +
@@ -1136,7 +1140,7 @@ V.submit = () => {
     (options ? '<select id="' + id + '">' + options.map(x => '<option' + (x === val ? ' selected' : '') + '>' + x + '</option>').join('') + '</select>' : '<input id="' + id + '" type="' + (type || 'text') + '" placeholder="' + ph + '" value="' + attr(val) + '"' + (req ? ' aria-required="true"' : '') + '>') +
     '<div class="err">This one is needed</div></div>';
   const link = o ? (o.url || 'https://careers.' + o.org.toLowerCase().replace(/\s/g, '') + '.example/apply') : '';
-  return '<div class="page-head" data-role><h1>' + (o ? 'Edit listing' : 'Post an opportunity') + '</h1></div><p class="sub">' + (o ? 'Scholars see the change as soon as you save.' : 'It goes live for every scholar as soon as you publish' + (S.role === 'admin' ? '' : ', and scholars see exactly what you enter here') + '.') + ' Fields marked * are needed.</p>' +
+  return '<div class="page-head" data-role><h1>' + (o ? 'Edit listing' : 'Post an opportunity') + '</h1></div>' +
     '<form class="card form" oninput="previewListing()" onchange="previewListing()" onsubmit="event.preventDefault();publishListing()"><div class="grid2">' +
     f('f0', 'Job title', 'Graduate Software Engineer', true, 'text', null, o && o.title) + f('f1', 'Employer', 'TechNova', true, 'text', null, o && o.org) +
     '<div class="field wide" id="w-f2"><label for="f2">Application link<i class="req" aria-hidden="true">*</i></label><input id="f2" type="url" aria-required="true" placeholder="https://careers.example.com/graduate" value="' + attr(link) + '"' + (o ? '' : ' oninput="checkDup(this.value)"') + '><div class="err">A full link starting with https:// is needed</div><div id="dup"></div></div>' +
@@ -1185,7 +1189,7 @@ const STU_COUNT = 880;
 /* ---------- sign in: replicates frontend/src/features/LoginView.vue ---------- */
 const ACCOUNTS = [['thandiwe.mokoena@myuct.ac.za', 'scholar'], ['sipho.dlamini@wits.ac.za', 'champion'], ['naledi.khumalo@moshal.org', 'admin']];
 V.login = () => '<main class="login-layout"><section class="hero login-hero"><div class="hero-inner"><img src="brand/logo-horizontal-white.svg" alt="Moshal Program">' +
-  '<h1>Your next opportunity starts here.</h1><p>Discover opportunities, prepare for interviews and take the next step from campus to career.</p><p class="prog">Career Champion Programme 2027</p><div class="journey" aria-label="The Moshal journey">' + JOURNEY.map(k => '<span><i style="color:' + STAGES[k].bg + '"></i><b>' + STAGES[k].label + '</b></span>').join('<em></em>') + '</div></div></section>' +
+  '<h1>Your next opportunity starts here.</h1><p class="prog">Career Champion Programme 2027</p><div class="journey" aria-label="The Moshal journey">' + JOURNEY.map(k => '<span><i style="color:' + STAGES[k].bg + '"></i><b>' + STAGES[k].label + '</b></span>').join('<em></em>') + '</div></div></section>' +
   '<form class="card login-form" onsubmit="event.preventDefault();signIn()"><span class="eyebrow">Welcome back</span><h1>Sign in to your portal</h1><p class="subtitle">Use the account provided by your Careers team.</p>' +
   (S.loginError ? '<div class="notice bad" role="alert">' + ICO.alert + S.loginError + '</div>' : '') +
   '<div class="field"><label for="li-email">Email</label><input id="li-email" type="email" autocomplete="username" required maxlength="254" value="' + (S.loginEmail === undefined ? ACCOUNTS[0][0] : S.loginEmail) + '"></div>' +
@@ -1464,7 +1468,7 @@ function mdd(key, label, options, counts){
 function periodDD(){
   const open = R.open === 'period', label = periodLabel().charAt(0).toUpperCase() + periodLabel().slice(1);
   const r = R.range || {from:isoAgo(30), to:isoAgo(0)};
-  return '<span class="ctl on" role="button" tabindex="0" aria-haspopup="listbox" aria-expanded="' + open + '" onclick="event.stopPropagation();rSetOpen(\'period\')">' + ICO.cal + label + CHEV +
+  return '<span class="ctl' + (R.period === 'custom' ? ' on' : '') + '" role="button" tabindex="0" aria-haspopup="listbox" aria-expanded="' + open + '" onclick="event.stopPropagation();rSetOpen(\'period\')">' + ICO.cal + label + CHEV +
     (open ? '<div class="pop period" onclick="event.stopPropagation()"><div class="ph"><span>Period</span></div>' +
       [[30, 'Last 30 days'], [90, 'Last 90 days'], [365, 'This year']].map(([v, l]) => '<button class="o" role="option" aria-selected="' + (R.period === v) + '" onclick="setPeriod(' + v + ')">' + ICO.check.replace('<svg', '<svg class="tick"') + '<span>' + l + '</span></button>').join('') +
       '<div class="grp">Custom range</div><div class="range"><input id="pf" type="date" value="' + r.from + '" aria-label="From"><span>to</span><input id="pt" type="date" value="' + r.to + '" aria-label="To"><button class="btn btn-primary btn-sm" onclick="setRange()">Apply</button></div></div>' : '') + '</span>';
