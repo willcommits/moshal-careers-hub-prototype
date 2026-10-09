@@ -22,6 +22,11 @@ type will differ from the branded original.
 ## The prototype
 
 - `index.html` is the whole app shell: every screen, plus Reporting.
+- The dashboard search shows a ghost typing example searches when the field is empty: a phrase
+  types out at a calm pace with a blinking caret, holds, clears, and the next one follows. It is
+  drawn over the field, never as its value, so there is nothing to clear. Focusing the field or
+  pressing a key stops it and the plain placeholder takes over; it resumes only if the field is
+  left empty and unfocused for a few seconds. Under reduced motion the plain placeholder shows.
 - It opens on a sign-in screen in the brand:
   the hero on the left, email and password on the right, "Sign in →". The form opens prefilled with
   Thandiwe's details and signs in as the scholar; the account menu switches role once inside, and

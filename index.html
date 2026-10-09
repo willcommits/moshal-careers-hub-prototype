@@ -110,7 +110,11 @@ h3{font-family:var(--display);font-size:16px;font-weight:500;color:var(--navy);m
 .hero h2{color:#fff;font-size:23px;margin:0 0 4px}
 .hero p{margin:0 0 18px;color:#CFE2F7;font-size:14px}
 .hero-search{display:flex;gap:12px;flex-wrap:wrap}
-.hero-search .search{flex:1;min-width:240px;display:flex;align-items:center;gap:10px;height:48px;border-radius:var(--r-sm);padding:0 16px;background:#fff}
+.hero-search .search{flex:1;min-width:240px;display:flex;align-items:center;gap:10px;height:48px;border-radius:var(--r-sm);padding:0 16px;background:#fff;position:relative}
+.hero-search .ghost{position:absolute;left:43px;right:16px;top:0;height:100%;display:flex;align-items:center;font-size:15px;color:var(--muted);pointer-events:none;white-space:nowrap;overflow:hidden}
+.hero-search .ghost:empty{display:none}
+.hero-search .ghost i{display:inline-block;width:1.5px;height:18px;margin-left:2px;background:var(--brand);border-radius:1px;vertical-align:-3px}
+@media (prefers-reduced-motion:no-preference){.hero-search .ghost i{animation:caret 1.1s steps(1) infinite}@keyframes caret{50%{opacity:0}}}
 .hero-search .search svg{width:17px;height:17px;color:var(--muted)}
 .hero-search input{flex:1;min-width:0;height:100%;border:0;background:none;font:inherit;font-size:15px;color:var(--ink);outline:0}
 .hero-search button{height:48px;padding:0 28px;border:0;border-radius:var(--r-sm);background:var(--navy);color:#fff;font-weight:500}
@@ -989,7 +993,7 @@ V.overview = () => {
     '<div class="page-head only-m"><div><h1>Your next chapter starts here</h1><p class="lead">Opportunities selected for scholars</p></div></div>' +
     '<section class="hero"><h2 class="only-d">Find the opportunity that’s right for you</h2><p class="only-d">Internships, graduate programmes and bursaries, shared by career champions.</p>' +
     '<h2 class="only-m">Explore your future</h2><p class="only-m">Graduate roles, internships and career support</p>' +
-    '<form class="hero-search only-d" onsubmit="event.preventDefault();S.q=document.getElementById(\'hq\').value;nav(\'opps\')"><span class="search">' + ICO.search + '<input id="hq" placeholder="Search opportunities, employers or study fields" value="' + S.q + '"></span><button type="submit">Search</button></form>' +
+    '<form class="hero-search only-d" onsubmit="event.preventDefault();S.q=document.getElementById(\'hq\').value;nav(\'opps\')"><span class="search">' + ICO.search + '<input id="hq" placeholder="" aria-label="Search opportunities, employers or study fields" value="' + S.q + '" onfocus="ghostStop(true)" onkeydown="ghostStop(true)" oninput="ghostStop(true)" onblur="ghostResume()"><span class="ghost" aria-hidden="true"></span></span><button type="submit">Search</button></form>' +
     '<button class="hero-go only-m" onclick="nav(\'opps\')">Browse opportunities' + ICO.chevR + '</button></section>' +
     '<div class="stats">' +
     '<button class="card stat" onclick="S.q=\'\';S.soon=false;nav(\'opps\')"><i></i><b>' + mine.length + '</b><span>Open opportunities</span></button>' +
@@ -1263,6 +1267,27 @@ function dialog(){
     '<div class="pb"><p style="margin:0;font-size:14px;color:var(--muted)">' + o.title + ' · ' + o.org + '</p><div class="field"><label for="rwhy">What is wrong with it?</label><select id="rwhy"><option>The link does not work</option><option>Applications have closed</option><option>The closing date is wrong</option><option>It is not a real opportunity</option></select></div></div>' +
     '<div class="pf"><button class="btn btn-ghost" onclick="closeDlg()">Cancel</button><button class="btn btn-primary" onclick="sendReport()">' + ICO.flag + 'Send report</button></div></div></div>';
 }
+/* The empty search field shows a ghost typing example searches: calm cadence, blinking caret, a phrase at a time. Focus or a keystroke stops it. */
+const GHOST_PHRASES = ['Graduate programme in Cape Town', 'Actuarial science bursary', 'Engineering internship', 'Data analyst'];
+const G = {timer:null, phrase:0, pos:0, deleting:false, stopped:false};
+const ghostEl = () => document.querySelector('.hero-search .ghost');
+const ghostInput = () => document.getElementById('hq');
+function ghostStep(){
+  const el = ghostEl(), input = ghostInput(); if (!el || !input) return;
+  if (G.stopped || document.activeElement === input || input.value) { el.textContent = ''; return; }
+  const text = GHOST_PHRASES[G.phrase];
+  if (!G.deleting) { G.pos++; el.innerHTML = text.slice(0, G.pos) + '<i></i>'; if (G.pos >= text.length) { G.deleting = true; G.timer = setTimeout(ghostStep, 1800); return; } G.timer = setTimeout(ghostStep, 55 + Math.random() * 45); }
+  else { G.pos--; el.innerHTML = text.slice(0, G.pos) + '<i></i>'; if (G.pos <= 0) { G.deleting = false; G.phrase = (G.phrase + 1) % GHOST_PHRASES.length; G.timer = setTimeout(ghostStep, 700); return; } G.timer = setTimeout(ghostStep, 26); }
+}
+function ghostStart(delay){
+  clearTimeout(G.timer); const el = ghostEl(), input = ghostInput(); if (!el || !input) return;
+  if (matchMedia('(prefers-reduced-motion:reduce)').matches) { input.placeholder = 'Search opportunities, employers or study fields'; el.textContent = ''; return; }
+  if (!input.value && document.activeElement !== input) G.stopped = false;
+  if (G.stopped || input.value || document.activeElement === input) { el.textContent = ''; input.placeholder = 'Search opportunities, employers or study fields'; return; }
+  input.placeholder = ''; el.innerHTML = '<i></i>'; G.pos = 0; G.deleting = false; G.timer = setTimeout(ghostStep, delay || 900);
+}
+function ghostStop(byUser){ clearTimeout(G.timer); const el = ghostEl(), input = ghostInput(); if (el) el.textContent = ''; if (input) input.placeholder = 'Search opportunities, employers or study fields'; if (byUser) G.stopped = true; }
+function ghostResume(){ const input = ghostInput(); if (!input || input.value) return; G.stopped = false; clearTimeout(G.timer); G.timer = setTimeout(() => ghostStart(0), 2500); }
 function render(){
   const app = document.querySelector('.app'); app.classList.toggle('auth', !S.auth);
   if (!S.auth) { document.getElementById('chrome').innerHTML = ''; document.getElementById('main').innerHTML = V.login(); document.getElementById('dlg').innerHTML = ''; setTimeout(() => { const f = document.getElementById('li-email'); if (f) (f.value ? document.querySelector('.login-form .btn') : f).focus(); }, 0); return; }
@@ -1273,6 +1298,7 @@ function render(){
   main.innerHTML = (V[S.view] || V.overview)();
   if (S.view !== S.lastView) { main.classList.remove('enter'); void main.offsetWidth; main.classList.add('enter'); S.lastView = S.view; }
   if (S.view === 'submit') previewListing();
+  if (S.view === 'overview' && S.auth) ghostStart(); else ghostStop(false);
   const ph = document.querySelector('.page-head[data-role]'); if (ph) { const r = PAGE_ROLE[S.view]; ph.classList.add(r === undefined ? 'r-scholar' : r ? 'r-' + r : 'r-none'); }
   document.getElementById('dlg').innerHTML = dialog();
   if (S.view === 'admin' && typeof placeRef === 'function') setTimeout(placeRef, 0);
