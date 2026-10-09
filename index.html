@@ -115,9 +115,6 @@ h3{font-family:var(--display);font-size:16px;font-weight:500;color:var(--navy);m
 .hero-search button:hover{background:#0F2A47}
 .hero-go{height:44px;padding:0 18px;border:0;border-radius:var(--r-sm);background:#fff;color:var(--brand);font-weight:500;display:inline-flex;align-items:center;gap:8px}
 .hero-go svg{width:16px;height:16px}
-.soonline{display:inline-flex;align-items:center;gap:8px;border:0;background:none;padding:0;margin:-6px 0 20px;font:inherit;font-size:14px;font-weight:500;color:var(--warn);cursor:pointer}
-.soonline svg{width:16px;height:16px}
-.soonline:hover{text-decoration:underline}
 .jobs{display:flex;flex-direction:column;gap:12px}
 .list{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
 .jcards{display:flex;flex-direction:column;gap:10px}
@@ -968,7 +965,7 @@ function closeDlg(){ S.dlg = null; render(); }
 /* ---------- views ---------- */
 const V = {};
 V.overview = () => {
-  const mine = forMe(OPPS), soon = mine.filter(o => o.days <= 14 && !o.applied), rec = mine.filter(o => !o.applied).slice(0, 3);
+  const mine = forMe(OPPS), rec = mine.filter(o => !o.applied).sort((a, b) => a.days - b.days).slice(0, 3);
   const u = ROLES[S.role];
   return '<div class="page-head only-d" data-role><h1>Welcome back, ' + u.name.split(' ')[0] + '</h1>' + journeyChip() + '</div>' +
     '<div class="page-head only-m"><div><h1>Your next chapter starts here</h1><p class="lead">Opportunities selected for scholars</p></div>' + journeyChip() + '</div>' +
@@ -976,7 +973,6 @@ V.overview = () => {
     '<h2 class="only-m">Explore your future</h2><p class="only-m">Graduate roles, internships and career support</p>' +
     '<form class="hero-search only-d" onsubmit="event.preventDefault();S.q=document.getElementById(\'hq\').value;nav(\'opps\')"><span class="search">' + ICO.search + '<input id="hq" placeholder="" aria-label="Search opportunities, employers or study fields" value="' + S.q + '" onfocus="ghostStop(true)" onkeydown="ghostStop(true)" oninput="ghostStop(true)" onblur="ghostResume()"><span class="ghost" aria-hidden="true"></span></span><button type="submit">Search</button></form>' +
     '<button class="hero-go only-m" onclick="nav(\'opps\')">Browse opportunities' + ICO.chevR + '</button></section>' +
-    (soon.length ? '<button class="soonline" onclick="S.soon=true;nav(\'opps\')">' + ICO.clock + soon.length + ' close within 14 days · See them</button>' : '') +
     '<div class="page-head"><h2 style="margin:0">Recommended for you</h2><div class="acts"><button class="btn btn-ghost btn-sm" onclick="nav(\'opps\')">See all ' + ICO.chevR + '</button></div></div>' +
     jobList(rec, '');
 };

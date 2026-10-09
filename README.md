@@ -22,11 +22,12 @@ type will differ from the branded original.
 ## The prototype
 
 - `index.html` is the whole app shell: every screen, plus Reporting.
-- The dashboard is three kinds of thing and a list: the greeting, the hero search, an amber line
-  saying how many listings close within 14 days (it links to the filtered list and hides when
-  nothing is closing), and Recommended for you. The row of count tiles is gone, since the sidebar
-  badges already carry those numbers. Beside the greeting sits a four-dot journey chip, Dreamer to
-  Leader with the person's stage lit and "3rd year of 4" after it: two words and four dots.
+- The dashboard is the greeting, the hero search and Recommended for you. The row of count tiles
+  is gone, since the sidebar badges already carry those numbers, and there is no line about what
+  closes soon: Recommended lists the soonest-closing listings first and each card says "Closes in
+  9 days" in amber, which is the same fact where the eye already is. Beside the greeting sits a
+  four-dot journey chip, Dreamer to Leader with the person's stage lit and "3rd year of 4" after
+  it: two words and four dots.
 - The dashboard search shows a ghost typing example searches when the field is empty: a phrase
   types out at a calm pace with a blinking caret, holds, clears, and the next one follows. It is
   drawn over the field, never as its value, so there is nothing to clear. Focusing the field or
