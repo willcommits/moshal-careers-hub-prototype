@@ -1,0 +1,1685 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Moshal Careers Hub</title>
+<style>
+/*
+ * Brand, from Branding/. The palette has one structural family and three status colours, nothing else:
+ *   Structure (Moshal Program blue family): navy #16385C for the sidebar and headings, blue #2362B4 for anything you can
+ *     click or that is selected, a light-blue tint for selected and hover surfaces. On the navy sidebar the selected mark is
+ *     the Scholars light blue #41C3FF, the same family one step lighter so it shows on dark.
+ *   Status, only when something has a state: Alumni amber #EBB22A = needs your attention (closing soon, flagged, unread);
+ *     Dreamers green #79BE4D = done or live (applied, published, read); Leaders red #E15546 = broken or destructive.
+ *   Everything else is neutral: white cards, one hairline, slate text.
+ *   The four sub-brands are also audiences, and appear as the stages of one journey (Dreamers, Scholars, Alumni, Leaders):
+ *     the strip on the sign-in hero, the colour of each person's avatar, the scholar's journey card and the champion's card.
+ * Type is Narkiss Block, Regular and Medium only.
+ */
+@font-face{font-family:"Frank Ruhl Libre";src:url("brand/FrankRuhlLibre-Regular.ttf") format("truetype");font-weight:400;font-display:swap}
+@font-face{font-family:"Lora";src:url("brand/Lora-Regular.ttf") format("truetype");font-weight:400;font-display:swap}
+:root{
+  --brand:#2362B4; --brand-hover:#1B4B89; --brand-soft:#E9F1FB; --brand-ring:rgba(35,98,180,.18);
+  --scholars:#41C3FF; --scholars-soft:#E4F6FF; --scholars-ink:#0B4F6C;
+  --dreamers:#79BE4D; --ok:#3F7A14; --ok-soft:#ECF6E2;
+  --alumni:#EBB22A; --warn:#6E4E00; --warn-soft:#FBF1D8;
+  --leaders:#E15546; --bad:#A8372A; --bad-soft:#FBE9E6;
+  --navy:#16385C; --ink:#2B3C50; --muted:#6B7B8C; --faint:#9AA7B5;
+  --line:#E4EAF1; --page:#F3F6FA; --surface:#FFFFFF; --surface-2:#F7F9FC;
+  --display:"Narkiss Block","Segoe UI",system-ui,sans-serif; --body:"Narkiss Block","Segoe UI",system-ui,sans-serif;
+  --r:12px; --r-sm:8px; --shadow:0 12px 32px rgba(22,56,92,.14); --t:background-color .15s ease,border-color .15s ease,color .15s ease,box-shadow .15s ease;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--page);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+button{font:inherit;cursor:pointer;color:inherit;transition:var(--t)}
+.card,.jc,.ctl,.heart,.sv,.iconbtn,.go,.tag,.pill{transition:var(--t)}
+@media (prefers-reduced-motion:no-preference){
+.menu,.pop{animation:drop .14s ease-out}@keyframes drop{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+main.enter{animation:page .22s ease-out}@keyframes page{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.jc,.row,.event,.rrow{transition:var(--t),transform .15s ease}
+@media (hover:hover){.jc:hover,.row:hover,.event:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(22,56,92,.07)}}
+.sv.pop svg,.jacts .btn.pop svg{animation:pop .28s ease-out}@keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.3)}100%{transform:scale(1)}}
+#toast{animation:rise .2s ease-out}@keyframes rise{from{opacity:0;transform:translate(-50%,8px)}to{opacity:1;transform:translate(-50%,0)}}
+.stat b{transition:color .15s ease}
+.jcard.play .steps i em{animation:fill .55s cubic-bezier(.2,.8,.2,1) both}
+.jcard.play .steps div:nth-child(2) i em{animation-delay:.45s}
+.jcard.play .steps div:nth-child(3) i em{animation-delay:.9s}
+.jcard.play .steps div:nth-child(4) i em{animation-delay:1.35s}
+.jcard.play .steps .now span{animation:appear .3s ease-out both;animation-delay:1s}
+@keyframes fill{from{transform:scaleX(0)}to{transform:scaleX(var(--to,1))}}
+@keyframes appear{from{opacity:0;transform:translateY(3px)}to{opacity:1;transform:none}}
+}
+a{color:inherit;text-decoration:none}
+b,strong{font-weight:500}
+:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.app{display:flex;min-height:100vh}
+moshal-sidebar{--surface:#16385C;--line:rgba(255,255,255,.12);--ink:#FFFFFF;--muted:rgba(255,255,255,.64);--brand:#FFFFFF;--brand-soft:rgba(255,255,255,.14);--page:rgba(255,255,255,.08);--navy:#0F2A47;--alumni:#EBB22A;--mark:#41C3FF}
+.content{flex:1;min-width:0;display:flex;flex-direction:column}
+.topbar{height:64px;background:var(--surface);border-bottom:1px solid var(--line);box-shadow:0 1px 0 rgba(22,56,92,.03);display:flex;align-items:center;gap:16px;padding:0 24px;position:sticky;top:0;z-index:20}
+.topbar .actions{margin-left:auto;display:flex;align-items:center;gap:8px}
+.topbar .burger,.topbar .tlogo,.tabbar{display:none}
+.tlogo{height:22px}
+.scrim{position:fixed;inset:0;background:rgba(15,42,71,.45);z-index:65}
+.iconbtn{width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center;color:var(--muted);position:relative;padding:0}
+.iconbtn:hover,.iconbtn[aria-expanded="true"]{border-color:var(--brand);color:var(--brand)}
+.iconbtn svg{width:18px;height:18px}
+.iconbtn .dot{position:absolute;top:7px;right:8px;min-width:9px;height:9px;border-radius:999px;background:var(--alumni);border:2px solid var(--surface)}
+.menuwrap{position:relative}
+.me{display:flex;align-items:center;gap:9px;font-size:14px;font-weight:500;padding:0 0 0 12px;margin-left:4px;border:0;border-left:1px solid var(--line);background:none;height:38px;border-radius:0}
+.me:hover .avatar,.me[aria-expanded="true"] .avatar{box-shadow:0 0 0 3px var(--brand-ring)}
+.me .avatar{width:34px;height:34px;border-radius:50%;background:var(--brand);color:#fff;display:grid;place-items:center;font-weight:500;font-size:13px}
+.me .chev{width:12px;height:12px;color:var(--muted)}
+.menu{position:absolute;right:0;top:calc(100% + 10px);width:320px;background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);padding:6px;z-index:40;text-align:left;font-weight:400}
+.menu .mh{display:flex;justify-content:space-between;align-items:center;padding:10px 12px 8px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.menu .mh button{border:0;background:none;color:var(--brand);font-weight:500;font-size:12px;padding:0;letter-spacing:0;text-transform:none}
+.menu .mi{display:flex;gap:10px;width:100%;padding:9px 12px;border:0;border-radius:8px;background:none;text-align:left;font:inherit;align-items:center}
+.menu .mi:hover{background:var(--surface-2)}
+.menu .mi[aria-current="true"]{background:var(--brand-soft);color:var(--brand)}
+.menu .mi .ri{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:500;flex:none;background:var(--surface-2);color:var(--muted)}
+.menu .mi[aria-current="true"] .ri{background:var(--brand);color:#fff}
+.menu .mi b{display:block;font-size:14px;color:var(--navy)}
+.menu .mi span{display:block;font-size:12px;color:var(--muted)}
+.menu .mi svg{width:16px;height:16px;color:var(--muted)}
+.menu .sep{height:1px;background:var(--line);margin:6px 8px}
+.menu .ni{display:grid;grid-template-columns:8px 1fr;gap:10px;align-items:start;padding:10px 12px;border-radius:8px;width:100%;border:0;background:none;text-align:left}
+.menu .ni:hover{background:var(--surface-2)}
+.menu .ni i{width:8px;height:8px;border-radius:50%;margin-top:6px;background:var(--line)}
+.menu .ni.unread i{background:var(--alumni)}
+.menu .ni p{margin:0;font-size:13px;line-height:1.4}
+.menu .ni time{font-size:11px;color:var(--muted)}
+.menu .empty{padding:20px 12px;text-align:center;color:var(--muted);font-size:13px}
+main{padding:32px 32px 72px;max-width:1160px;width:100%;container-type:inline-size}
+h1{font-family:var(--display);font-size:28px;font-weight:500;color:var(--navy);margin:0;letter-spacing:-.2px;line-height:1.2}
+h2{font-family:var(--display);font-size:19px;font-weight:500;color:var(--navy);margin:0 0 14px;letter-spacing:-.1px}
+h3{font-family:var(--display);font-size:16px;font-weight:500;color:var(--navy);margin:0}
+.page-head{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:22px;position:relative;padding-top:14px}
+.page-head::before{content:"";position:absolute;top:0;left:0;width:36px;height:4px;border-radius:2px;background:var(--brand)}
+
+.page-head .n{color:var(--muted);font-size:14px;font-variant-numeric:tabular-nums}
+.page-head .lead{margin:4px 0 0;font-size:14px;color:var(--muted)}
+.page-head .acts{display:flex;gap:8px;align-items:center;margin-left:auto}
+.sub{color:var(--muted);font-size:14px;margin:-12px 0 22px;max-width:70ch}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r)}
+.hero{position:relative;overflow:hidden;background:linear-gradient(135deg,#1B4B89,#2362B4 60%,#2F74C8);color:#fff;border-radius:16px;padding:28px 30px 30px;margin-bottom:24px}
+.hero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:4px;background:var(--scholars)}
+/* The five sub-brand colours as one quiet rule: the brand's own device, nothing encoded. */
+.hero h2{color:#fff;font-size:23px;margin:0 0 4px}
+.hero p{margin:0 0 18px;color:#CFE2F7;font-size:14px}
+.hero-search{display:flex;gap:12px;flex-wrap:wrap}
+.hero-search .search{flex:1;min-width:240px;display:flex;align-items:center;gap:10px;height:48px;border-radius:var(--r-sm);padding:0 16px;background:#fff}
+.hero-search .search svg{width:17px;height:17px;color:var(--muted)}
+.hero-search input{flex:1;min-width:0;height:100%;border:0;background:none;font:inherit;font-size:15px;color:var(--ink);outline:0}
+.hero-search button{height:48px;padding:0 28px;border:0;border-radius:var(--r-sm);background:var(--navy);color:#fff;font-weight:500}
+.hero-search button:hover{background:#0F2A47}
+.hero-go{height:44px;padding:0 18px;border:0;border-radius:var(--r-sm);background:#fff;color:var(--brand);font-weight:500;display:inline-flex;align-items:center;gap:8px}
+.hero-go svg{width:16px;height:16px}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-bottom:28px}
+@container (max-width:860px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.stat{padding:18px 20px;text-align:left;font:inherit;color:inherit;display:flex;flex-direction:column;gap:4px}
+.stat:hover{border-color:var(--brand)}
+.stat b{font-family:var(--display);font-size:30px;font-weight:500;color:var(--navy);line-height:1.1}
+.stat span{color:var(--muted);font-size:13px}
+.stat i{display:none}
+.stat:hover b{color:var(--brand)}
+.jobs{display:flex;flex-direction:column;gap:12px}
+.list{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.jcards{display:flex;flex-direction:column;gap:10px}
+.jc{display:grid;grid-template-columns:40px minmax(0,1fr) auto 32px;gap:14px;align-items:center;padding:14px 18px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r)}
+@media (hover:hover){.jc:hover{border-color:var(--brand)}}
+.jc .open{display:contents;cursor:pointer;border:0;background:none;padding:0;font:inherit;color:inherit;text-align:left}
+.jc .av{width:40px;height:40px;border-radius:10px;background:var(--brand-soft);color:var(--brand);display:grid;place-items:center;font-size:13px;font-weight:500;letter-spacing:.02em}
+.jc .t{min-width:0}
+.jc .t b{display:block;font-size:15px;font-weight:500;color:var(--navy);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.jc .t span{display:block;font-size:13px;color:var(--muted);margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.jc .w{font-size:13px;color:var(--muted);text-align:right;white-space:nowrap}
+.jc .w.soon{color:var(--warn)}
+.jc .w.done{color:var(--ok);display:inline-flex;align-items:center;gap:5px}
+.jc .w.done svg{width:14px;height:14px}
+.sv{width:32px;height:32px;border:0;border-radius:6px;background:none;color:var(--faint);display:grid;place-items:center;padding:0;justify-self:end}
+.sv:hover{background:var(--surface-2);color:var(--brand)}
+.sv[aria-pressed="true"]{color:var(--brand)}
+.sv[aria-pressed="true"] svg{fill:currentColor}
+.sv svg{width:17px;height:17px}
+.list .empty{padding:48px 20px}
+.rlist{display:flex;flex-direction:column;gap:22px}
+.rgroup h2{font-size:15px;margin:0 0 8px;color:var(--muted);font-weight:500}
+.rrow{display:grid;grid-template-columns:56px minmax(0,1fr) 110px 24px;gap:16px;align-items:center;padding:14px 20px;border-bottom:1px solid var(--line);width:100%;border-left:0;border-right:0;border-top:0;background:none;text-align:left;font:inherit;color:inherit;cursor:pointer}
+.rrow:last-child{border-bottom:0}
+.rrow:hover{background:var(--surface-2)}
+.rrow b{display:block;font-size:15px;font-weight:500;color:var(--navy)}
+.rrow:hover b{color:var(--brand)}
+.rrow p{margin:2px 0 0;font-size:13px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rrow .m{font-size:13px;color:var(--muted);text-align:right}
+.rrow .m.done{color:var(--ok)}
+.rrow svg{width:16px;height:16px;color:var(--faint)}
+.rrow .ok-ic{color:var(--ok)}
+.progress{display:flex;align-items:center;gap:12px;font-size:13px;color:var(--muted);margin:-12px 0 20px}
+.progress i{display:block;flex:0 0 160px;height:4px;border-radius:2px;background:var(--line);overflow:hidden}
+.progress i b{display:block;height:100%;background:var(--dreamers)}
+@container (max-width:640px){.rrow{grid-template-columns:56px minmax(0,1fr) 24px}.rrow .m{display:none}}
+.job{display:grid;grid-template-columns:48px minmax(0,1fr) auto;gap:0 16px;align-items:center;padding:14px 16px;width:100%;position:relative}
+.job:hover{border-color:var(--brand)}
+.job .open{display:contents;cursor:pointer;border:0;background:none;padding:0;font:inherit;color:inherit;text-align:left}
+.job .body{min-width:0}
+.job h3{font-size:16px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.job .meta{color:var(--muted);font-size:13px;margin:2px 0 7px;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.job .tags{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.job .side{display:flex;align-items:center;gap:8px;justify-self:end}
+.av{width:48px;height:48px;border-radius:10px;background:var(--brand-soft);color:var(--brand);font-family:var(--display);font-weight:500;font-size:16px;display:grid;place-items:center}
+.tag{display:inline-flex;align-items:center;gap:5px;background:var(--brand-soft);color:var(--brand);font-size:12px;font-weight:500;padding:4px 10px;border-radius:6px;white-space:nowrap}
+.tag.soon{background:var(--warn-soft);color:var(--warn)}
+.tag.applied{background:var(--ok-soft);color:var(--ok)}
+.tag.saved{background:var(--brand-soft);color:var(--brand)}
+.tag.muted{background:var(--surface-2);color:var(--muted)}
+.tag svg{width:12px;height:12px}
+.heart{width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center;color:var(--muted);padding:0}
+.heart:hover{border-color:var(--brand);color:var(--brand)}
+.heart[aria-pressed="true"]{background:var(--brand-soft);border-color:var(--brand);color:var(--brand)}
+.heart svg{width:16px;height:16px}
+.go{width:34px;height:34px;border-radius:50%;background:var(--brand-soft);color:var(--brand);display:grid;place-items:center;border:0;padding:0}
+.go:hover{background:var(--brand);color:#fff}
+.go svg{width:16px;height:16px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:42px;padding:0 18px;border-radius:var(--r-sm);border:1px solid transparent;font-weight:500;font-size:14px;background:var(--brand-soft);color:var(--brand);white-space:nowrap}
+.btn:hover{background:#DCEAFA}
+.btn-primary{background:var(--brand);color:#fff}
+.btn-primary:hover{background:var(--brand-hover)}
+.btn-ghost{background:var(--surface);border-color:var(--line);color:var(--ink)}
+.btn-ghost:hover{background:var(--surface-2)}
+.btn-danger{background:var(--surface);border-color:var(--leaders);color:var(--bad)}
+.btn-danger:hover{background:var(--bad-soft)}
+.btn-sm{height:34px;padding:0 12px;font-size:13px}
+.btn svg{width:16px;height:16px}
+.btn:disabled{opacity:.45;cursor:default}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+.toolbar .sp{flex:1}
+.search-wide{flex:1;min-width:220px;display:flex;align-items:center;gap:10px;height:38px;border:1px solid var(--line);border-radius:var(--r-sm);padding:0 12px;background:var(--surface)}
+.search-wide:focus-within{border-color:var(--brand);box-shadow:0 0 0 3px var(--brand-ring)}
+.search-wide svg{width:16px;height:16px;color:var(--muted);flex:none}
+.search-wide input{flex:1;min-width:0;border:0;background:none;font:inherit;font-size:14px;outline:0}
+.search-wide .clear{border:0;background:none;color:var(--muted);padding:0 2px;font-size:16px;line-height:1}
+.ctl{height:38px;display:inline-flex;align-items:center;gap:8px;padding:0 12px;border:1px solid var(--line);border-radius:10px;background:var(--surface);font:inherit;font-size:14px;color:var(--ink);cursor:pointer;white-space:nowrap;position:relative}
+.ctl:hover{border-color:var(--brand)}
+.ctl[aria-expanded="true"],.ctl.on{border-color:var(--brand);color:var(--brand);background:var(--brand-soft)}
+.ctl .chev{margin-left:2px;width:12px;height:12px;opacity:.7}
+.ctl .cnt{min-width:18px;height:18px;padding:0 5px;border-radius:999px;background:var(--brand);color:#fff;font-size:11px;font-weight:500;display:inline-flex;align-items:center;justify-content:center}
+.pop{position:absolute;top:calc(100% + 8px);left:0;min-width:240px;cursor:default;font-weight:400;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);padding:6px;z-index:40;text-align:left;font-weight:400;color:var(--ink);cursor:default;max-height:360px;overflow:auto}
+.pop.pop-right{left:auto;right:0}
+.pop .h{display:flex;justify-content:space-between;align-items:center;padding:8px 10px 6px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.pop .h button{border:0;background:none;color:var(--brand);font-size:12px;font-weight:500;padding:0;letter-spacing:0;text-transform:none}
+.pop .o{display:flex;align-items:center;gap:10px;width:100%;padding:9px 10px;border:0;background:none;border-radius:8px;font-size:14px;text-align:left}
+.pop .o:hover{background:var(--surface-2)}
+.pop .o[aria-selected="true"]{background:var(--brand-soft);color:var(--brand);font-weight:500}
+.pop .o .n{margin-left:auto;font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.pop .o .tick{width:14px;height:14px;flex:none;opacity:0}
+.pop .o[aria-selected="true"] .tick{opacity:1}
+.listbar{display:flex;align-items:center;justify-content:flex-end;gap:2px;margin:-4px 0 10px;font-size:13px;color:var(--muted)}
+.listbar .ctl{height:32px;padding:0 8px;border-color:transparent;background:none;font-size:13px;color:var(--navy)}
+.listbar .ctl:hover{border-color:var(--line)}
+.listbar .pop{left:auto;right:0}
+.chipbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:16px;font-size:14px;color:var(--muted);min-height:30px}
+.fchip{display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 6px 0 12px;border-radius:999px;background:var(--surface);border:1px solid var(--line);font-size:13px;font-weight:500;color:var(--navy)}
+.fchip button{width:18px;height:18px;border:0;border-radius:50%;background:var(--surface-2);color:var(--muted);font-size:12px;line-height:1;display:grid;place-items:center;padding:0}
+.fchip button:hover{background:var(--bad-soft);color:var(--bad)}
+.chipbar .reset{border:0;background:none;color:var(--brand);font-weight:500;font-size:13px;padding:0}
+.empty{padding:44px 20px;text-align:center;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:10px}
+.empty b{color:var(--navy);font-size:16px;font-weight:500}
+.notice{display:flex;gap:10px;align-items:center;padding:12px 16px;border-radius:var(--r-sm);font-size:14px;margin-bottom:18px}
+.notice svg{width:16px;height:16px;flex:none}
+.notice.ok{background:var(--ok-soft);color:var(--ok)}
+.notice.warn{background:var(--warn-soft);color:var(--warn)}
+.notice.bad{background:var(--bad-soft);color:var(--bad)}
+.notice.info{background:var(--brand-soft);color:var(--navy)}
+.jobwrap{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:20px;align-items:start}
+@container (max-width:860px){.jobwrap{grid-template-columns:1fr}.jside{position:static}}
+.detail{padding:28px}
+.detail .tags{font-size:13px;color:var(--muted)}
+.detail h1{font-size:26px;margin:8px 0 6px}
+.detail .where{color:var(--muted);font-size:15px;margin:0 0 24px}
+.detail h3{margin:0 0 10px}
+.detail p{font-size:15px;margin:0;max-width:70ch;line-height:1.6}
+.detail .none{color:var(--muted)}
+.jside{padding:20px;position:sticky;top:84px;display:flex;flex-direction:column;gap:18px}
+.jside > .btn{justify-content:center;width:100%}
+.jside .kv{display:flex;flex-direction:column;gap:12px;padding-top:18px;border-top:1px solid var(--line)}
+.jside .kv span{display:block;font-size:12px;color:var(--muted);margin-bottom:2px}
+.jside .kv b{font-weight:500;color:var(--navy);font-size:14px}
+.jside .kv b small{color:var(--warn);font-size:13px;margin-left:6px}
+.jacts{display:flex;gap:6px;flex-wrap:wrap;padding-top:14px;border-top:1px solid var(--line)}
+.jacts .btn{flex:1;justify-content:center}
+.jacts .btn svg{width:15px;height:15px}
+.jacts .btn[aria-pressed="true"]{color:var(--brand);border-color:var(--brand)}
+.btn.danger{color:var(--bad)}
+.btn.danger:hover{border-color:var(--bad)}
+.grid-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(248px,1fr));gap:16px}
+.res{padding:20px;text-align:left;font:inherit;color:inherit;display:flex;flex-direction:column;align-items:flex-start}
+.res:hover{border-color:var(--brand)}
+.res .ic{width:44px;height:44px;border-radius:10px;background:var(--brand-soft);color:var(--brand);display:grid;place-items:center;margin-bottom:22px}
+.res .ic svg{width:20px;height:20px}
+.res .kind{color:var(--brand);font-size:11px;font-weight:500;letter-spacing:.09em;text-transform:uppercase}
+.res h3{margin:6px 0 8px}
+.res p{margin:0 0 16px;font-size:13px;color:var(--muted);flex:1}
+.res .foot{display:flex;justify-content:space-between;align-items:center;width:100%;font-size:13px;color:var(--brand);font-weight:500}
+.res .done{color:var(--ok);display:inline-flex;align-items:center;gap:5px}
+.res .done svg{width:14px;height:14px}
+.article{padding:30px;max-width:780px}
+.article .kind{color:var(--muted);font-size:13px}
+.article h1{margin:6px 0 18px}
+.article p,.article li{font-size:15px;line-height:1.65}
+.article ul,.article ol{padding-left:20px;margin:0 0 18px}
+.article .foot{display:flex;gap:10px;flex-wrap:wrap;padding-top:20px;border-top:1px solid var(--line);margin-top:6px}
+.cover,.th{display:block;background:var(--brand-soft) center/cover no-repeat;border-radius:10px;overflow:hidden}
+.cover{width:100%;aspect-ratio:16/7;margin-bottom:18px}
+.th{width:56px;height:40px;border-radius:8px}
+.cover.dflt,.th.dflt{background:linear-gradient(135deg,#1B4B89,#2362B4 60%,#2F74C8);display:grid;place-items:center;color:#fff;font-family:var(--display);font-weight:500}
+.cover.dflt b{font-size:48px;opacity:.9} .th.dflt b{font-size:16px}
+.rich{font-size:15px;line-height:1.65}
+.rich h2{font-size:22px;margin:22px 0 8px} .rich h3{font-size:17px;margin:18px 0 6px}
+.rich p{margin:0 0 14px} .rich ul,.rich ol{padding-left:20px;margin:0 0 14px}
+.rich blockquote{margin:0 0 14px;padding:4px 0 4px 16px;border-left:3px solid var(--brand);color:var(--muted)}
+.rich img{max-width:100%;height:auto;border-radius:10px;display:block;margin:6px 0 14px}
+.rich iframe,.rich video{display:block;width:100%;aspect-ratio:16/9;border:0;border-radius:10px;margin:6px 0 14px;background:#000}
+.rich a{color:var(--brand)}
+.rich font[size="2"]{font-size:13px} .rich font[size="3"]{font-size:15px} .rich font[size="5"]{font-size:19px}
+.rtbar{display:flex;flex-wrap:wrap;gap:4px;align-items:center;padding:6px;border:1px solid var(--line);border-bottom:0;border-radius:var(--r-sm) var(--r-sm) 0 0;background:var(--surface-2)}
+.rtbar select{height:30px;width:auto;padding:0 26px 0 8px;font-size:13px;border-radius:7px;background-position:right 7px center}
+.rtbar .rtb{height:30px;padding:0 9px;border:1px solid transparent;border-radius:7px;background:none;font:inherit;font-size:13px;color:var(--ink);cursor:pointer;display:inline-flex;align-items:center}
+.rtbar .rtb:hover{background:var(--surface);border-color:var(--line)}
+.rtbar .sep{width:1px;height:18px;background:var(--line);margin:0 4px}
+.filebtn{position:relative;overflow:hidden;cursor:pointer} .filebtn input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.editor{min-height:260px;border:1px solid var(--line);border-radius:0 0 var(--r-sm) var(--r-sm);padding:14px 16px;background:#fff;outline:0;color:var(--ink)}
+.editor:focus{border-color:var(--brand);box-shadow:0 0 0 3px var(--brand-ring)}
+.editor:empty::before{content:attr(data-placeholder);color:var(--faint)}
+.field.bad .editor{border-color:var(--leaders)}
+.coverrow{display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap}
+.coverrow .cover{width:220px;aspect-ratio:16/9;margin:0;flex:none}
+.coverctl{flex:1;min-width:220px;display:flex;flex-direction:column;gap:8px}
+.coverctl .r{display:flex;gap:8px;flex-wrap:wrap}
+.events{display:flex;flex-direction:column;gap:12px}
+.event{display:grid;grid-template-columns:84px minmax(0,1fr) auto;gap:0 16px;align-items:center;padding:14px 16px;width:100%}
+.event:hover{border-color:var(--brand)}
+.date{height:62px;border-radius:var(--r-sm);background:var(--brand-soft);color:var(--brand);font-family:var(--display);font-weight:500;font-size:13px;display:grid;place-items:center;text-align:center;line-height:1.25}
+.date.past{background:var(--surface-2);color:var(--muted)}
+.event .body{min-width:0}
+.event h3{font-size:16px}
+.event .meta{color:var(--muted);font-size:13px;margin-top:2px;display:block}
+.evacts{display:flex;gap:6px}
+.tabs{display:inline-flex;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:3px;height:38px;margin-bottom:16px}
+.tabs button{height:30px;padding:0 14px;border:0;border-radius:7px;background:none;color:var(--muted);font-weight:500;font-size:13px}
+.tabs button[aria-selected="true"]{background:var(--navy);color:#fff}
+.form{padding:26px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px 24px}
+.grid2 .wide{grid-column:1/-1}
+.field label{display:block;font-weight:500;font-size:14px;color:var(--navy);margin-bottom:7px}
+.field label .req{color:var(--brand);font-style:normal;margin-left:3px}
+.preview{margin-top:24px;padding-top:20px;border-top:1px solid var(--line)}
+.preview .jc{pointer-events:none}
+.field input,.field select,.field textarea{width:100%;height:46px;border:1px solid var(--line);border-radius:var(--r-sm);padding:0 13px;font:inherit;font-size:15px;color:var(--ink);background:#fff}
+.field select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236B7B8C' stroke-width='2.2' stroke-linecap='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;background-size:14px;padding-right:34px}
+.field textarea{height:auto;min-height:104px;padding:12px 13px;resize:vertical;line-height:1.5}
+.field input:focus,.field select:focus,.field textarea:focus{outline:0;border-color:var(--brand);box-shadow:0 0 0 3px var(--brand-ring)}
+.field .err{color:var(--bad);font-size:13px;margin-top:6px;display:none}
+.field.bad input,.field.bad select,.field.bad textarea{border-color:var(--leaders)}
+.field.bad .err{display:block}
+.field .hint{font-size:12px;color:var(--muted);margin-top:6px}
+.chipset{display:flex;flex-wrap:wrap;gap:6px}
+.chipset button{height:32px;padding:0 12px;border:1px solid var(--line);border-radius:999px;background:var(--surface);font-size:13px}
+.chipset button[aria-pressed="true"]{background:var(--brand-soft);border-color:var(--brand);color:var(--brand);font-weight:500}
+.aud-note{font-style:normal;color:var(--brand)}
+.form-foot{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-top:24px;flex-wrap:wrap}
+.form-foot .r{display:flex;gap:10px;align-items:center}
+.dup{display:inline-flex;gap:8px;align-items:center;font-size:13px;padding:8px 12px;border-radius:6px}
+.dup.ok{background:var(--ok-soft);color:var(--ok)} .dup.warn{background:var(--warn-soft);color:var(--warn)}
+.dup svg{width:14px;height:14px}
+.rows{display:flex;flex-direction:column;gap:12px}
+.row{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:16px 18px;flex-wrap:wrap}
+.row .body{min-width:200px;flex:1}
+.row .meta{color:var(--muted);font-size:13px;margin-top:4px}
+.row h3 .lnk{border:0;background:none;padding:0;font:inherit;color:inherit;text-align:left;cursor:pointer}
+.row h3 .lnk:hover{color:var(--brand)}
+.row .side{display:flex;gap:10px;align-items:center}
+.pill{display:inline-flex;align-items:center;gap:6px;background:var(--brand-soft);color:var(--brand);font-size:12px;font-weight:500;padding:5px 10px;border-radius:999px;white-space:nowrap}
+.pill i{width:7px;height:7px;border-radius:50%;background:currentColor;flex:none}
+.pill.live{background:var(--ok-soft);color:var(--ok)}
+.pill.broken{background:var(--bad-soft);color:var(--bad)}
+.pill.off{background:var(--surface-2);color:var(--muted)}
+.pill.warn{background:var(--warn-soft);color:var(--warn)}
+.xmask{position:fixed;inset:0;background:rgba(22,56,92,.4);display:grid;place-items:center;padding:16px;z-index:90}
+.xdlg{width:440px;max-width:100%;max-height:calc(100vh - 32px);overflow:auto;background:var(--surface);border-radius:14px;box-shadow:0 24px 60px rgba(22,56,92,.3);text-align:left;color:var(--ink)}
+.xh{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--line);font-family:var(--display);font-size:16px;font-weight:500;color:var(--navy)}
+.xclose{width:30px;height:30px;border:0;border-radius:50%;background:var(--surface-2);color:var(--muted);font-size:18px;line-height:1;display:grid;place-items:center;padding:0}
+.xclose:hover{background:var(--line);color:var(--navy)}
+.xdlg .pb{padding:16px 18px;display:flex;flex-direction:column;gap:16px}
+.xdlg .pf{display:flex;justify-content:flex-end;gap:10px;padding:12px 18px;border-top:1px solid var(--line);position:sticky;bottom:0;background:var(--surface)}
+.xexport{width:560px;overflow:visible}
+.xexport .pb{overflow:visible}
+.xexport .pf{justify-content:space-between;align-items:center;position:static}
+.xexport .pf .fn{font-size:12px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:280px}
+.xrow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:8px}
+.xrow .xlab{font-size:12px;color:var(--muted);min-width:52px}
+.xrow .cap{font-size:12px;color:var(--muted)}
+.xseg{height:34px} .xseg button{height:26px;padding:0 12px;font-size:13px}
+.xrow .ctl{height:34px;font-size:13px}
+.xdd .pop{z-index:95}
+#toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);background:var(--navy);color:#fff;padding:11px 18px;border-radius:10px;font-size:14px;z-index:100;box-shadow:var(--shadow);display:flex;gap:10px;align-items:center;max-width:calc(100% - 32px)}
+#toast svg{width:16px;height:16px;flex:none;color:var(--dreamers)}
+/* Reporting */
+/* Series inks by role, never by entity: blue = the measured bucket, slate = the remainder, hollow dot = previous period, amber = final-years danger only.
+   Heatmap ramp #AEB7C1 #99A3AF #6A7583 #44505E validated with the dataviz ordinal check; text ink navy on the two light steps, white on the two dark. */
+.rp[data-q="amber"]{--qc:#EBB22A;--qi:#7A5600;--qs:#FBF3DC}
+.rp[data-q="green"]{--qc:#79BE4D;--qi:#2F6A0C;--qs:#EEF6E6}
+.rp[data-q="blue"]{--qc:#2362B4;--qi:#2362B4;--qs:#E9F1FB}
+.rp[data-q="red"]{--qc:#E15546;--qi:#9E2F22;--qs:#FCEDEB}
+.rp .bar em,.rp .bar em.pos{background:var(--qc)}
+.rp .fig.hero{border-left-color:var(--alumni)}
+.qs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:20px}
+.q{position:relative;display:flex;flex-direction:column;gap:6px;padding:16px 18px 14px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);font:inherit;color:inherit;text-align:left;cursor:pointer;overflow:hidden;transition:var(--t)}
+.q::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px}
+.q-amber::before{background:#EBB22A} .q-green::before{background:#79BE4D} .q-blue::before{background:#2362B4} .q-red::before{background:#E15546}
+.q:hover{border-color:var(--navy)}
+.q[aria-selected="true"]{box-shadow:inset 0 0 0 1px var(--navy);border-color:var(--navy)}
+.q-amber[aria-selected="true"]{background:#FBF3DC} .q-green[aria-selected="true"]{background:#EEF6E6} .q-blue[aria-selected="true"]{background:#E9F1FB} .q-red[aria-selected="true"]{background:#FCEDEB}
+.q .l{font-size:13px;color:var(--muted);font-weight:500}
+.q .v{font-family:var(--display);font-size:34px;font-weight:500;color:var(--navy);line-height:1}
+.q .s{font-size:13px;font-weight:500;display:flex;align-items:baseline;gap:8px}
+.q-amber .s{color:#7A5600} .q-green .s{color:#2F6A0C} .q-blue .s{color:#2362B4} .q-red .s{color:#9E2F22}
+.q .s .d{font-weight:400;color:var(--muted);font-size:12px}
+.story .in{margin:0 2px 0 6px}
+.rp{container-type:inline-size;--pos:var(--brand);--rem:#7D8B9A;--track:#EEF1F4;--ghost:#6B7B8C;--pos-soft:#9DBDE8;--hm1:#AEB7C1;--hm2:#99A3AF;--hm3:#6A7583;--hm4:#44505E}
+.rp .page-head{margin-bottom:18px}
+.rp small{font-size:11px}
+/* inline text links keep their place in the sentence but take a finger-sized hit area */
+.rp .words button,.rp .fconv button,.rp .tile .sub button,.rp .card-foot .lnk,.rp .hm th button,.rp table.rt th button,.rp .brk button{padding-top:6px;padding-bottom:6px;margin-top:-6px;margin-bottom:-6px}
+.rp .tb{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.rp .tb .sp{flex:1}
+.rp .tb.filters{margin:2px 0 14px;gap:6px}
+.rp .tb.filters .ctl{height:34px;font-size:13px;padding:0 10px}
+.rp .tb.filters .vsep{width:1px;height:22px;background:var(--line);margin:0 4px}
+.rp .tb.filters .ctl svg{width:15px;height:15px}
+.pop.period{min-width:280px}
+.pop .range{display:flex;align-items:center;gap:8px;padding:6px 10px 10px;flex-wrap:wrap}
+.pop .range input{height:34px;border:1px solid var(--line);border-radius:8px;padding:0 8px;font:inherit;font-size:13px;color:var(--ink);background:#fff;flex:1;min-width:120px}
+.pop .range span{font-size:12px;color:var(--muted)}
+.rp .tb.filters .reset{border:0;background:none;color:var(--brand);font-weight:500;font-size:13px;padding:0 6px;cursor:pointer}
+.xp{margin-bottom:20px}
+.xp .xtabs{margin-bottom:12px;height:auto;padding:3px;flex-wrap:wrap}
+.xp .xtabs button{height:30px}
+.xp > .card{margin-bottom:0}
+.xp .rp-grid{display:block}
+.rp .cap{font-size:12px;color:var(--muted);margin-left:2px}
+.ctl svg{width:15px;height:15px;color:var(--muted)}
+.ctl.on svg{color:var(--brand)}
+.seg{display:inline-flex;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:3px;height:38px}
+.seg button{height:30px;padding:0 14px;border:0;border-radius:7px;background:none;color:var(--muted);font-weight:500;font-size:13px}
+.seg button[aria-pressed="true"]{background:var(--navy);color:#fff}
+.pop label{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;font-size:14px;color:var(--ink);cursor:pointer}
+.pop label:hover{background:var(--surface-2)}
+.pop label input{width:16px;height:16px;accent-color:var(--brand);margin:0}
+.pop .n{margin-left:auto;color:var(--muted);font-size:12px;font-variant-numeric:tabular-nums}
+.pop .ph{display:flex;justify-content:space-between;align-items:center;padding:8px 10px 6px;font-size:12px;color:var(--muted)}
+.pop .ph button{border:0;background:none;color:var(--brand);font-weight:500;font-size:12px;padding:0}
+.pop .grp{padding:8px 10px 2px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:500}
+.pop label.sub{padding-left:28px;font-size:13px}
+.panel{width:420px;max-width:calc(100vw - 48px);padding:0}
+.panel .ph{padding:12px 16px;border-bottom:1px solid var(--line);font-size:14px;color:var(--navy);font-weight:500}
+.panel .pb{padding:14px 16px;display:flex;flex-direction:column;gap:14px}
+.eyebrow{display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:500;margin-bottom:8px}
+.chipset{display:flex;flex-wrap:wrap;gap:6px}
+.chipset button{height:30px;padding:0 12px;border:1px solid var(--line);border-radius:999px;background:var(--surface);font-size:13px;color:var(--ink)}
+.chipset button[aria-pressed="true"]{background:var(--brand-soft);border-color:var(--brand);color:var(--brand);font-weight:500}
+.pf{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 16px;border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
+.story{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:18px;font-size:14px;color:var(--muted);min-height:28px}
+.story b{color:var(--navy);font-weight:500}
+.chip{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 6px 0 10px;border-radius:999px;background:var(--surface);border:1px solid var(--line);font-size:13px;font-weight:500;color:var(--navy)}
+.chip.fy{border-color:var(--alumni);background:var(--warn-soft)}
+.chip button{width:18px;height:18px;border:0;border-radius:50%;background:var(--surface-2);color:var(--muted);font-size:12px;line-height:1;display:grid;place-items:center;padding:0}
+.chip button:hover{background:var(--bad-soft);color:var(--bad)}
+.story .reset{border:0;background:none;color:var(--brand);font-weight:500;font-size:13px;padding:0 4px}
+.well{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:4px;margin-bottom:20px}
+.tile{display:flex;flex-direction:column;gap:5px;padding:14px 16px;border:0;border-radius:10px;background:none;font:inherit;color:inherit;text-align:left;cursor:pointer;min-height:84px}
+.tile:hover{background:var(--surface-2)}
+.tile[aria-selected="true"]{background:var(--brand-soft);box-shadow:inset 0 0 0 1px var(--brand)}
+.tile .l{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:6px}
+.tile .l i{width:8px;height:8px;border-radius:50%}
+.tile .v{font-family:var(--display);font-size:28px;font-weight:500;color:var(--navy);line-height:1;display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.tile .v small{font-family:var(--body);font-size:13px;font-weight:500;color:var(--muted)}
+.rpill{display:inline-flex;align-items:center;height:20px;padding:0 8px;border-radius:999px;background:var(--page);color:var(--ink);font:500 12px/1 var(--body)}
+.tile .sub{font-size:12px;color:var(--muted)}
+.tile .sub button{border:0;background:none;color:var(--brand);font:inherit;font-weight:500;padding:0;cursor:pointer}
+.i-pos{background:var(--pos)} .i-rem{background:var(--rem)} .i-soft{background:var(--pos-soft)} .i-amber{background:var(--alumni)} .i-muted{background:#C9D3DF}
+.card-head{display:flex;align-items:center;gap:10px;padding:12px 20px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.card-head h2{margin:0;font-size:15px}
+.card-head .n{font-size:12px;color:var(--muted)}
+.card-head .acts{margin-left:auto;display:flex;align-items:center;gap:8px}
+.card-head .sub{font-size:12px;color:var(--muted)}
+.legend{display:flex;gap:12px;font-size:12px;color:var(--muted);align-items:center}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+.legend i.ghost{width:8px;height:8px;border-radius:50%;border:1.5px solid var(--ghost);background:#fff}
+.legend i.soft{background:var(--pos-soft)}
+.iconbtn-sm{width:28px;height:28px;border-radius:8px;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center;color:var(--muted);padding:0}
+.iconbtn-sm:hover{border-color:var(--brand);color:var(--brand)}
+.iconbtn-sm[aria-pressed="true"]{background:var(--brand-soft);color:var(--brand);border-color:var(--brand)}
+.iconbtn-sm svg{width:14px;height:14px}
+.crumbs{display:flex;gap:6px;align-items:center;font-size:13px;color:var(--muted);flex-basis:100%}
+.crumbs button{border:0;background:none;color:var(--muted);font:inherit;font-size:13px;padding:0;cursor:pointer}
+.crumbs button:hover{color:var(--brand)}
+.crumbs b{color:var(--navy);font-weight:500}
+.fy-body{display:grid;grid-template-columns:300px minmax(0,1fr);gap:24px;padding:16px 20px}
+@container (max-width:880px){.fy-body{grid-template-columns:1fr}}
+.strip{display:flex;flex-direction:column;gap:14px}
+.fig{display:flex;flex-direction:column;gap:3px;border:0;background:none;text-align:left;font:inherit;color:inherit;cursor:pointer;padding:4px 8px;border-radius:8px;align-items:flex-start}
+.fig:hover{background:var(--surface-2)}
+.fig .l{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:6px}
+.fig .l i{width:10px;height:10px;border-radius:2px}
+.fig .v{font-family:var(--display);font-size:22px;font-weight:500;color:var(--navy);line-height:1.05}
+.fig .v small{font-family:var(--body);font-size:12px;font-weight:500;color:var(--muted);margin-left:6px}
+.fig.hero{border-left:4px solid var(--alumni);border-radius:0 8px 8px 0;padding-left:12px}
+.fig.hero .v{font-size:48px}
+.fig .flag{display:inline-flex;align-items:center;gap:4px;background:var(--warn-soft);color:var(--warn);border-radius:6px;padding:2px 6px;font-size:11px;font-weight:500}
+.fig .flag svg{width:12px;height:12px}
+.fyrows{display:flex;flex-direction:column}
+.fyhead,.fyrow{display:grid;grid-template-columns:minmax(0,150px) 80px 80px minmax(160px,1fr);gap:12px;align-items:center;min-width:0}
+.fyhead{height:24px;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:500}
+.fyhead .scale{display:flex;justify-content:space-between;font-size:11px;letter-spacing:0;text-transform:none;font-variant-numeric:tabular-nums}
+.fyrow{height:30px;border:0;background:none;font:inherit;color:inherit;text-align:left;cursor:pointer;border-radius:6px;padding:0}
+.fyrow:hover{background:rgba(35,98,180,.06)}
+.fyrow .nm{font-size:13px;font-weight:500;color:var(--navy);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fyrow .nm small{color:var(--muted);font-weight:400;margin-left:4px}
+.fyrow .c{font-size:13px;color:var(--ink);font-variant-numeric:tabular-nums}
+.fyrow .c small{color:var(--muted);margin-left:3px}
+.fyrow .q{display:flex;align-items:center;gap:8px;min-width:0}
+.track{flex:1;min-width:0;height:10px;border-radius:0 4px 4px 0;background:var(--track);position:relative;overflow:visible}
+.track em{display:block;height:100%;background:var(--rem);border-radius:0 4px 4px 0}
+.fyrow .val{font-size:13px;font-weight:500;color:var(--navy);font-variant-numeric:tabular-nums;white-space:nowrap}
+.bd-body{display:block}
+.bd-rows{padding:10px 0 12px;position:relative}
+.bhead{display:grid;grid-template-columns:minmax(0,150px) minmax(0,1fr) 140px 62px;gap:12px;padding:0 20px;height:24px;align-items:center;font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}
+.bhead .ax{display:flex;justify-content:space-between;position:relative}
+.bhead .ax .ref{position:absolute;top:0;transform:translateX(-50%);color:var(--ghost);font-weight:500}
+.brow{display:grid;grid-template-columns:minmax(0,150px) minmax(0,1fr) 140px 62px;gap:12px;align-items:center;min-height:40px;padding:0 20px;border:0;background:none;font:inherit;color:inherit;text-align:left;cursor:pointer;width:100%;position:relative}
+.brow.noact{cursor:default}
+.brow:not(.noact):hover{background:rgba(35,98,180,.06)}
+.brow.offers,.bhead.offers{grid-template-columns:minmax(0,150px) minmax(0,1fr) 190px}
+.brow .nm{font-size:13px;font-weight:500;color:var(--navy);line-height:1.25;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.brow .nm small{color:var(--muted);font-weight:400;margin-left:4px}
+.bar{position:relative;height:10px;background:var(--track);border-radius:0 4px 4px 0}
+.bar em{display:block;height:100%;border-radius:0 4px 4px 0;background:var(--rem)}
+.bar em.pos{background:var(--pos)}
+.bar .ghost{position:absolute;top:50%;width:8px;height:8px;margin:-4px 0 0 -4px;border:1.5px solid var(--ghost);border-radius:50%;background:#fff}
+.bar.small{background:var(--track)}
+.brow .val{font-size:13px;font-weight:500;min-width:0;color:var(--navy);font-variant-numeric:tabular-nums;line-height:1.2}
+.brow .val small{display:block;font-size:11px;color:var(--muted);font-weight:400;white-space:nowrap}
+.brow .d{font-size:12px;color:var(--ink);font-variant-numeric:tabular-nums;white-space:nowrap}
+.refline{position:absolute;top:34px;bottom:12px;width:1px;background:var(--ghost);opacity:.7;pointer-events:none}
+.rp-grid{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,2fr);gap:20px;align-items:stretch;margin-bottom:20px}
+@container (max-width:880px){.rp-grid{grid-template-columns:1fr}}
+.hm{padding:12px 20px 16px;overflow-x:auto}
+.hm table{border-collapse:separate;border-spacing:2px;width:100%}
+.hm th{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:500;height:28px;text-align:center;padding:0}
+.hm th.rl{text-align:left}
+.hm th button{border:0;background:none;font:inherit;color:inherit;cursor:pointer;padding:4px 6px;border-radius:6px;letter-spacing:inherit;text-transform:inherit}
+.hm th button:hover{background:var(--surface-2);color:var(--navy)}
+.hm th button[aria-pressed="true"]{color:var(--brand);box-shadow:inset 0 -2px 0 var(--brand)}
+.hm .brk{font-size:11px;color:var(--muted);text-transform:none;letter-spacing:0;border-top:1px solid var(--muted);padding-top:2px}
+.hm .brk button{font-size:11px;padding:1px 4px}
+.hm td{padding:0}
+.hm td.rl{font-size:13px;font-weight:500;color:var(--navy);padding-right:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:160px}
+.hm td.rl small{color:var(--muted);font-weight:400;margin-left:4px}
+.hm td.rl.ctx{color:var(--muted);font-weight:500}
+.hc{display:block;width:100%;height:36px;border:0;border-radius:4px;font:500 12px var(--body);font-variant-numeric:tabular-nums;cursor:pointer;color:var(--navy)}
+.hc.ink-w{color:#fff}
+.hc.small{background:var(--page);color:var(--muted);font-weight:500}
+.hc.sel{box-shadow:inset 0 0 0 2px var(--navy)}
+.hc:hover,.hc:focus-visible{box-shadow:inset 0 0 0 1.5px var(--navy)}
+.hc.ctx{cursor:default}
+.hmleg{display:flex;gap:10px;align-items:center;font-size:11px;color:var(--muted)}
+.hmleg i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:3px;vertical-align:-1px}
+.fn{padding:14px 20px 10px;display:flex;flex-direction:column}
+.fstage{display:grid;grid-template-columns:110px minmax(0,1fr);gap:12px;align-items:center;min-height:36px}
+.fstage .l{font-size:13px;color:var(--ink)}
+.fbar{display:flex;align-items:center;gap:6px;border:0;background:none;padding:0;font:inherit;cursor:pointer;height:36px;width:100%}
+.fbar em{display:block;height:16px;background:var(--pos);border-radius:0 4px 4px 0;min-width:2px}
+.fbar .c{font-size:12px;font-weight:500;color:var(--navy);font-variant-numeric:tabular-nums;white-space:nowrap}
+.fbar.nt{cursor:default}
+.fbar .nt{font-size:12px;color:var(--muted)}
+.fconv{display:grid;grid-template-columns:110px 1fr;gap:12px;height:18px;align-items:center}
+.fconv button{border:0;background:none;font:inherit;font-size:11px;color:var(--muted);padding:0;text-align:left;cursor:pointer}
+.fconv button:hover{color:var(--brand)}
+.fconv button.big{color:var(--navy);font-weight:500}
+.fn .foot{margin-top:auto;padding-top:10px;font-size:11px;color:var(--muted)}
+table.rt{width:100%;border-collapse:collapse;font-size:14px}
+table.rt th{text-align:left;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:500;padding:10px 20px;border-bottom:1px solid var(--line);white-space:nowrap}
+table.rt th button{border:0;background:none;font:inherit;color:inherit;text-transform:inherit;letter-spacing:inherit;padding:0;cursor:pointer;display:inline-flex;align-items:center;gap:4px}
+table.rt th button:hover{color:var(--navy)}
+table.rt th.sorted button{color:var(--navy)}
+table.rt th svg{width:10px;height:10px}
+table.rt td{padding:11px 20px;border-bottom:1px solid var(--line);vertical-align:middle;height:48px}
+table.rt tr:last-child td{border-bottom:0}
+table.rt .nm{font-weight:500;color:var(--navy)}
+table.rt .sm{color:var(--muted);font-size:12px}
+table.rt .num{text-align:right;font-variant-numeric:tabular-nums}
+table.rt td.muted{color:var(--muted)}
+.chip-st{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 9px 0 7px;border-radius:999px;font-size:12px;font-weight:500;white-space:nowrap}
+.chip-st svg{width:14px;height:14px}
+.chip-st .d{font-weight:400;opacity:.8}
+.chip-st.is-on{background:var(--brand-soft);color:var(--navy)}
+.chip-st.is-off{background:var(--page);color:var(--ink)}
+.chip-st.is-danger{background:var(--warn-soft);color:var(--warn)}
+.card-foot{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 20px;border-top:1px solid var(--line);font-size:13px;color:var(--muted);flex-wrap:wrap}
+.card-foot .lnk{border:0;background:none;color:var(--brand);font-weight:500;font-size:13px;padding:0;cursor:pointer}
+.pager{display:flex;gap:4px;align-items:center}
+.pager button{min-width:28px;height:28px;border:1px solid var(--line);border-radius:6px;background:var(--surface);font-size:12px;color:var(--ink)}
+.pager button[aria-current="page"]{background:var(--navy);color:#fff;border-color:var(--navy)}
+.tview{padding:0;overflow:auto}
+.tview table{width:100%;border-collapse:collapse;font-size:13px}
+.tview th{text-align:left;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:500;padding:8px 20px;border-bottom:1px solid var(--line)}
+.tview td{padding:8px 20px;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums}
+.tview td:first-child{font-weight:500;color:var(--navy)}
+.tview tr:last-child td{border-bottom:0}
+.empty-line{padding:22px 20px;font-size:14px;color:var(--muted)}
+.btn-sm{height:34px;padding:0 14px;font-size:13px}
+.btn-sm svg{width:15px;height:15px}
+#hcard{position:fixed;z-index:70;width:250px;padding:10px 12px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 12px 32px rgba(22,56,92,.14);font-size:13px;color:var(--ink);pointer-events:none}
+#hcard .t{font-weight:500;color:var(--navy);margin-bottom:6px}
+#hcard .r{display:grid;grid-template-columns:12px 1fr auto;gap:8px;align-items:center;padding:2px 0}
+#hcard .r.ind{padding-left:20px;grid-template-columns:1fr auto;color:var(--muted);font-size:12px}
+#hcard .r b{color:var(--navy);font-variant-numeric:tabular-nums}
+#hcard .sw{width:10px;height:10px;border-radius:2px;display:block}
+#hcard .sw.ghost{width:8px;height:8px;border-radius:50%;border:1.5px solid var(--ghost);background:#fff}
+#hcard .f{margin-top:6px;padding-top:6px;border-top:1px solid var(--line);font-size:12px;color:var(--muted)}
+.xmask{position:fixed;inset:0;background:rgba(22,56,92,.38);display:grid;place-items:center;padding:16px;z-index:80}
+.xdlg{width:440px;max-width:100%;max-height:calc(100vh - 32px);overflow:auto;background:var(--surface);border-radius:14px;box-shadow:0 24px 60px rgba(22,56,92,.3);font-weight:400;color:var(--ink);text-align:left}
+.xh{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--line);font-family:var(--display);font-size:16px;font-weight:500;color:var(--navy)}
+.xclose{width:30px;height:30px;border:0;border-radius:50%;background:var(--surface-2);color:var(--muted);font-size:18px;line-height:1;display:grid;place-items:center;padding:0}
+.xclose:hover{background:var(--line);color:var(--navy)}
+.xdlg .pb{padding:16px 18px;display:flex;flex-direction:column;gap:18px}
+.xdlg label{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;font-size:14px;cursor:pointer}
+.xdlg label:hover{background:var(--surface-2)}
+.xdlg label input{width:16px;height:16px;accent-color:var(--brand);margin:0}
+.xdlg .n{margin-left:auto;color:var(--muted);font-size:12px;font-variant-numeric:tabular-nums}
+.xdlg .scope{font-size:13px;color:var(--muted);line-height:1.5;background:var(--surface-2);border-radius:8px;padding:10px 12px}
+.xdlg .scope b{color:var(--navy);font-weight:500}
+.xdlg .pf{position:sticky;bottom:0;background:var(--surface)}
+
+/* Folds: by container width for parts, by viewport for the shell. Last so they win. */
+@container (max-width:640px){
+.jc{grid-template-columns:40px minmax(0,1fr) 32px;row-gap:2px}
+.jc .av{grid-row:1/3}
+.jc .w{grid-column:2;text-align:left;font-size:12px}
+.jc .sv{grid-column:3;grid-row:1/3;align-self:center}
+.jside{order:-1}
+.event{grid-template-columns:64px minmax(0,1fr);row-gap:8px}
+.event .btn,.event .pill,.event .evacts{grid-column:2;justify-self:start}
+.toolbar .search-wide{flex-basis:100%}
+.qs{grid-template-columns:repeat(2,minmax(0,1fr))}
+.fyhead,.fyrow{grid-template-columns:minmax(0,1fr) 64px 64px}
+.fyhead .scale,.fyrow .q{display:none}
+.bhead,.brow .bar{display:none}
+.brow,.brow.offers{grid-template-columns:minmax(0,1fr) auto auto}
+.row .pill{white-space:normal;text-align:left}
+.legend{flex-wrap:wrap;row-gap:4px}
+.names{overflow-x:auto}
+.names table.rt{min-width:560px}
+.rp-grid > .card,.hm{min-width:0}
+.fig.hero .v{font-size:36px}
+}
+@media (max-width:900px){
+.app{display:block}
+moshal-sidebar{position:fixed;top:0;bottom:0;left:0;z-index:70;transform:translateX(-102%);transition:transform .22s ease}
+.app.nav-open moshal-sidebar{transform:none;box-shadow:0 20px 60px rgba(15,42,71,.35)}
+body.nav-open{overflow:hidden}
+.topbar{height:56px;padding:0 12px;gap:10px}
+.topbar .burger{display:grid}
+.topbar .tlogo{display:block}
+main{padding:18px 16px 100px}
+h1{font-size:22px}
+.page-head{margin-bottom:16px;padding-top:12px}
+.sub{margin-top:-6px}
+.hero{padding:22px 18px 24px;border-radius:14px}
+.hero h2{font-size:20px}
+.hero-search .search{flex-basis:100%;min-width:0}
+.hero-search button{width:100%}
+.detail{padding:20px}
+.detail h1{font-size:22px}
+.jside{position:static;padding:16px}
+.form{padding:18px}
+.pop,.menu{max-width:calc(100vw - 24px)}
+.xdlg{width:100%}
+.rp .tb .cap{flex-basis:100%}
+.tabbar{display:grid;grid-template-columns:repeat(4,1fr);position:fixed;left:0;right:0;bottom:0;height:64px;padding-bottom:env(safe-area-inset-bottom);background:var(--surface);border-top:1px solid var(--line);z-index:30}
+.tabbar button{border:0;background:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:11px;color:var(--muted);font-weight:500;padding:0}
+.tabbar button svg{width:20px;height:20px}
+.tabbar button[aria-current="true"]{color:var(--brand)}
+#toast{bottom:84px}
+.pop.panel{position:fixed;left:12px;right:12px;top:68px;width:auto;max-width:none;max-height:calc(100vh - 84px);overflow:auto}
+}
+/* Device variants, last so nothing later re-shows them. */
+.only-m{display:none}
+@media (max-width:900px){.only-d{display:none}.only-m{display:revert}.page-head.only-m{display:flex}.hero-go.only-m{display:inline-flex}}
+/* Sign in */
+.app.auth moshal-sidebar,.app.auth #chrome{display:none}
+.app.auth main{max-width:none;padding:0;width:100%}
+.login-layout{min-height:100vh;display:grid;grid-template-columns:1.15fr 1fr;align-items:center;gap:48px;max-width:1160px;margin:auto;padding:32px}
+.login-hero{min-height:540px;margin:0;display:flex;align-items:center;padding:40px 44px;border-radius:18px}
+.login-hero::after{content:"";position:absolute;right:-77px;top:-140px;border:53px solid rgba(255,255,255,.07);width:315px;height:315px;border-radius:50%;background:none;left:auto;bottom:auto;height:315px}
+.login-hero::before{content:"";position:absolute;right:108px;bottom:-120px;width:300px;height:300px;border:1px solid rgba(255,255,255,.12);border-radius:50%}
+.login-hero .hero-inner{position:relative;z-index:1;max-width:520px}
+.login-hero img{height:34px;display:block;margin-bottom:36px}
+.login-hero h1{color:#fff;font-size:34px;line-height:1.18;margin:0 0 12px}
+.login-hero p{color:#CFE2F7;font-size:15px;margin:0 0 14px;max-width:46ch}
+.login-hero .prog{color:rgba(255,255,255,.72);font-size:13px;margin:28px 0 0}
+.journey{display:flex;align-items:center;margin-top:30px;font-size:12px;color:#CFE2F7}
+.journey span{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.journey i{width:9px;height:9px;border-radius:50%;display:inline-block;background:currentColor}
+.journey span b{font-weight:400}
+.journey em{flex:1;height:1px;background:rgba(255,255,255,.3);margin:0 10px;display:block;position:relative}
+.journey em::after{content:"";position:absolute;inset:-0.5px 0;background:#fff;transform-origin:left;transform:scaleX(0);opacity:.9}
+@media (prefers-reduced-motion:reduce){.journey em::after{transform:none;opacity:.6}}
+/* The journey plays once: the line travels from Dreamers to Leaders with a bright head, each dot ignites as it is reached, Leaders closes with a second pulse. */
+.journey em::before{content:"";position:absolute;top:-2.5px;left:0;width:6px;height:6px;margin-left:-3px;border-radius:50%;background:#fff;box-shadow:0 0 10px 3px rgba(255,255,255,.55);opacity:0}
+@media (prefers-reduced-motion:no-preference){
+.journey i,.journey span b,.journey em::after,.journey em::before{animation-duration:4.4s;animation-delay:.6s;animation-iteration-count:1;animation-timing-function:cubic-bezier(.2,.8,.2,1);animation-fill-mode:both}
+.journey span:nth-of-type(1) i{animation-name:jd1}.journey span:nth-of-type(2) i{animation-name:jd2}.journey span:nth-of-type(3) i{animation-name:jd3}.journey span:nth-of-type(4) i{animation-name:jd4}
+.journey span:nth-of-type(1) b{animation-name:jl1}.journey span:nth-of-type(2) b{animation-name:jl2}.journey span:nth-of-type(3) b{animation-name:jl3}.journey span:nth-of-type(4) b{animation-name:jl4}
+.journey em:nth-of-type(1)::after{animation-name:jf1}.journey em:nth-of-type(2)::after{animation-name:jf2}.journey em:nth-of-type(3)::after{animation-name:jf3}
+.journey em::after{animation-timing-function:cubic-bezier(.4,0,.2,1)}
+.journey em:nth-of-type(1)::before{animation-name:jh1;animation-timing-function:cubic-bezier(.4,0,.2,1)}.journey em:nth-of-type(2)::before{animation-name:jh2;animation-timing-function:cubic-bezier(.4,0,.2,1)}.journey em:nth-of-type(3)::before{animation-name:jh3;animation-timing-function:cubic-bezier(.4,0,.2,1)}
+.login-hero .hero-inner > *{animation:heroin .5s ease-out both}
+@keyframes heroin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.login-hero .hero-inner > :nth-child(2){animation-delay:.08s}.login-hero .hero-inner > :nth-child(3){animation-delay:.16s}.login-hero .hero-inner > :nth-child(4){animation-delay:.24s}.login-hero .hero-inner > .journey{animation-delay:.32s}
+@keyframes jd1{0%{opacity:.35;transform:scale(.7);box-shadow:0 0 0 0 rgba(255,255,255,0)}4%{opacity:1;transform:scale(1.6);box-shadow:0 0 0 0 rgba(255,255,255,.6)}12%,100%{opacity:1;transform:scale(1);box-shadow:0 0 0 9px rgba(255,255,255,0)}}
+@keyframes jd2{0%,24%{opacity:.35;transform:scale(.7);box-shadow:0 0 0 0 rgba(255,255,255,0)}28%{opacity:1;transform:scale(1.6);box-shadow:0 0 0 0 rgba(255,255,255,.6)}36%,100%{opacity:1;transform:scale(1);box-shadow:0 0 0 9px rgba(255,255,255,0)}}
+@keyframes jd3{0%,48%{opacity:.35;transform:scale(.7);box-shadow:0 0 0 0 rgba(255,255,255,0)}52%{opacity:1;transform:scale(1.6);box-shadow:0 0 0 0 rgba(255,255,255,.6)}60%,100%{opacity:1;transform:scale(1);box-shadow:0 0 0 9px rgba(255,255,255,0)}}
+@keyframes jd4{0%,72%{opacity:.35;transform:scale(.7);box-shadow:0 0 0 0 rgba(255,255,255,0)}76%{opacity:1;transform:scale(1.7);box-shadow:0 0 0 0 rgba(255,255,255,.65)}84%{opacity:1;transform:scale(1);box-shadow:0 0 0 10px rgba(255,255,255,0)}88%{box-shadow:0 0 0 0 rgba(255,255,255,.35)}100%{opacity:1;transform:scale(1);box-shadow:0 0 0 14px rgba(255,255,255,0)}}
+@keyframes jl1{0%{opacity:.45;transform:translateY(3px)}10%,100%{opacity:1;transform:none}}
+@keyframes jl2{0%,24%{opacity:.45;transform:translateY(3px)}34%,100%{opacity:1;transform:none}}
+@keyframes jl3{0%,48%{opacity:.45;transform:translateY(3px)}58%,100%{opacity:1;transform:none}}
+@keyframes jl4{0%,72%{opacity:.45;transform:translateY(3px)}82%,100%{opacity:1;transform:none}}
+@keyframes jf1{0%,8%{transform:scaleX(0)}24%,100%{transform:scaleX(1)}}
+@keyframes jf2{0%,32%{transform:scaleX(0)}48%,100%{transform:scaleX(1)}}
+@keyframes jf3{0%,56%{transform:scaleX(0)}72%,100%{transform:scaleX(1)}}
+@keyframes jh1{0%,8%{left:0;opacity:0}9%{opacity:1}23%{opacity:1}24%,100%{left:100%;opacity:0}}
+@keyframes jh2{0%,31%{left:0;opacity:0}33%{opacity:1}47%{opacity:1}48%,100%{left:100%;opacity:0}}
+@keyframes jh3{0%,55%{left:0;opacity:0}57%{opacity:1}71%{opacity:1}72%,100%{left:100%;opacity:0}}
+}
+.jcard{padding:16px 18px;margin-bottom:24px}
+.jcard .hd{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.jcard .t{font-size:15px;font-weight:500;color:var(--navy)}
+.jcard .n{font-size:12px;color:var(--muted)}
+.steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.steps i{display:block;height:4px;border-radius:2px;background:var(--line);overflow:hidden}
+.steps i em{display:block;height:100%;border-radius:2px;transform-origin:left;transform:scaleX(var(--to,1))}
+.steps b{display:block;font-size:12px;margin-top:8px;font-weight:400;color:var(--muted)}
+.steps span{display:block;font-size:11px;color:var(--faint)}
+.steps .now b{font-weight:500;color:var(--navy)}
+.steps .now span{color:var(--brand)}
+.steps .done span{color:var(--muted)}
+.impact{display:flex;justify-content:space-between;align-items:center;gap:18px;flex-wrap:wrap;padding:14px 18px;border-left:4px solid var(--alumni);border-radius:0 var(--r) var(--r) 0;margin-bottom:18px}
+.impact .t{display:block;font-size:15px;font-weight:500;color:var(--navy)}
+.impact .n{display:block;font-size:13px;color:var(--muted);margin-top:2px}
+.impact .r{display:flex;gap:22px}
+.impact .r b{display:block;font-size:22px;font-weight:500;color:var(--navy);line-height:1.1}
+.impact .r span{font-size:12px;color:var(--muted)}
+.login-form{padding:36px;display:flex;flex-direction:column;gap:0}
+.login-form .eyebrow{margin-bottom:10px}
+.login-form h1{margin:0 0 6px}
+.login-form .subtitle{color:var(--muted);font-size:14px;margin:0 0 8px}
+.login-form .field{margin-top:18px}
+.login-form .notice{margin:14px 0 0}
+.login-form > .btn{width:100%;justify-content:center;height:46px;margin-top:22px}
+.login-form .tiny{font-size:12px;color:var(--muted);margin:14px 0 0}
+@media (max-width:900px){
+.login-layout{grid-template-columns:1fr;gap:16px;padding:16px;align-items:start;min-height:0}
+.login-hero{min-height:0;padding:26px 22px;border-radius:14px}
+.login-hero img{height:26px;margin-bottom:20px}
+.login-hero h1{font-size:24px}
+.login-hero .prog{margin-top:16px}
+.journey{font-size:11px;margin-top:22px}
+.journey em{margin:0 6px}
+.login-form{padding:22px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <moshal-sidebar id="sb"></moshal-sidebar>
+  <div class="content">
+    <div id="chrome"></div>
+    <main id="main"></main>
+  </div>
+</div>
+<div id="dlg"></div>
+<script src="sidebar.js"></script>
+<script>
+/* ---------- icons ---------- */
+const I = (p, w) => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="' + (w || 1.9) + '" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + p + '</svg>';
+const ICO = {
+  search: I('<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>'),
+  chev: I('<path d="m6 9 6 6 6-6"/>', 2.2),
+  chevR: I('<path d="m9 6 6 6-6 6"/>', 2.2),
+  bell: I('<path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20a2 2 0 0 0 4 0"/>'),
+  heart: I('<path d="M12 20s-7-4.6-7-9.3A3.9 3.9 0 0 1 12 8a3.9 3.9 0 0 1 7 2.7C19 15.4 12 20 12 20z"/>'),
+  check: I('<path d="m5 12.5 4.5 4.5L19 7.5"/>', 2.3),
+  checkC: I('<circle cx="12" cy="12" r="9"/><path d="m8.5 12.3 2.4 2.4 4.6-4.9"/>'),
+  alert: I('<path d="M12 3 2.5 20h19z"/><path d="M12 9v5M12 17h.01"/>'),
+  link: I('<path d="M10 13a5 5 0 0 0 7 0l2-2a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7 0l-2 2a5 5 0 0 0 7 7l1-1"/>'),
+  ext: I('<path d="M14 5h5v5"/><path d="M19 5 11 13"/><path d="M18 14v5H5V6h5"/>'),
+  user: I('<circle cx="12" cy="9" r="3.5"/><path d="M5.5 20a6.5 6.5 0 0 1 13 0"/>'),
+  swap: I('<path d="M4 8h12l-3-3M20 16H8l3 3"/>'),
+  out: I('<path d="M14 4h4v16h-4"/><path d="M10 8 6 12l4 4M6 12h9"/>'),
+  book: I('<path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5"/>'),
+  cal: I('<rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M8 3v4M16 3v4"/>'),
+  home: I('<path d="M3 11.5 12 4l9 7.5"/><path d="M5 10v10h14V10"/>'),
+  brief: I('<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5h6v2M3 13h18"/>'),
+  plus: I('<path d="M12 6v12M6 12h12"/>', 2.2),
+  x: I('<path d="M6 6l12 12M18 6 6 18"/>', 2.2),
+  flag: I('<path d="M5 21V4h12l-2 3.5L17 11H5"/>'),
+  send: I('<path d="M4 12 20 4l-8 16-2-6z"/>'),
+  download: I('<path d="M12 4v11M7 10l5 5 5-5M5 20h14"/>'),
+  clock: I('<circle cx="12" cy="12" r="8"/><path d="M12 8v4.5l3 1.5"/>'),
+  pin: I('<path d="M12 21s6-5.5 6-10a6 6 0 1 0-12 0c0 4.5 6 10 6 10z"/><circle cx="12" cy="11" r="2"/>')
+};
+
+/* ---------- example data ---------- */
+const FIELDS_OPT = ['Engineering & Technology','Commerce & Finance','Health Sciences','Science','Law','Humanities'];
+const LOCS = ['Cape Town','Johannesburg','Durban','Pretoria','Remote'];
+const OPP_TYPES = ['Graduate programme','Internship','Vacation work','Bursary','Learnership'];
+let OPPS = [
+  {id:1, title:'Graduate Software Engineer', org:'TechNova', type:'Graduate programme', field:'Engineering & Technology', loc:'Cape Town', closes:'30 Oct 2026', days:21, by:'Sipho Dlamini', saved:true, applied:false,
+   desc:'Build digital solutions in an agile engineering team. Collaborate with developers, designers and product specialists in an inclusive graduate environment, with a mentor for your first year.'},
+  {id:2, title:'Finance Graduate Analyst', org:'CapeBridge', type:'Graduate programme', field:'Commerce & Finance', loc:'Cape Town', closes:'31 Oct 2026', days:22, by:'Sipho Dlamini', saved:false, applied:true,
+   desc:'A two-year rotation through corporate finance, treasury and risk, with study support towards CFA Level I.'},
+  {id:3, title:'Business Analyst Internship', org:'FutureLab', type:'Internship', field:'Commerce & Finance', loc:'Cape Town', closes:'15 Nov 2026', days:37, by:'Sipho Dlamini', saved:true, applied:false,
+   desc:'Ten-week paid internship working with client teams on process mapping and requirements gathering.'},
+  {id:4, title:'Graduate Data Analyst', org:'Karoo Analytics', type:'Graduate programme', field:'Science', loc:'Johannesburg', closes:'20 Oct 2026', days:11, by:'Ayanda Zulu', saved:false, applied:false,
+   desc:'An 18-month rotation through data engineering, analytics and client delivery teams. Start date February 2027.'},
+  {id:5, title:'Civil Engineering Vacation Work', org:'Drakensberg Structures', type:'Vacation work', field:'Engineering & Technology', loc:'Durban', closes:'5 Nov 2026', days:27, by:'Ayanda Zulu', saved:false, applied:false,
+   desc:'Six weeks of site work over December and January on a bridge rehabilitation project. Accommodation provided; counts towards ECSA practical training.'},
+  {id:6, title:'Actuarial Science Bursary 2027', org:'Baobab Life', type:'Bursary', field:'Commerce & Finance', loc:'Johannesburg', closes:'18 Oct 2026', days:9, by:'Ayanda Zulu', saved:false, applied:false,
+   desc:'Full-cost bursary covering tuition, accommodation and books, with vacation work in Johannesburg each year.'},
+  {id:7, title:'Clinical Research Assistant', org:'Umthunzi Health Trust', type:'Internship', field:'Health Sciences', loc:'Cape Town', closes:'28 Nov 2026', days:50, by:'Sipho Dlamini', saved:false, applied:false,
+   desc:'Twelve hours a week supporting a TB vaccine trial in Khayelitsha: patient follow-up, data capture and sample logistics.'},
+  {id:8, title:'Candidate Attorney 2027', org:'Ndlovu Attorneys', type:'Graduate programme', field:'Law', loc:'Johannesburg', closes:'24 Oct 2026', days:15, by:'Ayanda Zulu', saved:false, applied:false,
+   desc:'Two years of articles across litigation, commercial and labour law, with one rotation at a legal aid clinic.'},
+  {id:9, title:'Mining Engineering Learnership', org:'Highveld Minerals', type:'Learnership', field:'Engineering & Technology', loc:'Pretoria', closes:'12 Dec 2026', days:64, by:'Sipho Dlamini', saved:false, applied:false,
+   desc:'Twelve-month learnership at an open-cast operation near eMalahleni, including blasting certificate preparation.'},
+  {id:10, title:'Digital Marketing Intern', org:'Spaza Digital', type:'Internship', field:'Humanities', loc:'Remote', closes:'22 Oct 2026', days:13, by:'Ayanda Zulu', saved:false, applied:false,
+   desc:'Three-month remote internship running social campaigns for township retailers. Laptop and data provided.'},
+  {id:11, title:'Electrical Engineering Bursary', org:'Lesedi Power', type:'Bursary', field:'Engineering & Technology', loc:'Johannesburg', closes:'8 Nov 2026', days:30, by:'Sipho Dlamini', saved:false, applied:false,
+   desc:'Bursary for 2nd and 3rd year electrical engineering students, with one year of work-back per year funded.'},
+  {id:12, title:'Policy Research Internship', org:'Ubuntu Policy Institute', type:'Internship', field:'Humanities', loc:'Pretoria', closes:'16 Nov 2026', days:38, by:'Ayanda Zulu', saved:false, applied:false,
+   desc:'Six-month research internship on municipal service delivery, ending in a published brief with your name on it.'}
+];
+let RESOURCES = [
+  {id:1, group:'Getting your application right', kind:'CV preparation', title:'CV writing toolkit', icon:'book', mins:12, done:true, blurb:'The one-page format South African graduate recruiters expect, with two worked examples.',
+   body:['Recruiters spend under a minute on a first read, so the top third of the page has to carry your degree, your graduation year and one line about what you are looking for.','Keep it to one page until you have three years of work behind you. Vacation work, tutoring and society roles all count as experience: name what you did and what changed because you did it.','List your referees only when you have asked them. "References available on request" is fine, and it saves a line.']},
+  {id:2, group:'Interviews and assessments', kind:'Interview preparation', title:'Interview question bank', icon:'user', mins:18, done:false, blurb:'Forty questions graduate panels actually ask, grouped by what they are testing.',
+   body:['Every graduate interview tests three things: can you do the work, will you fit the team, and will you still be here in two years.','Prepare four stories you can tell in two minutes each: a time you fixed something, a time you worked with someone difficult, a time you were wrong, and a time you led without being in charge.','Ask two questions at the end. The best ones are about what the first six months look like and how the team decides what to work on.']},
+  {id:3, group:'Getting your application right', kind:'Cover letters', title:'Graduate cover letter', icon:'send', mins:8, done:false, blurb:'A three-paragraph structure you can fill in for any application in twenty minutes.',
+   body:['Paragraph one: the role you are applying for and the one thing about the organisation that made you apply. Be specific; a line anyone could have written reads as a template.','Paragraph two: the evidence. Two examples from your degree or your vacation work that match what the advert asked for.','Paragraph three: what you want to learn and when you are available. Close politely and stop.']},
+  {id:4, group:'Interviews and assessments', kind:'Assessments', title:'Numerical assessment guide', icon:'brief', mins:15, done:false, blurb:'What the online tests measure and how to practise without paying for a course.',
+   body:['Most graduate numerical tests are percentages, ratios and reading a table under time pressure. The maths is school level; the pressure is the test.','Practise with a timer from the start. Twenty minutes of timed questions beats an hour of relaxed ones.','If a question is taking more than ninety seconds, guess and move on. The scoring rewards finishing.']},
+  {id:5, group:'Beyond the first job', kind:'Networking', title:'Networking checklist', icon:'pin', mins:10, done:false, blurb:'How to use a careers fair or an alumni event when you do not know anyone.',
+   body:['Arrive early. The first twenty minutes are the only time recruiters are not three deep.','Have one sentence ready: your degree, your year, and the kind of work you are after. That is the whole introduction.','Ask for a name and a next step, not a job. Follow up within two days, referencing something you actually spoke about.']},
+  {id:6, group:'Beyond the first job', kind:'Career development', title:'Workplace readiness', icon:'checkC', mins:14, done:false, blurb:'The first ninety days in a graduate role, and the habits that make them go well.',
+   body:['Write down what you are told in your first week. Nobody expects you to remember it; everybody notices when you ask twice.','Find the person who has been there two years longer than you and ask them how things really work.','Set up a monthly check-in with your manager yourself. Waiting to be managed is the most common graduate mistake.']}
+];
+let EVENTS = [
+  {id:1, d:'15 OCT', title:'CV Masterclass', when:'Online session · 15:00', past:false, going:false, who:'Hosted by the Moshal careers team', about:'Bring a draft CV. We rewrite three live, then you work on yours with feedback from the room.'},
+  {id:2, d:'20 OCT', title:'Interview skills workshop', when:'Online session · 16:30', past:false, going:true, who:'Hosted by TechNova recruiters', about:'A mock panel, then small-group practice. Recruiters from two partner employers stay for questions.'},
+  {id:3, d:'25 OCT', title:'Career readiness survey', when:'Complete before closing', past:false, going:false, who:'Moshal programme team', about:'Ten minutes. It decides which workshops we run next term, so it is worth your time.'},
+  {id:4, d:'03 NOV', title:'Networking evening', when:'Cape Town · In person · 18:00', past:false, going:false, who:'Moshal Alumni chapter', about:'Alumni working in finance, engineering and health sciences. Dress smart casual; snacks provided.'},
+  {id:5, d:'28 SEP', title:'Bursary application clinic', when:'Online session', past:true, going:false, who:'Moshal programme team', about:'Recording and slides are available on request from the careers team.'},
+  {id:6, d:'12 SEP', title:'Meet the engineers', when:'Johannesburg · In person', past:true, going:false, who:'Lesedi Power', about:'Site visit and panel with graduate engineers in their second year.'}
+];
+let NOTIFS = [
+  {id:1, text:'<b>Graduate Data Analyst</b> at Karoo Analytics closes in 11 days.', when:'2 hours ago', unread:true, go:() => openJob(4)},
+  {id:2, text:'Your application to <b>CapeBridge</b> moved to interview.', when:'Yesterday', unread:true, go:() => nav('applications')},
+  {id:3, text:'New resource: <b>Interview question bank</b>.', when:'3 days ago', unread:false, go:() => openResource(2)}
+];
+/* Champions publish straight to scholars. A listing reaches an admin only when a scholar reports it or the nightly link check fails. */
+let MINE = [
+  {id:1, title:'Graduate Software Engineer', org:'TechNova', status:'live', applied:14, posted:'2 Oct 2026', closes:'30 Oct 2026'},
+  {id:2, title:'Business Analyst Internship', org:'FutureLab', status:'live', applied:9, posted:'24 Sep 2026', closes:'15 Nov 2026'},
+  {id:3, title:'Finance Graduate Analyst', org:'CapeBridge', status:'broken', applied:3, posted:'12 Sep 2026', closes:'31 Oct 2026', check:'404 Not Found on 3 nights running'}
+];
+let FLAGS = [
+  {id:11, title:'Finance Graduate Analyst', org:'CapeBridge', by:'Sipho Dlamini', why:'Link checker: 404 Not Found on 3 nights running', src:'link', when:'This morning'},
+  {id:12, title:'Software Engineering Internship', org:'FutureLab', by:'Ayanda Zulu', why:'Reported by a scholar: "The application page says applications have closed."', src:'report', when:'Yesterday'},
+  {id:13, title:'Data Science Graduate', org:'Nexa Group', by:'Kagiso Molefe', why:'Reported by a scholar: "Closing date on their site is 20 Oct, not 30 Oct."', src:'report', when:'2 days ago'}
+];
+const ROLES = {
+  scholar:{name:'Thandiwe Mokoena', ini:'TM', sub:'Scholar · UCT · 3rd year', stage:'scholars', year:3, years:4},
+  champion:{name:'Sipho Dlamini', ini:'SD', sub:'Alumni · Career champion · Wits', stage:'alumni'},
+  admin:{name:'Naledi Khumalo', ini:'NK', sub:'Programme team · Admin', stage:'program'}
+};
+/* Each person wears the colour of their stage: Dreamer, Scholar, Alumni, Leader. Programme staff wear the Program's own blue. */
+const STAGES = {dreamers:{bg:'#79BE4D', ink:'#173404', label:'Dreamers'}, scholars:{bg:'#41C3FF', ink:'#0B2A3F', label:'Scholars'}, alumni:{bg:'#EBB22A', ink:'#3F2C00', label:'Alumni'}, leaders:{bg:'#E15546', ink:'#fff', label:'Leaders'}, program:{bg:'#2362B4', ink:'#FFFFFF', label:'Moshal Program'}};
+const JOURNEY = ['dreamers', 'scholars', 'alumni', 'leaders'];
+const stageOf = r => STAGES[ROLES[r].stage];
+
+/* ---------- state ---------- */
+const S = {auth:false, role:'scholar', view:'overview', open:null, job:null, res:null, navOpen:false, q:'', field:'', loc:'', type:'', soon:false, sort:'closing',
+  evTab:'upcoming', appTab:'all', dlg:null};
+const byId = id => OPPS.find(o => o.id === id);
+const esc = v => String(v).replace(/'/g, "\\'");
+const attr = v => String(v == null ? '' : v).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+const canPost = () => S.role !== 'scholar';
+const myYear = () => YEARS[(ROLES.scholar.year || 1) - 1];
+const visibleTo = x => !x.years || !x.years.length || x.years.includes(myYear());
+const forMe = list => S.role === 'scholar' ? list.filter(visibleTo) : list;
+const audienceNote = x => x.years && x.years.length ? 'For ' + x.years.join(', ') : '';
+function audienceField(key, current){
+  if (S.role !== 'admin') return '';
+  if (S.audFor !== key) { S.aud = [...(current || [])]; S.audFor = key; }
+  const a = S.aud;
+  return '<div class="field wide"><label>Who sees this</label><div class="chipset aud">' + ['Everyone'].concat(YEARS).map(y => '<button type="button" aria-pressed="' + (y === 'Everyone' ? !a.length : a.includes(y)) + '" onclick="toggleAud(\'' + y + '\',this)">' + y + '</button>').join('') + '</div><div class="hint">Everyone, or only the years you pick. Scholars outside the pick never see it.</div></div>';
+}
+function toggleAud(y, btn){ const a = S.aud || (S.aud = []); if (y === 'Everyone') a.length = 0; else { const i = a.indexOf(y); if (i < 0) a.push(y); else a.splice(i, 1); } [...btn.parentElement.children].forEach(b => b.setAttribute('aria-pressed', b.textContent === 'Everyone' ? !a.length : a.includes(b.textContent))); }
+const pickedYears = existing => S.role === 'admin' ? [...(S.aud || [])] : [...(existing || [])];
+const canEdit = o => S.role === 'admin' || (S.role === 'champion' && o.by === ROLES.champion.name);
+const toISO = text => { const d = new Date(text); return isNaN(d) ? '' : d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); };
+const savedList = () => OPPS.filter(o => o.saved);
+const appliedList = () => OPPS.filter(o => o.applied);
+const unread = () => NOTIFS.filter(n => n.unread).length;
+
+/* ---------- nav ---------- */
+function sections(){
+  if (S.role === 'admin') return [
+    {id:'team', label:'Programme team', items:[
+      {key:'admin', label:'Reporting', icon:'chart'},
+      {key:'queue', label:'Flagged listings', icon:'alert', count:FLAGS.length || undefined, urgent:true}
+    ]},
+    {id:'content', label:'Content', items:[
+      {key:'opps', label:'Opportunities', icon:'search', count:OPPS.length},
+      {key:'resources', label:'Career resources', icon:'list'},
+      {key:'events', label:'Events & updates', icon:'calendar', count:EVENTS.filter(e => !e.past).length}
+    ]}
+  ];
+  const s = [{id:'scholar', label:'Scholar', items:[
+    {key:'overview', label:'Overview', icon:'home'},
+    {key:'opps', label:'Opportunities', icon:'search', count:forMe(OPPS).length},
+    {key:'saved', label:'Saved jobs', icon:'bookmark', count:savedList().length || undefined},
+    {key:'applications', label:'My applications', icon:'check', count:appliedList().length || undefined},
+    {key:'resources', label:'Career resources', icon:'book'},
+    {key:'events', label:'Events & updates', icon:'calendar', count:forMe(EVENTS).filter(e => !e.past).length}
+  ]}];
+  if (S.role === 'champion') s.push({id:'champion', label:'Career champion', items:[
+    {key:'subs', label:'My listings', icon:'list', count:MINE.filter(l => l.status === 'broken').length || undefined, urgent:true}
+  ]});
+  return s;
+}
+function syncNav(){ sb.setAttribute('user-name', ROLES[S.role].name); sb.setAttribute('user-initials', ROLES[S.role].ini); sb.setAttribute('user-role', ROLES[S.role].sub); sb.setAttribute('sections', JSON.stringify(sections())); sb.setAttribute('active', S.view === 'job' ? 'opps' : S.view === 'res' || S.view === 'postres' ? 'resources' : S.view === 'postevent' ? 'events' : S.view === 'submit' ? (S.role === 'champion' ? 'subs' : 'opps') : S.view); }
+function nav(v){ S.navOpen = false; S.view = v; S.open = null; syncNav(); render(); window.scrollTo(0, 0); }
+function setRole(r){ S.role = r; S.open = null; if (!S.auth) return; const allowed = sections().flatMap(s => s.items).map(i => i.key); if (!allowed.includes(S.view)) S.view = allowed[0]; syncNav(); render(); toast('Signed in as ' + ROLES[r].name + ' · ' + ROLES[r].sub.split(' · ')[0]); }
+
+/* ---------- shared bits ---------- */
+function toast(msg){ let t = document.getElementById('toast'); if (!t) { t = document.createElement('div'); t.id = 'toast'; document.body.appendChild(t); } t.innerHTML = ICO.checkC + '<span></span>'; t.querySelector('span').textContent = msg; t.hidden = false; clearTimeout(window.__tt); window.__tt = setTimeout(() => { t.hidden = true; }, 3200); }
+function setOpen(k){ S.open = S.open === k ? null : k; render(); }
+function dropdown(key, label, options, value, pickFn, extra){
+  const open = S.open === key, cur = value ? options.find(o => o[0] === value) : null;
+  return '<span class="menuwrap"><button class="ctl' + (value ? ' on' : '') + '" aria-haspopup="listbox" aria-expanded="' + open + '" onclick="event.stopPropagation();setOpen(\'' + key + '\')">' + (cur ? cur[1] : label) + ICO.chev + '</button>' +
+    (open ? '<div class="pop" role="listbox" onclick="event.stopPropagation()">' + (extra ? '<div class="h"><span>' + label + '</span>' + (value ? '<button onclick="' + pickFn.split('%v').join("''") + '">Clear</button>' : '') + '</div>' : '') +
+      options.map(o => '<button class="o" role="option" aria-selected="' + (o[0] === value) + '" onclick="' + pickFn.split('%v').join("'" + esc(o[0]) + "'") + '">' + ICO.check.replace('<svg', '<svg class="tick"') + '<span>' + o[1] + '</span>' + (o[2] !== undefined ? '<span class="n">' + o[2] + '</span>' : '') + '</button>').join('') + '</div>' : '') + '</span>';
+}
+const pill = (cls, text) => '<span class="pill ' + cls + '"><i></i>' + text + '</span>';
+const BOOK = I('<path d="M6 4h12v17l-6-4-6 4z"/>');
+const ini = org => { const w = org.trim().split(/\s+/); return (w.length > 1 ? w[0][0] + w[1][0] : org.slice(0, 2)).toUpperCase(); };
+const BURGER = I('<path d="M4 7h16M4 12h16M4 17h16"/>');
+function jobRow(o){
+  const soon = !!o.closes && o.days <= 14;
+  return '<article class="jc"><button class="open" onclick="openJob(' + o.id + ')" aria-label="Open ' + o.title + '"><span class="av">' + ini(o.org) + '</span><span class="t"><b>' + o.title + '</b><span>' + o.org + ' · ' + o.loc + ' · ' + o.type + (S.role === 'admin' && audienceNote(o) ? ' · <em class="aud-note">' + audienceNote(o) + '</em>' : '') + '</span></span>' +
+    (o.applied ? '<span class="w done">' + ICO.check + 'Applied</span>' : '<span class="w' + (soon ? ' soon' : '') + '">' + (!o.closes ? 'No closing date' : soon ? 'Closes in ' + o.days + ' days' : 'Closes ' + o.closes) + '</span>') + '</button>' +
+    '<button class="sv" data-id="' + o.id + '" aria-pressed="' + o.saved + '" aria-label="' + (o.saved ? 'Remove from saved' : 'Save') + '" onclick="event.stopPropagation();toggleSave(' + o.id + ')">' + BOOK + '</button></article>';
+}
+const jobList = (list, emptyHtml) => list.length ? '<div class="jcards">' + list.map(jobRow).join('') + '</div>' : '<div class="card empty">' + emptyHtml + '</div>';
+function toggleSave(id){ const o = byId(id); o.saved = !o.saved; syncNav(); render(); if (o.saved) document.querySelectorAll('[data-id="' + id + '"]').forEach(b => b.classList.add('pop')); toast(o.saved ? 'Saved. It is in your saved jobs.' : 'Removed from saved jobs.'); }
+function openJob(id){ S.job = id; S.view = 'job'; S.open = null; syncNav(); render(); window.scrollTo(0, 0); }
+function openResource(id){ S.res = id; S.view = 'res'; S.open = null; syncNav(); render(); window.scrollTo(0, 0); }
+function applyTo(id){ const o = byId(id); if (o.applied) { nav('applications'); return; } S.dlg = {kind:'apply', id}; render(); }
+function confirmApply(){ const o = byId(S.dlg.id); o.applied = true; S.dlg = null; syncNav(); render(); toast('Added to My applications. Finish on the employer’s site.'); }
+function withdraw(id){ const o = byId(id); o.applied = false; syncNav(); render(); toast('Withdrawn. It is no longer counted as an application.'); }
+function editResource(id){ S.editRes = id; S.coverFor = null; nav('postres'); }
+function removeResource(id){ RESOURCES = RESOURCES.filter(x => x.id !== id); nav('resources'); toast('Removed. Scholars can no longer read it.'); }
+function markResource(id){ const r = RESOURCES.find(x => x.id === id); r.done = !r.done; render(); toast(r.done ? 'Marked as done.' : 'Marked as not done.'); }
+const MONTHS = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+const eventDateISO = e => e.date || (() => { const m = (e.d || '').match(/^(\d{1,2}) ([A-Z]{3})$/); if (!m) return ''; const mi = MONTHS.indexOf(m[2]); return mi < 0 ? '' : THIS_YEAR_D + '-' + String(mi + 1).padStart(2, '0') + '-' + m[1].padStart(2, '0'); })();
+const THIS_YEAR_D = new Date().getFullYear();
+function publishEvent(){
+  const val = id => ((document.getElementById(id) || {}).value || '').trim();
+  let bad = false;
+  [['e0', val('e0')], ['e1', val('e1')], ['e2', val('e2')]].forEach(([id, v]) => { const w = document.getElementById('w-' + id); if (w) w.classList.toggle('bad', !v); if (!v) bad = true; });
+  if (bad) { toast('Add a title, a date and where it happens.'); return; }
+  const d = new Date(val('e1') + 'T12:00:00'), today = new Date(); today.setHours(0, 0, 0, 0);
+  const fields = {title:val('e0'), date:val('e1'), d:d.getDate() + ' ' + MONTHS[d.getMonth()], when:val('e2'), who:val('e3') || 'Moshal programme team', about:val('e4'), past:d < today, years:pickedYears(S.editEv ? (EVENTS.find(x => x.id === S.editEv) || {}).years : [])};
+  if (S.editEv) { const e = EVENTS.find(x => x.id === S.editEv); Object.assign(e, fields); S.editEv = null; S.evTab = e.past ? 'past' : 'upcoming'; nav('events'); toast('Saved. Scholars see the update now.'); return; }
+  EVENTS.push({id:Date.now(), going:false, ...fields}); EVENTS.sort((a, b) => eventDateISO(a).localeCompare(eventDateISO(b)));
+  S.evTab = fields.past ? 'past' : 'upcoming'; nav('events'); toast('Published. Scholars can see it now.');
+}
+function editEvent(id){ S.editEv = id; nav('postevent'); }
+function cancelEvent(id){ const e = EVENTS.find(x => x.id === id); EVENTS = EVENTS.filter(x => x.id !== id); nav('events'); toast('Cancelled. ' + (e.going ? 'Scholars who saved a place will be told.' : 'It no longer shows for scholars.')); }
+function toggleEvent(id){ const e = EVENTS.find(x => x.id === id); e.going = !e.going; render(); toast(e.going ? 'Your place at ' + e.title + ' is saved.' : 'Your place at ' + e.title + ' is released.'); }
+function reportListing(id){ const o = byId(id); S.dlg = {kind:'report', id}; render(); }
+function sendReport(){ const o = byId(S.dlg.id); const why = (document.getElementById('rwhy') || {}).value || 'Reported by a scholar'; FLAGS.unshift({id:Date.now(), title:o.title, org:o.org, by:o.by, why:'Reported by a scholar: "' + why + '"', src:'report', when:'Just now'}); S.dlg = null; syncNav(); render(); toast('Thanks. An admin will check this listing.'); }
+function closeDlg(){ S.dlg = null; render(); }
+
+/* ---------- views ---------- */
+const V = {};
+V.overview = () => {
+  const mine = forMe(OPPS), soon = mine.filter(o => o.days <= 14), rec = mine.filter(o => !o.applied).slice(0, 3);
+  const u = ROLES[S.role];
+  return '<div class="page-head only-d" data-role><div><h1>Welcome back, ' + u.name.split(' ')[0] + '</h1><p class="lead">' + u.sub + '</p></div></div>' +
+    '<div class="page-head only-m"><div><h1>Your next chapter starts here</h1><p class="lead">Opportunities selected for scholars</p></div></div>' +
+    '<section class="hero"><h2 class="only-d">Find the opportunity that’s right for you</h2><p class="only-d">Internships, graduate programmes and bursaries, shared by career champions.</p>' +
+    '<h2 class="only-m">Explore your future</h2><p class="only-m">Graduate roles, internships and career support</p>' +
+    '<form class="hero-search only-d" onsubmit="event.preventDefault();S.q=document.getElementById(\'hq\').value;nav(\'opps\')"><span class="search">' + ICO.search + '<input id="hq" placeholder="Search opportunities, employers or study fields" value="' + S.q + '"></span><button type="submit">Search</button></form>' +
+    '<button class="hero-go only-m" onclick="nav(\'opps\')">Browse opportunities' + ICO.chevR + '</button></section>' +
+    '<div class="stats">' +
+    '<button class="card stat" onclick="S.q=\'\';S.soon=false;nav(\'opps\')"><i></i><b>' + mine.length + '</b><span>Open opportunities</span></button>' +
+    '<button class="card stat s-alumni" onclick="S.soon=true;nav(\'opps\')"><i></i><b>' + soon.length + '</b><span>Closing in 14 days</span></button>' +
+    '<button class="card stat s-scholars" onclick="nav(\'saved\')"><i></i><b>' + savedList().length + '</b><span>Saved jobs</span></button>' +
+    '<button class="card stat s-dreamers" onclick="nav(\'applications\')"><i></i><b>' + appliedList().length + '</b><span>Applications</span></button></div>' + journeyCard() +
+    '<div class="page-head"><h2 style="margin:0">Recommended for you</h2><div class="acts"><button class="btn btn-ghost btn-sm" onclick="nav(\'opps\')">See all ' + ICO.chevR + '</button></div></div>' +
+    jobList(rec, '');
+};
+V.opps = () => {
+  let list = forMe(OPPS).filter(o => (!S.q || (o.title + ' ' + o.org + ' ' + o.desc + ' ' + o.field).toLowerCase().includes(S.q.toLowerCase())) &&
+    (!S.field || o.field === S.field) && (!S.loc || o.loc === S.loc) && (!S.type || o.type === S.type) && (!S.soon || o.days <= 14));
+  list = list.slice().sort((a, b) => S.sort === 'closing' ? a.days - b.days : S.sort === 'newest' ? b.id - a.id : a.title.localeCompare(b.title));
+  const count = (key, v) => OPPS.filter(o => o[key] === v).length;
+  const chips = [];
+  if (S.q) chips.push(['“' + S.q + '”', "S.q='';render()"]);
+  if (S.field) chips.push([S.field, "S.field='';render()"]);
+  if (S.loc) chips.push([S.loc, "S.loc='';render()"]);
+  if (S.type) chips.push([S.type, "S.type='';render()"]);
+  if (S.soon) chips.push(['Closing in 14 days', 'S.soon=false;render()']);
+  return '<div class="page-head" data-role><h1>Opportunities</h1><span class="n">' + list.length + ' of ' + forMe(OPPS).length + '</span>' + (canPost() ? '<div class="acts"><button class="btn btn-primary btn-sm" onclick="S.edit=null;nav(\'submit\')">' + ICO.plus + 'Post an opportunity</button></div>' : '') + '</div>' +
+    '<div class="toolbar"><label class="search-wide">' + ICO.search + '<input id="oq" placeholder="Search jobs, employers or keywords" value="' + S.q + '" oninput="S.q=this.value;renderList()">' + (S.q ? '<button class="clear" aria-label="Clear search" onclick="S.q=\'\';render()">×</button>' : '') + '</label>' +
+    dropdown('f-field', 'Study field', [['', 'All study fields']].concat(FIELDS_OPT.map(f => [f, f, count('field', f)])), S.field, 'S.field=%v;S.open=null;render()', true) +
+    dropdown('f-loc', 'Location', [['', 'Anywhere']].concat(LOCS.map(l => [l, l, count('loc', l)])), S.loc, 'S.loc=%v;S.open=null;render()', true) +
+    dropdown('f-type', 'Type', [['', 'All types']].concat(OPP_TYPES.map(t => [t, t, count('type', t)])), S.type, 'S.type=%v;S.open=null;render()', true) +
+    '<button class="ctl' + (S.soon ? ' on' : '') + '" aria-pressed="' + S.soon + '" onclick="S.soon=!S.soon;render()">' + ICO.clock + 'Closing soon</button>' +
+    '</div>' +
+    (chips.length ? '<div class="chipbar">' + chips.map(([l, u]) => '<span class="fchip">' + l + '<button aria-label="Remove ' + l + '" onclick="' + u + '">×</button></span>').join('') + '<button class="reset" onclick="S.q=\'\';S.field=\'\';S.loc=\'\';S.type=\'\';S.soon=false;render()">Clear all</button></div>' : '') +
+    '<div class="listbar"><span>Sorted by</span>' + dropdown('f-sort', 'Sort', [['closing', 'Closing soonest'], ['newest', 'Newest first'], ['az', 'A to Z']], S.sort, 'S.sort=%v;S.open=null;render()') + '</div>' +
+    '<div id="olist">' + jobList(list, '<b>No opportunities match</b><span>Try clearing a filter or searching for something broader.</span><button class="btn" onclick="S.q=\'\';S.field=\'\';S.loc=\'\';S.type=\'\';S.soon=false;render()">Clear all filters</button>') + '</div>';
+};
+V.job = () => {
+  const o = byId(S.job), soon = !!o.closes && o.days <= 14;
+  const fact = (k, v) => v ? '<div><span>' + k + '</span><b>' + v + '</b></div>' : '';
+  return '<button class="btn btn-ghost btn-sm" style="margin-bottom:18px" onclick="nav(\'opps\')">← Back to opportunities</button>' +
+    (o.applied ? '<div class="notice ok">' + ICO.checkC + 'You applied to this on the employer’s site. Track it in My applications.</div>' : soon ? '<div class="notice warn">' + ICO.clock + 'Closes in ' + o.days + ' days, on ' + o.closes + '.</div>' : '') +
+    '<div class="jobwrap"><article class="card detail"><div class="tags">' + o.type + ' · ' + o.field + (S.role === 'admin' && audienceNote(o) ? ' · <em class="aud-note">' + audienceNote(o) + '</em>' : '') + '</div><h1>' + o.title + '</h1><div class="where">' + o.org + ' · ' + o.loc + '</div>' +
+    (o.desc ? '<h3>What the role involves</h3><p>' + o.desc + '</p>' : '<p class="none">The champion did not add a description. The employer’s page has the full details.</p>') + '</article>' +
+    '<aside class="card jside">' + (o.applied ? '<button class="btn" onclick="nav(\'applications\')">' + ICO.check + 'Applied · My applications</button>' : '<button class="btn btn-primary" onclick="applyTo(' + o.id + ')">Apply on employer website' + ICO.ext + '</button>') +
+    '<div class="kv">' + fact('Closes', o.closes ? o.closes + (soon ? '<small>in ' + o.days + ' days</small>' : '') : 'No closing date') + fact('Location', o.loc) + fact('Study field', o.field) + fact('Type', o.type) + '</div>' +
+    '<div class="jacts"><button class="btn btn-ghost btn-sm" data-id="' + o.id + '" aria-pressed="' + o.saved + '" onclick="toggleSave(' + o.id + ')">' + BOOK + (o.saved ? 'Saved' : 'Save') + '</button><button class="btn btn-ghost btn-sm" onclick="reportListing(' + o.id + ')">' + ICO.flag + 'Report</button>' +
+    (canEdit(o) ? '<button class="btn btn-ghost btn-sm" onclick="editListing(' + o.id + ')">Edit</button>' : '') + (S.role === 'admin' ? '<button class="btn btn-ghost btn-sm danger" onclick="unpublishListing(' + o.id + ')">Unpublish</button>' : '') +
+    (o.applied ? '<button class="btn btn-ghost btn-sm" onclick="withdraw(' + o.id + ')">Withdraw</button>' : '') + '</div></aside></div>';
+};
+V.saved = () => {
+  const list = savedList();
+  return '<div class="page-head" data-role><h1>Saved jobs</h1><span class="n">' + list.length + ' saved</span></div>' +
+    (list.length ? jobList(list, '') : '<div class="card empty"><b>Nothing saved yet</b><span>Tap the bookmark on any opportunity to keep it here.</span><button class="btn btn-primary" onclick="nav(\'opps\')">Browse opportunities</button></div>');
+};
+V.applications = () => {
+  const list = appliedList();
+  return '<div class="page-head" data-role><h1>My applications</h1><span class="n">' + list.length + '</span></div>' +
+    (list.length ? '<div class="rows">' + list.map(o => '<article class="card row"><div class="body"><h3><button class="lnk" onclick="openJob(' + o.id + ')">' + o.title + '</button></h3><div class="meta">' + o.org + ' · ' + o.loc + (o.closes ? ' · closes ' + o.closes : '') + '</div></div><div class="side">' + pill('live', 'Applied') + '<button class="btn btn-ghost btn-sm" onclick="withdraw(' + o.id + ')">Withdraw</button></div></article>').join('') + '</div>'
+      : '<div class="card empty"><b>No applications yet</b><span>When you apply to an opportunity it shows up here so you can track it.</span><button class="btn btn-primary" onclick="nav(\'opps\')">Browse opportunities</button></div>');
+};
+const RGROUPS = ['Getting your application right', 'Interviews and assessments', 'Beyond the first job'];
+V.resources = () => {
+  const done = RESOURCES.filter(r => r.done).length, admin = S.role === 'admin';
+  const all = forMe(RESOURCES), groups = RGROUPS.map(h => [h, all.filter(r => r.group === h)]).filter(([h, list]) => list.length);
+  return '<div class="page-head" data-role><h1>Career resources</h1><span class="n">' + all.length + '</span>' + (admin ? '<div class="acts"><button class="btn btn-primary btn-sm" onclick="S.editRes=null;S.coverFor=null;nav(\'postres\')">' + ICO.plus + 'Post a resource</button></div>' : '') + '</div>' +
+    (admin ? '' : '<div class="progress"><i><b style="width:' + Math.round((all.filter(r => r.done).length) / Math.max(1, all.length) * 100) + '%"></b></i><span>' + all.filter(r => r.done).length + ' of ' + all.length + ' read</span></div>') +
+    '<div class="rlist">' + groups.map(([h, list]) => '<section class="rgroup"><h2>' + h + '</h2><div class="list">' + list.map(r =>
+      '<button class="rrow" onclick="openResource(' + r.id + ')">' + coverHtml(r, 'th') + '<span><b>' + r.title + '</b><p>' + (S.role === 'admin' && audienceNote(r) ? '<em class="aud-note">' + audienceNote(r) + '</em> · ' : '') + r.blurb + '</p></span><span class="m' + (!admin && r.done ? ' done' : '') + '">' + (!admin && r.done ? 'Read' : r.mins + ' min read') + '</span>' + (!admin && r.done ? ICO.checkC.replace('<svg', '<svg class="ok-ic"') : ICO.chevR) + '</button>').join('') + '</div></section>').join('') + '</div>';
+};
+const FONTS = [['Narkiss Block', 'Narkiss Block'], ['Frank Ruhl Libre', 'Frank Ruhl Libre'], ['Lora', 'Lora']];
+const coverHtml = (r, cls) => r.cover ? '<span class="' + cls + '" style="background-image:url(&quot;' + attr(r.cover) + '&quot;)" role="img" aria-label="Cover image"></span>' : '<span class="' + cls + ' dflt" aria-hidden="true"><b>' + attr((r.title || 'R').trim().charAt(0).toUpperCase()) + '</b></span>';
+const resourceHtml = r => r.html || r.body.map(p => '<p>' + p + '</p>').join('');
+function clean(html){
+  const t = document.createElement('template'); t.innerHTML = html;
+  t.content.querySelectorAll('script,style,link,meta,object,embed').forEach(e => e.remove());
+  t.content.querySelectorAll('*').forEach(e => { [...e.attributes].forEach(a => { if (/^on/i.test(a.name) || (a.name === 'href' && /^\s*javascript:/i.test(a.value))) e.removeAttribute(a.name); }); });
+  t.content.querySelectorAll('iframe').forEach(f => { if (!/^https:\/\/(www\.)?(youtube\.com\/embed\/|player\.vimeo\.com\/video\/)/.test(f.getAttribute('src') || '')) f.remove(); });
+  return t.innerHTML;
+}
+const embedFor = url => { const y = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|shorts\/|embed\/))([\w-]{6,})/); if (y) return '<iframe src="https://www.youtube.com/embed/' + y[1] + '" allowfullscreen loading="lazy"></iframe>'; const v = url.match(/vimeo\.com\/(\d+)/); if (v) return '<iframe src="https://player.vimeo.com/video/' + v[1] + '" allowfullscreen loading="lazy"></iframe>'; if (/\.(mp4|webm)(\?|$)/i.test(url)) return '<video controls src="' + attr(url) + '"></video>'; return ''; };
+function rt(cmd, val){ const ed = document.getElementById('r4'); if (!ed) return; ed.focus(); document.execCommand(cmd, false, val || null); }
+function rtLink(){ const u = prompt('Link address'); if (u) rt('createLink', u); }
+function rtImageUrl(){ const u = prompt('Image address'); if (u) rt('insertHTML', '<img src="' + attr(u) + '" alt="">'); }
+function rtImageFile(input){ const f = input.files && input.files[0]; if (!f) return; const rd = new FileReader(); rd.onload = () => rt('insertHTML', '<img src="' + rd.result + '" alt="">'); rd.readAsDataURL(f); input.value = ''; }
+function rtVideo(){ const u = prompt('YouTube, Vimeo or video file address'); if (!u) return; const h = embedFor(u.trim()); if (h) rt('insertHTML', h + '<p><br></p>'); else toast('Use a YouTube or Vimeo link, or a .mp4 file.'); }
+function setCover(v){ S.cover = v || ''; const c = document.getElementById('cov'); if (c) c.innerHTML = coverHtml({cover:S.cover, title:(document.getElementById('r0') || {}).value}, 'cover'); }
+function coverFile(input){ const f = input.files && input.files[0]; if (!f) return; const rd = new FileReader(); rd.onload = () => { setCover(rd.result); const u = document.getElementById('r5'); if (u) u.value = ''; }; rd.readAsDataURL(f); }
+V.postres = () => {
+  const r = S.editRes ? RESOURCES.find(x => x.id === S.editRes) : null;
+  if (S.coverFor !== (r ? r.id : 'new')) { S.cover = r ? (r.cover || '') : ''; S.coverFor = r ? r.id : 'new'; }
+  const f = (id, label, ph, req, type, val) => '<div class="field" id="w-' + id + '"><label for="' + id + '">' + label + (req ? '<i class="req" aria-hidden="true">*</i>' : '') + '</label><input id="' + id + '" type="' + (type || 'text') + '" placeholder="' + ph + '" value="' + attr(val) + '"' + (req ? ' aria-required="true"' : '') + '><div class="err">This one is needed</div></div>';
+  const tb = (label, cmd, val, title) => '<button type="button" class="rtb" title="' + (title || label) + '" aria-label="' + (title || label) + '" onmousedown="event.preventDefault()" onclick="rt(\'' + cmd + '\'' + (val ? ',\'' + val + '\'' : '') + ')">' + label + '</button>';
+  return '<div class="page-head" data-role><h1>' + (r ? 'Edit resource' : 'Post a resource') + '</h1></div><p class="sub">' + (r ? 'Scholars see the change as soon as you save.' : 'It appears in Career resources for every scholar as soon as you publish.') + ' Fields marked * are needed.</p>' +
+    '<form class="card form" onsubmit="event.preventDefault();publishResource()"><div class="grid2">' +
+    f('r0', 'Title', 'Interview question bank', true, 'text', r && r.title) +
+    '<div class="field" id="w-r1"><label for="r1">Section</label><select id="r1">' + RGROUPS.map(g => '<option' + (r && r.group === g ? ' selected' : '') + '>' + g + '</option>').join('') + '</select></div>' +
+    '<div class="field wide" id="w-r3"><label for="r3">One-line summary<i class="req" aria-hidden="true">*</i></label><input id="r3" aria-required="true" placeholder="What a scholar gets from reading it" value="' + attr(r && r.blurb) + '"><div class="err">This one is needed</div></div>' +
+    '<div class="field wide"><label>Cover image</label><div class="coverrow"><span id="cov">' + coverHtml({cover:S.cover, title:r && r.title}, 'cover') + '</span><div class="coverctl"><input id="r5" type="url" placeholder="Paste an image address" value="' + attr(S.cover && !S.cover.startsWith('data:') ? S.cover : '') + '" onchange="setCover(this.value.trim())"><div class="r"><label class="btn btn-ghost btn-sm filebtn">Upload an image<input type="file" accept="image/*" onchange="coverFile(this)"></label><button type="button" class="btn btn-ghost btn-sm" onclick="setCover(\'\');document.getElementById(\'r5\').value=\'\'">Use the default</button></div><div class="hint">Without one, scholars see the default cover with the title’s initial.</div></div></div></div>' +
+    '<div class="field wide" id="w-r4"><label>The article<i class="req" aria-hidden="true">*</i></label>' +
+    '<div class="rtbar" role="toolbar" aria-label="Formatting"><select aria-label="Paragraph style" onmousedown="event.stopPropagation()" onchange="rt(\'formatBlock\',this.value);this.selectedIndex=0"><option value="">Style</option><option value="p">Paragraph</option><option value="h2">Heading</option><option value="h3">Subheading</option><option value="blockquote">Quote</option></select>' +
+    '<select aria-label="Font" onchange="rt(\'fontName\',this.value);this.selectedIndex=0"><option value="">Font</option>' + FONTS.map(([n, v]) => '<option value="' + v + '">' + n + '</option>').join('') + '</select>' +
+    '<select aria-label="Text size" onchange="rt(\'fontSize\',this.value);this.selectedIndex=0"><option value="">Size</option><option value="2">Small</option><option value="3">Normal</option><option value="5">Large</option></select><i class="sep"></i>' +
+    tb('<b>B</b>', 'bold', '', 'Bold') + tb('<i>I</i>', 'italic', '', 'Italic') + tb('<u>U</u>', 'underline', '', 'Underline') + '<i class="sep"></i>' + tb('• List', 'insertUnorderedList', '', 'Bulleted list') + tb('1. List', 'insertOrderedList', '', 'Numbered list') + '<i class="sep"></i>' +
+    '<button type="button" class="rtb" onmousedown="event.preventDefault()" onclick="rtLink()">Link</button><label class="rtb filebtn">Image<input type="file" accept="image/*" onchange="rtImageFile(this)"></label><button type="button" class="rtb" onmousedown="event.preventDefault()" onclick="rtImageUrl()">Image by link</button><button type="button" class="rtb" onmousedown="event.preventDefault()" onclick="rtVideo()">Video</button><i class="sep"></i>' + tb('Clear', 'removeFormat', '', 'Clear formatting') + '</div>' +
+    '<div id="r4" class="editor rich" contenteditable="true" aria-required="true" data-placeholder="Write it here. Use the toolbar for headings, images and video.">' + (r ? resourceHtml(r) : '') + '</div><div class="err">This one is needed</div></div>' +
+    f('r2', 'Read time in minutes', 'Worked out from the length if left blank', false, 'number', r && r.mins) + audienceField('res:' + (r ? r.id : 'new'), r && r.years) +
+    '</div><div class="form-foot"><span class="dup ok">' + ICO.checkC + (r ? 'Saves straight away' : 'Goes live straight away') + '</span><div class="r"><button type="button" class="btn btn-ghost" onclick="' + (r ? 'S.editRes=null;openResource(' + r.id + ')' : 'nav(\'resources\')') + '">Cancel</button><button class="btn btn-primary" type="submit">' + (r ? ICO.check + 'Save changes' : ICO.send + 'Publish') + '</button></div></div></form>';
+};
+function publishResource(){
+  const val = id => ((document.getElementById(id) || {}).value || '').trim();
+  const ed = document.getElementById('r4'), html = ed ? clean(ed.innerHTML) : '', text = ed ? ed.innerText.trim() : '';
+  const hasBody = !!text || /<(img|iframe|video)/i.test(html);
+  let bad = false;
+  [['r0', val('r0')], ['r3', val('r3')], ['r4', hasBody ? 'ok' : '']].forEach(([id, v]) => { const w = document.getElementById('w-' + id); if (w) w.classList.toggle('bad', !v); if (!v) bad = true; });
+  if (bad) { toast('Add a title, a summary and the article.'); return; }
+  const body = text.split(/\n\s*\n/).map(p => p.trim()).filter(Boolean);
+  const mins = Math.max(1, parseInt(val('r2'), 10) || Math.ceil(text.split(/\s+/).length / 200));
+  const fields = {group:val('r1'), kind:val('r1'), title:val('r0'), mins, blurb:val('r3'), body, html, cover:S.cover || '', years:pickedYears(S.editRes ? (RESOURCES.find(x => x.id === S.editRes) || {}).years : [])};
+  S.coverFor = null;
+  if (S.editRes) { const r = RESOURCES.find(x => x.id === S.editRes); Object.assign(r, fields); S.editRes = null; openResource(r.id); toast('Saved. Scholars see the update now.'); return; }
+  RESOURCES.push({id:Date.now(), icon:'book', done:false, ...fields});
+  nav('resources'); toast('Published. Scholars can read it now.');
+}
+V.res = () => {
+  const r = RESOURCES.find(x => x.id === S.res);
+  return '<button class="btn btn-ghost btn-sm" style="margin-bottom:18px" onclick="nav(\'resources\')">← Back to resources</button>' +
+    '<article class="card article">' + (r.cover ? coverHtml(r, 'cover') : '') + '<span class="kind">' + r.kind + ' · ' + r.mins + ' min read</span><h1>' + r.title + '</h1><div class="rich">' + resourceHtml(r) + '</div>' +
+    '<div class="foot">' + (S.role === 'admin' ? '<button class="btn btn-primary" onclick="editResource(' + r.id + ')">Edit</button><button class="btn btn-ghost danger" onclick="removeResource(' + r.id + ')">Remove</button>' : '<button class="btn ' + (r.done ? 'btn-ghost' : 'btn-primary') + '" onclick="markResource(' + r.id + ')">' + (r.done ? 'Mark as not done' : ICO.check + 'Mark as done') + '</button>') + '<button class="btn btn-ghost" onclick="nav(\'resources\')">All resources</button></div></article>';
+};
+V.postevent = () => {
+  const e = S.editEv ? EVENTS.find(x => x.id === S.editEv) : null;
+  const f = (id, label, ph, req, type, val) => '<div class="field" id="w-' + id + '"><label for="' + id + '">' + label + (req ? '<i class="req" aria-hidden="true">*</i>' : '') + '</label><input id="' + id + '" type="' + (type || 'text') + '" placeholder="' + ph + '" value="' + attr(val) + '"' + (req ? ' aria-required="true"' : '') + '><div class="err">This one is needed</div></div>';
+  return '<div class="page-head" data-role><h1>' + (e ? 'Edit event' : 'Add an event') + '</h1></div><p class="sub">' + (e ? 'Scholars who saved a place see the change straight away.' : 'It appears under Events & updates for every scholar as soon as you publish.') + ' Fields marked * are needed.</p>' +
+    '<form class="card form" onsubmit="event.preventDefault();publishEvent()"><div class="grid2">' +
+    f('e0', 'Title', 'CV Masterclass', true, 'text', e && e.title) + f('e1', 'Date', '', true, 'date', e && eventDateISO(e)) +
+    f('e2', 'Where and when', 'Online session · 15:00', true, 'text', e && e.when) + f('e3', 'Hosted by', 'Hosted by the Moshal careers team', false, 'text', e && e.who) +
+    '<div class="field wide"><label for="e4">About</label><textarea id="e4" placeholder="What happens, who it is for, what to bring.">' + attr(e && e.about) + '</textarea></div>' + audienceField('ev:' + (e ? e.id : 'new'), e && e.years) +
+    '</div><div class="form-foot"><span class="dup ok">' + ICO.checkC + (e ? 'Saves straight away' : 'Goes live straight away') + '</span><div class="r"><button type="button" class="btn btn-ghost" onclick="nav(\'events\')">Cancel</button><button class="btn btn-primary" type="submit">' + (e ? ICO.check + 'Save changes' : ICO.send + 'Publish') + '</button></div></div></form>';
+};
+V.events = () => {
+  const evs = forMe(EVENTS), list = evs.filter(e => S.evTab === 'upcoming' ? !e.past : e.past);
+  const admin = S.role === 'admin';
+  return '<div class="page-head" data-role><h1>Events & updates</h1>' + (admin ? '<div class="acts"><button class="btn btn-primary btn-sm" onclick="S.editEv=null;nav(\'postevent\')">' + ICO.plus + 'Add an event</button></div>' : '') + '</div>' +
+    '<div class="tabs" role="tablist">' + [['upcoming', 'Upcoming', evs.filter(e => !e.past).length], ['past', 'Past', evs.filter(e => e.past).length]].map(([k, l, n]) => '<button role="tab" aria-selected="' + (S.evTab === k) + '" onclick="S.evTab=\'' + k + '\';render()">' + l + ' · ' + n + '</button>').join('') + '</div>' +
+    '<div class="events">' + list.map(e => '<article class="card event"><span class="date' + (e.past ? ' past' : '') + '">' + e.d.replace(' ', '<br>') + '</span><span class="body"><h3>' + e.title + '</h3><span class="meta">' + e.when + ' · ' + e.who + (S.role === 'admin' && audienceNote(e) ? ' · <em class="aud-note">' + audienceNote(e) + '</em>' : '') + '</span><span class="meta" style="margin-top:6px">' + e.about + '</span></span>' +
+      (admin ? '<span class="evacts"><button class="btn btn-ghost btn-sm" onclick="editEvent(' + e.id + ')">Edit</button>' + (e.past ? '' : '<button class="btn btn-ghost btn-sm danger" onclick="cancelEvent(' + e.id + ')">Cancel</button>') + '</span>' : e.past ? '<span class="pill off"><i></i>Finished</span>' : '<button class="btn ' + (e.going ? 'btn-ghost' : 'btn-primary') + ' btn-sm" onclick="toggleEvent(' + e.id + ')">' + (e.going ? ICO.check + 'Going' : 'Save my place') + '</button>') + '</article>').join('') + (list.length ? '' : '<div class="card empty"><b>Nothing here' + (S.evTab === 'past' ? ' yet' : '') + '</b><span>' + (admin ? 'Add an event and scholars see it straight away.' : 'New events and updates appear here.') + '</span></div>') + '</div>';
+};
+V.submit = () => {
+  const o = S.edit ? byId(S.edit) : null;
+  if (S.edit && !o) { S.edit = null; }
+  const f = (id, label, ph, req, type, options, val) => '<div class="field" id="w-' + id + '"><label for="' + id + '">' + label + (req ? '<i class="req" aria-hidden="true">*</i>' : '') + '</label>' +
+    (options ? '<select id="' + id + '">' + options.map(x => '<option' + (x === val ? ' selected' : '') + '>' + x + '</option>').join('') + '</select>' : '<input id="' + id + '" type="' + (type || 'text') + '" placeholder="' + ph + '" value="' + attr(val) + '"' + (req ? ' aria-required="true"' : '') + '>') +
+    '<div class="err">This one is needed</div></div>';
+  const link = o ? (o.url || 'https://careers.' + o.org.toLowerCase().replace(/\s/g, '') + '.example/apply') : '';
+  return '<div class="page-head" data-role><h1>' + (o ? 'Edit listing' : 'Post an opportunity') + '</h1></div><p class="sub">' + (o ? 'Scholars see the change as soon as you save.' : 'It goes live for every scholar as soon as you publish' + (S.role === 'admin' ? '' : ', and scholars see exactly what you enter here') + '.') + ' Fields marked * are needed.</p>' +
+    '<form class="card form" oninput="previewListing()" onchange="previewListing()" onsubmit="event.preventDefault();publishListing()"><div class="grid2">' +
+    f('f0', 'Job title', 'Graduate Software Engineer', true, 'text', null, o && o.title) + f('f1', 'Employer', 'TechNova', true, 'text', null, o && o.org) +
+    '<div class="field wide" id="w-f2"><label for="f2">Application link<i class="req" aria-hidden="true">*</i></label><input id="f2" type="url" aria-required="true" placeholder="https://careers.example.com/graduate" value="' + attr(link) + '"' + (o ? '' : ' oninput="checkDup(this.value)"') + '><div class="err">A full link starting with https:// is needed</div><div id="dup"></div></div>' +
+    f('f3', 'Location', '', false, 'text', LOCS, o && o.loc) + f('f4', 'Closing date', '', false, 'date', null, o && toISO(o.closes)) +
+    f('f5', 'Study field', '', false, 'text', FIELDS_OPT, o && o.field) + f('f6', 'Opportunity type', '', false, 'text', OPP_TYPES, o && o.type) +
+    '<div class="field wide"><label for="f7">What the role involves</label><textarea id="f7" placeholder="A few lines about the work and who it suits.">' + attr(o && o.desc) + '</textarea></div>' + audienceField('opp:' + (o ? o.id : 'new'), o && o.years) +
+    '</div><div class="preview"><span class="eyebrow">How scholars will see it</span><div id="prev"></div></div>' +
+    '<div class="form-foot"><span class="dup ok">' + ICO.checkC + (o ? 'Saves straight away' : 'Goes live straight away') + '</span><div class="r"><button type="button" class="btn btn-ghost" onclick="' + (o ? 'S.edit=null;openJob(' + o.id + ')' : 'nav(\'' + (S.role === 'champion' ? 'subs' : 'opps') + '\')') + '">Cancel</button><button class="btn btn-primary" type="submit">' + (o ? ICO.check + 'Save changes' : ICO.send + 'Publish') + '</button></div></div></form>';
+};
+const closeInfo = iso => { if (!iso) return {closes:'', days:999}; const d = new Date(iso); return {closes:d.toLocaleDateString('en-ZA', {day:'numeric', month:'short', year:'numeric'}), days:Math.max(0, Math.round((d - Date.now()) / 864e5))}; };
+function previewListing(){
+  const el = document.getElementById('prev'); if (!el) return;
+  const val = id => (document.getElementById(id) || {}).value || '';
+  const o = {title:val('f0').trim() || 'Job title', org:val('f1').trim() || 'Employer', loc:val('f3'), type:val('f6'), saved:false, applied:false, ...closeInfo(val('f4'))};
+  el.innerHTML = jobRow(o).replace(/<button/g, '<span').replace(/<\/button>/g, '</span>').replace(/ onclick="[^"]*"/g, '');
+}
+V.subs = () => '<div class="page-head" data-role><h1>My listings</h1><span class="n">' + MINE.length + '</span><div class="acts"><button class="btn btn-primary btn-sm" onclick="S.edit=null;nav(\'submit\')">' + ICO.plus + 'Post an opportunity</button></div></div>' + impactCard() +
+  (MINE.some(l => l.status === 'broken') ? '<div class="notice bad">' + ICO.link + 'A link stopped working, so that listing is hidden from scholars until you update it.</div>' : '') +
+  (MINE.length ? '' : '<div class="card empty"><b>Nothing listed yet</b><span>Your listings, who applied and the nightly link check all show up here.</span></div>') +
+  '<div class="rows">' + MINE.map(l => { const o = OPPS.find(x => x.title === l.title); return '<article class="card row"><div class="body"><h3>' + l.title + '</h3><div class="meta">' + l.org + ' · posted ' + l.posted + ' · closes ' + l.closes + ' · ' + l.applied + ' applied' + (l.check ? ' · ' + l.check : '') + '</div></div><div class="side">' +
+    (l.status === 'live' ? pill('live', 'Live') : l.status === 'broken' ? pill('broken', 'Link broken') : pill('off', 'Unpublished')) +
+    (o && l.status !== 'unpublished' ? '<button class="btn btn-ghost btn-sm" onclick="editListing(' + o.id + ')">Edit</button>' : '') +
+    (l.status === 'broken' ? '<button class="btn btn-primary btn-sm" onclick="fixLink(' + l.id + ')">Fix link</button>' : l.status === 'live' ? '<button class="btn btn-ghost btn-sm" onclick="setListing(' + l.id + ',\'unpublished\')">Unpublish</button>' : '<button class="btn btn-ghost btn-sm" onclick="setListing(' + l.id + ',\'live\')">Publish again</button>') + '</div></article>'; }).join('') + '</div>';
+V.queue = () => '<div class="page-head" data-role><h1>Flagged listings</h1>' + (FLAGS.length ? '<span class="n">' + FLAGS.length + ' to check</span>' : '') + '</div>' +
+  '<p class="sub">Listings go live as soon as a champion posts them. They land here only when a scholar reports one or the nightly link check fails.</p>' +
+  (FLAGS.length ? '<div class="rows">' + FLAGS.map(f => '<article class="card row"><div class="body"><h3>' + f.title + '</h3><div class="meta">' + f.org + ' · posted by ' + f.by + ' · ' + f.when + '</div><div style="margin-top:10px">' + pill(f.src === 'link' ? 'broken' : 'warn', f.why) + '</div></div>' +
+    '<div class="side"><button class="btn btn-ghost btn-sm" onclick="resolveFlag(' + f.id + ',false)">Dismiss</button><button class="btn btn-danger btn-sm" onclick="resolveFlag(' + f.id + ',true)">Unpublish</button></div></article>').join('') + '</div>'
+    : '<div class="card empty">' + ICO.checkC + '<b>Nothing flagged</b><span>Reported listings and broken links will show up here.</span></div>');
+/* ---------- stage cards ---------- */
+function journeyCard(){
+  const u = ROLES[S.role];
+  if (u.stage === 'program') return '';
+  const at = JOURNEY.indexOf(u.stage);
+  const note = {dreamers:['Done', 'You are here', 'After graduation', 'Give back'], scholars:['Done', 'You are here', 'After graduation', 'Give back'], alumni:['Done', 'Done', 'You are here', 'Give back']}[u.stage];
+  const to = i => i < at ? 1 : u.stage === 'scholars' ? Math.round(u.year / u.years * 100) / 100 : 0.6;
+  return '<section class="card jcard' + (S.view !== S.lastView ? ' play' : '') + '"><div class="hd"><span class="t">Your journey</span><span class="n">' + (u.stage === 'scholars' ? 'Scholar · ' + u.year + ordinal(u.year) + ' year of ' + u.years : 'Alumni · Career champion') + '</span></div>' +
+    '<div class="steps">' + JOURNEY.map((k, i) => '<div class="' + (i < at ? 'done' : i === at ? 'now' : '') + '"><i>' + (i <= at ? '<em style="background:' + STAGES[k].bg + ';--to:' + to(i) + '"></em>' : '') + '</i><b>' + STAGES[k].label.replace(/s$/, '') + '</b><span>' + note[i] + '</span></div>').join('') + '</div></section>';
+}
+const ordinal = n => n === 1 ? 'st' : n === 2 ? 'nd' : n === 3 ? 'rd' : 'th';
+function impactCard(){
+  const live = MINE.filter(l => l.status === 'live').length, applied = MINE.reduce((a, l) => a + l.applied, 0);
+  if (!MINE.length) return '<section class="card impact first"><div class="l"><span class="t">Post your first opportunity</span><span class="n">A listing you post reaches ' + STU_COUNT + ' scholars the same day, and you can see who applied from here.</span></div><div class="r"><button class="btn btn-primary" onclick="S.edit=null;nav(\'submit\')">' + ICO.plus + 'Post an opportunity</button></div></section>';
+  return '<section class="card impact"><div class="l"><span class="t">Giving back as an Alumni career champion</span><span class="n">Every listing you post reaches ' + STU_COUNT + ' scholars the same day.</span></div><div class="r"><div><b>' + live + '</b><span>live listing' + (live === 1 ? '' : 's') + '</span></div><div><b>' + applied + '</b><span>scholars applied</span></div></div></section>';
+}
+const STU_COUNT = 880;
+/* ---------- sign in: replicates frontend/src/features/LoginView.vue ---------- */
+const ACCOUNTS = [['thandiwe.mokoena@myuct.ac.za', 'scholar'], ['sipho.dlamini@wits.ac.za', 'champion'], ['naledi.khumalo@moshal.org', 'admin']];
+V.login = () => '<main class="login-layout"><section class="hero login-hero"><div class="hero-inner"><img src="brand/logo-horizontal-white.svg" alt="Moshal Program">' +
+  '<h1>Your next opportunity starts here.</h1><p>Discover opportunities, prepare for interviews and take the next step from campus to career.</p><p class="prog">Career Champion Programme 2027</p><div class="journey" aria-label="The Moshal journey">' + JOURNEY.map(k => '<span><i style="color:' + STAGES[k].bg + '"></i><b>' + STAGES[k].label + '</b></span>').join('<em></em>') + '</div></div></section>' +
+  '<form class="card login-form" onsubmit="event.preventDefault();signIn()"><span class="eyebrow">Welcome back</span><h1>Sign in to your portal</h1><p class="subtitle">Use the account provided by your Careers team.</p>' +
+  (S.loginError ? '<div class="notice bad" role="alert">' + ICO.alert + S.loginError + '</div>' : '') +
+  '<div class="field"><label for="li-email">Email</label><input id="li-email" type="email" autocomplete="username" required maxlength="254" value="' + (S.loginEmail === undefined ? ACCOUNTS[0][0] : S.loginEmail) + '"></div>' +
+  '<div class="field"><label for="li-pass">Password</label><input id="li-pass" type="password" autocomplete="current-password" required maxlength="256" value="prototype-only"></div>' +
+  '<button class="btn btn-primary" type="submit">Sign in →</button>' +
+  '<p class="tiny">Need access or password assistance? Contact your portal administrator.</p>' +
+  '</form></main>';
+function signIn(){
+  const email = (document.getElementById('li-email').value || '').trim().toLowerCase(), pass = document.getElementById('li-pass').value || '';
+  if (!email || !pass) { S.loginError = 'Enter your email and password.'; S.loginEmail = email; render(); return; }
+  const acct = ACCOUNTS.find(a => a[0] === email);
+  S.loginError = ''; S.loginEmail = undefined; S.auth = true; S.view = 'overview'; setRole(acct ? acct[1] : 'scholar'); sb.intro();
+}
+function signOut(){ S.auth = false; S.open = null; S.navOpen = false; S.dlg = null; const t = document.getElementById('toast'); if (t) t.hidden = true; render(); window.scrollTo(0, 0); }
+
+/* ---------- champion and admin actions ---------- */
+function syncCounts(){ syncNav(); }
+function checkDup(v){ const el = document.getElementById('dup'); if (!el) return; if (!v) { el.innerHTML = ''; return; } const dup = MINE.some(l => (l.url || '') === v); el.innerHTML = '<div class="dup ' + (dup ? 'warn' : 'ok') + '" style="margin-top:8px">' + (dup ? ICO.alert + 'Another of your listings uses this link' : ICO.checkC + 'Not posted before') + '</div>'; }
+function publishListing(){
+  const val = id => (document.getElementById(id) || {}).value || '';
+  let bad = false;
+  [['f0', val('f0').trim()], ['f1', val('f1').trim()], ['f2', /^https?:\/\/\S+\.\S+/.test(val('f2').trim()) ? 'ok' : '']].forEach(([id, ok]) => { const w = document.getElementById('w-' + id); if (w) w.classList.toggle('bad', !ok); if (!ok) bad = true; });
+  if (bad) { toast('Add a title, an employer and a full link starting with https://'); return; }
+  const c = closeInfo(val('f4'));
+  if (S.edit) {
+    const o = byId(S.edit), was = o.title;
+    Object.assign(o, {title:val('f0').trim(), org:val('f1').trim(), url:val('f2').trim(), type:val('f6'), field:val('f5'), loc:val('f3'), closes:c.closes, days:c.days, desc:val('f7').trim(), years:pickedYears(o.years)});
+    const m = MINE.find(l => l.title === was); if (m) Object.assign(m, {title:o.title, org:o.org, url:o.url, closes:c.closes || 'No closing date'});
+    S.edit = null; openJob(o.id); toast('Saved. Scholars see the update now.'); return;
+  }
+  MINE.unshift({id:Date.now(), title:val('f0').trim(), org:val('f1').trim(), url:val('f2').trim(), status:'live', applied:0, posted:'Today', closes:c.closes || 'No closing date'});
+  OPPS.unshift({id:Date.now() + 1, title:val('f0').trim(), org:val('f1').trim(), type:val('f6') || OPP_TYPES[0], field:val('f5') || FIELDS_OPT[0], loc:val('f3') || LOCS[0], url:val('f2').trim(), closes:c.closes, days:c.days, by:ROLES[S.role].name, saved:false, applied:false, desc:val('f7').trim(), years:pickedYears()});
+  nav(S.role === 'champion' ? 'subs' : 'opps'); toast('Published. Scholars can see it now.');
+}
+function editListing(id){ S.edit = id; nav('submit'); }
+function unpublishListing(id){ const o = byId(id); OPPS = OPPS.filter(x => x.id !== id); const m = MINE.find(l => l.title === o.title); if (m) m.status = 'unpublished'; FLAGS = FLAGS.filter(f => f.title !== o.title); nav('opps'); toast('Unpublished. Scholars can no longer see it.'); }
+function fixLink(id){ const l = MINE.find(x => x.id === id); l.status = 'live'; delete l.check; FLAGS = FLAGS.filter(f => f.title !== l.title); syncNav(); render(); toast('Link updated. The listing is live again.'); }
+function setListing(id, st){ const l = MINE.find(x => x.id === id); l.status = st; syncNav(); render(); toast(st === 'live' ? 'Published again.' : 'Unpublished. Scholars can no longer see it.'); }
+function resolveFlag(id, unpub){ const f = FLAGS.find(x => x.id === id); FLAGS = FLAGS.filter(x => x.id !== id); if (unpub) { const l = MINE.find(x => x.title === f.title); if (l) l.status = 'unpublished'; } syncNav(); render(); toast(unpub ? 'Unpublished and the champion was told why.' : 'Flag dismissed. The listing stays live.'); }
+
+/* ---------- chrome ---------- */
+const TABS = {scholar:[['overview', 'Home', 'home'], ['opps', 'Jobs', 'search'], ['saved', 'Saved', 'bookmark'], ['resources', 'Resources', 'book']],
+  champion:[['overview', 'Home', 'home'], ['opps', 'Jobs', 'search'], ['subs', 'Listings', 'brief'], ['resources', 'Resources', 'book']],
+  admin:[['admin', 'Reporting', 'table'], ['queue', 'Flagged', 'flag'], ['opps', 'Jobs', 'search'], ['resources', 'Resources', 'book']]};
+function tabbar(){
+  const ic = n => n === 'bookmark' ? BOOK : (ICO[n] || ICO.brief);
+  return '<nav class="tabbar" aria-label="Primary">' + TABS[S.role].map(([k, l, i]) => '<button aria-current="' + (S.view === k || (k === 'opps' && S.view === 'job')) + '" onclick="nav(\'' + k + '\')">' + ic(i) + '<span>' + l + '</span></button>').join('') + '</nav>';
+}
+function topbar(){
+  const u = ROLES[S.role], n = unread();
+  return (S.navOpen ? '<div class="scrim" onclick="S.navOpen=false;render()"></div>' : '') +
+    '<header class="topbar"><button class="iconbtn burger" aria-label="Menu" aria-expanded="' + S.navOpen + '" onclick="event.stopPropagation();S.navOpen=!S.navOpen;render()">' + BURGER + '</button><img class="tlogo" src="brand/logo-horizontal-blue.svg" alt="Moshal Program">' +
+    '<div class="actions"><span class="menuwrap"><button class="iconbtn" aria-haspopup="menu" aria-expanded="' + (S.open === 'notif') + '" aria-label="Notifications' + (n ? ', ' + n + ' unread' : '') + '" onclick="event.stopPropagation();setOpen(\'notif\')">' + ICO.bell + (n ? '<span class="dot"></span>' : '') + '</button>' +
+    (S.open === 'notif' ? '<div class="menu" onclick="event.stopPropagation()"><div class="mh"><span>Notifications</span>' + (n ? '<button onclick="NOTIFS.forEach(x=>x.unread=false);render()">Mark all read</button>' : '') + '</div>' +
+      (NOTIFS.length ? NOTIFS.map((x, i) => '<button class="ni' + (x.unread ? ' unread' : '') + '" onclick="NOTIFS[' + i + '].unread=false;S.open=null;NOTIFS[' + i + '].go()"><i></i><span><p>' + x.text + '</p><time>' + x.when + '</time></span></button>').join('') : '<div class="empty">Nothing new</div>') + '</div>' : '') + '</span>' +
+    '<span class="menuwrap"><button class="me" aria-haspopup="menu" aria-expanded="' + (S.open === 'acct') + '" aria-label="Account, ' + u.name + '" onclick="event.stopPropagation();setOpen(\'acct\')"><span class="avatar" style="background:' + stageOf(S.role).bg + ';color:' + stageOf(S.role).ink + '">' + u.ini + '</span></button>' +
+    (S.open === 'acct' ? '<div class="menu" onclick="event.stopPropagation()"><div class="mh"><span>Signed in as</span></div>' +
+      '<div class="mi" style="cursor:default"><span class="ri" style="background:' + stageOf(S.role).bg + ';color:' + stageOf(S.role).ink + '">' + u.ini + '</span><span><b>' + u.name + '</b><span>' + u.sub + '</span></span></div><div class="sep"></div>' +
+      '<div class="mh"><span>Switch role</span></div>' + Object.entries(ROLES).map(([k, r]) => '<button class="mi" aria-current="' + (S.role === k) + '" onclick="S.open=null;setRole(\'' + k + '\')"><span class="ri" style="background:' + STAGES[r.stage].bg + ';color:' + STAGES[r.stage].ink + '">' + r.ini + '</span><span><b>' + r.name + '</b><span>' + r.sub + '</span></span></button>').join('') +
+      '<div class="sep"></div>' +
+      '<button class="mi" onclick="signOut()">' + ICO.out + '<span><b>Sign out</b></span></button></div>' : '') + '</span></div></header>' + tabbar();
+}
+function dialog(){
+  if (!S.dlg) return '';
+  if (S.dlg.kind === 'apply') { const o = byId(S.dlg.id);
+    return '<div class="xmask" onclick="if(event.target===this)closeDlg()"><div class="xdlg" role="dialog" aria-modal="true" aria-label="Apply"><div class="xh"><span>Apply to ' + o.org + '</span><button class="xclose" aria-label="Close" onclick="closeDlg()">×</button></div>' +
+      '<div class="pb"><p style="margin:0">We will add this to <b>My applications</b> and open the employer’s page in a new tab. Finish your application there.</p>' +
+      '<div class="notice info" style="margin:0">' + ICO.link + '<span>careers.' + o.org.toLowerCase().replace(/\s/g, '') + '.example</span></div></div>' +
+      '<div class="pf"><button class="btn btn-ghost" onclick="closeDlg()">Cancel</button><button class="btn btn-primary" onclick="confirmApply()">Continue' + ICO.ext + '</button></div></div></div>'; }
+  const o = byId(S.dlg.id);
+  return '<div class="xmask" onclick="if(event.target===this)closeDlg()"><div class="xdlg" role="dialog" aria-modal="true" aria-label="Report listing"><div class="xh"><span>Report this listing</span><button class="xclose" aria-label="Close" onclick="closeDlg()">×</button></div>' +
+    '<div class="pb"><p style="margin:0;font-size:14px;color:var(--muted)">' + o.title + ' · ' + o.org + '</p><div class="field"><label for="rwhy">What is wrong with it?</label><select id="rwhy"><option>The link does not work</option><option>Applications have closed</option><option>The closing date is wrong</option><option>It is not a real opportunity</option></select></div></div>' +
+    '<div class="pf"><button class="btn btn-ghost" onclick="closeDlg()">Cancel</button><button class="btn btn-primary" onclick="sendReport()">' + ICO.flag + 'Send report</button></div></div></div>';
+}
+function render(){
+  const app = document.querySelector('.app'); app.classList.toggle('auth', !S.auth);
+  if (!S.auth) { document.getElementById('chrome').innerHTML = ''; document.getElementById('main').innerHTML = V.login(); document.getElementById('dlg').innerHTML = ''; setTimeout(() => { const f = document.getElementById('li-email'); if (f) (f.value ? document.querySelector('.login-form .btn') : f).focus(); }, 0); return; }
+  document.getElementById('chrome').innerHTML = topbar();
+  const main = document.getElementById('main');
+  document.querySelector('.app').classList.toggle('nav-open', S.navOpen); document.body.classList.toggle('nav-open', S.navOpen);
+  if (S.navOpen) document.getElementById('sb').removeAttribute('rail');
+  main.innerHTML = (V[S.view] || V.overview)();
+  if (S.view !== S.lastView) { main.classList.remove('enter'); void main.offsetWidth; main.classList.add('enter'); S.lastView = S.view; }
+  if (S.view === 'submit') previewListing();
+  const ph = document.querySelector('.page-head[data-role]'); if (ph) { const r = PAGE_ROLE[S.view]; ph.classList.add(r === undefined ? 'r-scholar' : r ? 'r-' + r : 'r-none'); }
+  document.getElementById('dlg').innerHTML = dialog();
+  if (S.view === 'admin' && typeof placeRef === 'function') setTimeout(placeRef, 0);
+  placePops();
+}
+function renderList(){ const el = document.getElementById('olist'); if (el) render(); }
+
+/* ---- Reporting: example data (deterministic) ---- */
+const INST = [
+  ['UCT','University of Cape Town',['Engineering & Built Environment','Commerce','Health Sciences','Science']],
+  ['Wits','University of the Witwatersrand',['Engineering & Built Environment','Commerce, Law & Management','Science','Health Sciences']],
+  ['SU','Stellenbosch University',['Engineering','Economic & Management Sciences','Medicine & Health']],
+  ['UP','University of Pretoria',['EBIT','Economic & Management Sciences','Health Sciences','Humanities']],
+  ['UJ','University of Johannesburg',['Engineering & Built Environment','Business & Economics','Science']],
+  ['UKZN','University of KwaZulu-Natal',['Engineering','Law & Management','Health Sciences']]
+];
+const FIELD_OF = f => /Engineering|EBIT/.test(f) ? 'Engineering' : /Commerce|Economic|Business|Management/.test(f) ? 'Commerce' : /Health|Medicine/.test(f) ? 'Health Sciences' : /Science/.test(f) ? 'Science' : /Law/.test(f) ? 'Law' : 'Humanities';
+const YEARS = ['1st year','2nd year','3rd year','4th year','Honours'];
+const YEAR_SHORT = {'1st year':'1st','2nd year':'2nd','3rd year':'3rd','4th year':'4th','Honours':'Hons'};
+const TYPES = ['Internship','Vacation work','Graduate programme','Bursary'];
+const FIELDS = ['Engineering','Commerce','Science','Health Sciences','Law','Humanities'];
+const THIS_YEAR = 2026;
+const FIRST = ['Thandiwe','Sipho','Ayanda','Kagiso','Naomi','Bongani','Zanele','Liam','Precious','Ruan','Amahle','Tumelo','Karabo','Nomvula','Lindiwe','Mpho','Tshepo','Aisha','Sibusiso','Nandi','Keegan','Palesa','Yusuf','Refilwe','Jabu','Chloe','Lerato','Thabo','Anele','Kyle'];
+const LAST = ['Mokoena','Dlamini','Zulu','Molefe','Petersen','Ndlovu','Mthembu','Jacobs','Mahlangu','van Wyk','Cele','Sithole','Mabena','Khoza','Ngcobo','Radebe','Maseko','Moosa','Gumede','Shabalala','Naidoo','Mofokeng','Ebrahim','Tau','Mkhize','Adams'];
+let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+const pick = arr => arr[Math.floor(rnd() * arr.length)];
+function mkApp(d, yi){
+  const type = yi >= 3 ? pick(['Graduate programme','Graduate programme','Internship','Bursary']) : yi === 0 ? pick(['Bursary','Vacation work','Vacation work']) : pick(['Vacation work','Internship','Internship','Bursary']);
+  const r = rnd();
+  const status = r < (yi >= 3 ? 0.10 : 0.03) ? 'offer' : r < 0.28 ? 'interview' : r < 0.42 ? 'rejected' : 'applied';
+  return {d, type, status};
+}
+const STU = [];
+INST.forEach(([short, instName, facs], ui) => { const n = 130 + Math.floor(rnd() * 40); for (let i = 0; i < n; i++) {
+  const yi = Math.floor(rnd() * 5), year = YEARS[yi], grad = yi >= 3 ? THIS_YEAR : THIS_YEAR + (3 - yi);
+  const fac = pick(facs), apps = [];
+  if (rnd() >= 0.30 + ui * 0.05) { const k = 1 + Math.floor(rnd() * 4); for (let j = 0; j < k; j++) apps.push(mkApp(Math.floor(rnd() * 90), yi)); }
+  if (rnd() < 0.55) { const k = 1 + Math.floor(rnd() * 3); for (let j = 0; j < k; j++) apps.push(mkApp(91 + Math.floor(rnd() * 275), yi)); }
+  apps.sort((a, b) => a.d - b.d);
+  const last = apps.length ? apps[0].d : null;
+  const login = last !== null && last <= 30 ? Math.min(last, Math.floor(rnd() * 30)) : (rnd() < 0.85 ? Math.floor(rnd() * 365) : null);
+  STU.push({name:pick(FIRST) + ' ' + pick(LAST), inst:short, instName, fac, field:FIELD_OF(fac), year, grad, apps, offers:apps.filter(a => a.status === 'offer').length, last, login});
+} });
+
+/*
+ * Reporting state. Scope (place, year, graduating, field, final years) decides WHO is counted; the selected group
+ * (R.seg) decides which bucket is printed, which names are listed and what the export presets to. The group never
+ * shrinks the pool the charts are computed on, so a share is always a share of the scope.
+ * Vocabulary is fixed in README.md: Applied / Did not apply (lapsed, never started); Has an offer / No offer.
+ */
+const R = {tab:'bd', lens:'activity', period:30, inst:[], fac:[], grad:[], year:[], types:[], field:[], final:false, seg:'notapplied', open:null, page:1, all:false, draft:null, xd:null, view:{bd:false, fy:false, hm:false, fn:false}, sort:{col:'status', dir:1}};
+const SMALL_N = 5, SORT_N = 10;
+const fmtD = iso => new Date(iso + 'T12:00:00').toLocaleDateString('en-ZA', {day:'numeric', month:'short'});
+const periodLabel = () => R.period === 'custom' && R.range ? fmtD(R.range.from) + ' – ' + fmtD(R.range.to) : ({30:'last 30 days', 90:'last 90 days', 365:'this year'})[R.period];
+const daysAgo = iso => Math.max(0, Math.round((Date.now() - new Date(iso + 'T12:00:00')) / 864e5));
+const isoAgo = n => { const d = new Date(Date.now() - n * 864e5); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); };
+const win = () => R.period === 'custom' && R.range ? {lo:daysAgo(R.range.to), hi:daysAgo(R.range.from)} : {lo:0, hi:+R.period};
+const inWin = d => { const w = win(); return d >= w.lo && d <= w.hi; };
+const setPeriod = v => { R.period = v; R.page = 1; R.open = null; render(); };
+const setRange = () => { const f = document.getElementById('pf').value, t = document.getElementById('pt').value; if (!f || !t) { toast('Pick both dates.'); return; } R.range = f <= t ? {from:f, to:t} : {from:t, to:f}; setPeriod('custom'); };
+const typeOk = a => !R.types.length || R.types.includes(a.type);
+const appsIn = st => st.apps.filter(a => inWin(a.d) && typeOk(a));
+const applied = st => appsIn(st).length > 0;
+const appliedPrev = st => st.apps.some(a => a.d > R.period && a.d <= R.period * 2 && typeOk(a));
+const hasPrev = () => typeof R.period === 'number' && R.period !== 365 && R.lens === 'activity';
+const lastApp = st => { const l = st.apps.filter(typeOk); return l.length ? l[0].d : null; };
+const stateOf = st => applied(st) ? 'applied' : lastApp(st) === null ? 'never' : 'lapsed';
+const isFinal = st => st.grad === THIS_YEAR;
+const signedIn = st => st.login !== null && inWin(st.login);
+const stInterview = st => signedIn(st) && applied(st) && appsIn(st).some(a => a.status === 'interview' || a.status === 'offer');
+const stOffer = st => stInterview(st) && appsIn(st).some(a => a.status === 'offer');
+const pct = (a, b) => b ? Math.round(a / b * 100) : 0;
+const resc = v => String(v).replace(/'/g, "\\'");
+const CHEV = '<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>';
+const RICO = {
+  table: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M9 5v14"/></svg>',
+  download: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>',
+  check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>',
+  slash: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="8"/><path d="m7 17 10-10"/></svg>',
+  minus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="8"/><path d="M8 12h8"/></svg>',
+  alert: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 2.5 20h19z"/><path d="M12 9v5M12 17h.01"/></svg>',
+  up: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 6l6 8H6z"/></svg>',
+  down: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 18l-6-8h12z"/></svg>'
+};
+const scopedBase = (ignoreYear, ignoreFac) => STU.filter(st => (!R.inst.length || R.inst.includes(st.inst)) && (ignoreFac || !R.fac.length || R.fac.includes(st.fac)) && (!R.grad.length || R.grad.includes(String(st.grad))) && (!R.field.length || R.field.includes(st.field)) && (!R.final || isFinal(st)) && (ignoreYear || !R.year.length || R.year.includes(st.year)));
+const scoped = () => scopedBase(false);
+
+/* Groups: what a tile, a word link, a funnel bar or a final-years figure selects. Each is a predicate over the scope. */
+const GROUPS = {
+  all:{l:'All scholars', f:null},
+  applied:{l:'Applied', f:applied, c:'pos'},
+  notapplied:{l:'Did not apply', f:st => !applied(st), c:'rem'},
+  lapsed:{l:'Did not apply: lapsed', f:st => stateOf(st) === 'lapsed', c:'rem'},
+  never:{l:'Did not apply: never started', f:st => stateOf(st) === 'never', c:'rem'},
+  offer:{l:'Has an offer', f:st => st.offers > 0, c:'pos'},
+  multi:{l:'More than one offer', f:st => st.offers > 1, c:'pos'},
+  none:{l:'No offer', f:st => st.offers === 0, c:'rem'},
+  'none-quiet':{l:'No offer, did not apply', f:st => st.offers === 0 && !applied(st), c:'rem'},
+  'fy-offer':{l:'Final years: has an offer', f:st => isFinal(st) && st.offers > 0, fy:true},
+  'fy-applying':{l:'Final years: applied, no offer', f:st => isFinal(st) && st.offers === 0 && applied(st), fy:true},
+  'fy-neither':{l:'Final years: no offer, did not apply', f:st => isFinal(st) && st.offers === 0 && !applied(st), fy:true, danger:true},
+  gap:{l:'Signed in, did not apply', f:st => signedIn(st) && !applied(st)},
+  'st-signed':{l:'Signed in', f:signedIn},
+  'st-applied':{l:'Signed in and applied', f:st => signedIn(st) && applied(st)},
+  'st-interview':{l:'Reached interview', f:stInterview},
+  'st-offer':{l:'Offer this period', f:stOffer}
+};
+const TILES = {activity:['all','applied','notapplied'], offers:['all','offer','none']};
+const EXPORT_GROUPS = {
+  activity:['all','applied','notapplied','fy-neither'],
+  offers:['all','offer','none','fy-neither']
+};
+const grp = () => GROUPS[R.seg] || GROUPS.all;
+const groupList = pool => grp().f ? pool.filter(grp().f) : pool.slice();
+/* The bucket the breakdown prints: the remainder by default, the measured bucket when its tile is selected. */
+const bucketKey = () => R.lens === 'activity' ? (R.seg === 'applied' ? 'applied' : 'notapplied') : (R.seg === 'offer' || R.seg === 'multi' ? 'offer' : 'none');
+const inBucket = st => GROUPS[bucketKey()].f(st);
+const prevBucket = st => bucketKey() === 'applied' ? appliedPrev(st) : !appliedPrev(st);
+const bucketLabel = () => GROUPS[bucketKey()].l;
+const bucketIsPos = () => GROUPS[bucketKey()].c === 'pos';
+
+/* Level is derived from the place chips, never stored. */
+const level = () => R.inst.length === 1 ? (R.fac.length === 1 ? 'year' : 'fac') : 'inst';
+const LEVEL_WORD = {inst:'institution', fac:'faculty', year:'year of study'};
+const keyFn = () => ({inst:st => st.instName, fac:st => st.fac, year:st => st.year})[level()];
+function stat(k, l){ const fy = l.filter(isFinal); return {k, members:l, n:l.length, a:l.filter(applied).length, lp:l.filter(st => stateOf(st) === 'lapsed').length, nv:l.filter(st => stateOf(st) === 'never').length, o:l.filter(st => st.offers > 0).length, m:l.filter(st => st.offers > 1).length, prevA:l.filter(appliedPrev).length, b:l.filter(inBucket).length, prevB:l.filter(prevBucket).length, q:l.filter(st => st.offers === 0 && !applied(st)).length, fyN:fy.length, fyO:fy.filter(st => st.offers > 0).length, fyA:fy.filter(st => st.offers === 0 && applied(st)).length, fyQ:fy.filter(st => st.offers === 0 && !applied(st)).length}; }
+function rowsFor(pool, kf){ const m = new Map(); pool.forEach(st => { const k = kf(st); if (!m.has(k)) m.set(k, []); m.get(k).push(st); }); return [...m.entries()].map(([k, l]) => stat(k, l)); }
+function sortWorst(rows, shareFn, countFn){ const big = rows.filter(r => r.n >= SORT_N).sort((x, y) => shareFn(y) - shareFn(x) || y.n - x.n); const small = rows.filter(r => r.n < SORT_N).sort((x, y) => countFn(y) - countFn(x) || y.n - x.n); return big.concat(small); }
+function foldFaculties(rows){ if (level() !== 'fac' || rows.length <= 8) return rows; const keep = rows.slice(0, 8), rest = rows.slice(8); const f = stat('Other faculties (' + rest.length + ')', rest.flatMap(r => r.members)); f.fold = rest.map(r => r.k); return keep.concat([f]); }
+const instShort = name => (INST.find(x => x[1] === name) || [name])[0];
+
+/* State changes */
+const togg = (key, v) => { const i = R[key].indexOf(v); if (i < 0) R[key].push(v); else R[key].splice(i, 1); if (key === 'inst') R.fac = R.fac.filter(f => !R.inst.length || INST.some(x => R.inst.includes(x[0]) && x[2].includes(f))); R.page = 1; R.all = false; render(); };
+const rSetOpen = k => { R.open = R.open === k ? null : k; render(); };
+const setSeg = k => { R.seg = k; R.page = 1; R.all = false; render(); };
+const setFinal = v => { R.final = v; R.page = 1; render(); };
+const resetAll = () => { Object.assign(R, {inst:[], fac:[], grad:[], year:[], types:[], field:[], final:false, seg:'all', page:1, all:false, open:null}); render(); };
+function drillTo(k, fyFirst){
+  const lv = level(); R.page = 1; R.all = false;
+  if (lv === 'inst') { const inst = INST.find(x => x[1] === k); if (!inst) return; R.inst = [inst[0]]; R.fac = []; }
+  else if (lv === 'fac') { R.fac = [k]; }
+  else { togg('year', k); return; }
+  if (R.seg === 'all') R.seg = fyFirst ? 'fy-neither' : bucketKey();
+  render();
+}
+function drillFold(names){ R.fac = names.slice(); R.page = 1; if (R.seg === 'all') R.seg = bucketKey(); render(); }
+function scrollNames(){ const el = document.querySelector('.names'); if (el) el.scrollIntoView({behavior:'smooth', block:'start'}); }
+if (!window.__rpBound) {
+  window.__rpBound = true;
+  document.addEventListener('click', () => { if (R.open) { R.open = null; render(); } });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeExport(); hideCard(); } });
+  const main = document.getElementById('main');
+  main.addEventListener('mouseover', e => { const el = e.target.closest('[data-card]'); if (el) showCard(el); });
+  main.addEventListener('mouseout', e => { const el = e.target.closest('[data-card]'); if (el && !el.contains(e.relatedTarget)) hideCard(); });
+  main.addEventListener('focusin', e => { const el = e.target.closest('[data-card]'); if (el) showCard(el); });
+  main.addEventListener('focusout', () => hideCard());
+  main.addEventListener('keydown', e => {
+    const walk = e.target.closest('[data-walk]'); if (!walk) return;
+    const items = [...walk.querySelectorAll('button[data-card], button.hc, button.tile')]; const i = items.indexOf(e.target); if (i < 0) return;
+    const cols = +walk.dataset.cols || 1; let j = -1;
+    if (e.key === 'ArrowDown') j = i + cols; else if (e.key === 'ArrowUp') j = i - cols; else if (e.key === 'ArrowRight') j = i + 1; else if (e.key === 'ArrowLeft') j = i - 1;
+    if (j >= 0 && j < items.length) { e.preventDefault(); items[j].focus(); if (walk.classList.contains('well')) items[j].click(); }
+  });
+}
+/* Hover card: one element, filled from the anchor's data-card payload with textContent. */
+function showCard(el){
+  let c = document.getElementById('hcard'); if (!c) { c = document.createElement('div'); c.id = 'hcard'; c.setAttribute('aria-hidden', 'true'); document.body.appendChild(c); }
+  let d; try { d = JSON.parse(el.dataset.card); } catch (e) { return; }
+  c.textContent = '';
+  const t = document.createElement('div'); t.className = 't'; t.textContent = d.t; c.appendChild(t);
+  (d.rows || []).forEach(r => { const row = document.createElement('div'); row.className = 'r' + (r.ind ? ' ind' : ''); if (!r.ind) { const sw = document.createElement('span'); sw.className = 'sw' + (r.sw === 'ghost' ? ' ghost' : ''); if (r.sw && r.sw !== 'ghost' && r.sw !== 'none') sw.style.background = r.sw; if (r.sw === 'none') sw.style.visibility = 'hidden'; row.appendChild(sw); } const l = document.createElement('span'); l.textContent = r.l; const v = document.createElement('b'); v.textContent = r.v; row.appendChild(l); row.appendChild(v); c.appendChild(row); });
+  if (d.f) { const f = document.createElement('div'); f.className = 'f'; f.textContent = d.f; c.appendChild(f); }
+  const r = el.getBoundingClientRect(); const w = 250;
+  let left = r.right + 12; if (left + w > window.innerWidth - 8) left = r.left - w - 12; if (left < 8) left = 8;
+  let top = r.top - 8; c.style.visibility = 'hidden'; c.style.display = 'block'; const h = c.offsetHeight; if (top + h > window.innerHeight - 8) top = Math.max(8, window.innerHeight - h - 8); c.style.visibility = ''; c.style.left = left + 'px'; c.style.top = top + 'px';
+}
+function hideCard(){ const c = document.getElementById('hcard'); if (c) c.style.display = 'none'; }
+const card = d => ' data-card=\'' + JSON.stringify(d).replace(/'/g, '&#39;') + '\'';
+const delta = (now, prev) => { const d = now - prev; return d === 0 ? '<span class="rpill">· 0 pts</span>' : '<span class="rpill">' + (d > 0 ? '▲' : '▼') + ' ' + Math.abs(d) + ' pts</span>'; };
+const swatchFor = k => GROUPS[k] && GROUPS[k].c === 'pos' ? '#2362B4' : '#7D8B9A';
+
+/* ---- toolbar ---- */
+function segc(opts, cur, pickJs, aria){ return '<div class="seg" role="group" aria-label="' + aria + '">' + opts.map(([v, l]) => '<button aria-pressed="' + (String(cur) === String(v)) + '" onclick="' + pickJs.split('%v').join(String(v)) + '">' + l + '</button>').join('') + '</div>'; }
+function placePops(){ const cw = document.documentElement.clientWidth; if (!cw) return; document.querySelectorAll('.pop').forEach(p => { if (getComputedStyle(p).position === 'fixed') return; p.classList.remove('pop-right'); p.style.left = ''; const r = p.getBoundingClientRect(), c = p.parentElement.getBoundingClientRect(), over = r.right - (cw - 12); if (over <= 0) return; if (c.right - r.width >= 12) p.classList.add('pop-right'); else p.style.left = (-Math.min(over, r.left - 12)) + 'px'; }); }
+function mdd(key, label, options, counts){
+  const sel = R[key], on = sel.length > 0, open = R.open === key;
+  const text = !on ? label : sel.length === 1 ? ((options.find(o => String(o[0]) === String(sel[0])) || [])[1] || sel[0]) : label + ' · ' + sel.length;
+  return '<span class="ctl' + (on ? ' on' : '') + '" role="button" tabindex="0" aria-haspopup="listbox" aria-expanded="' + open + '" onclick="event.stopPropagation();rSetOpen(\'' + key + '\')" onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();rSetOpen(\'' + key + '\')}">' + text + CHEV +
+    (open ? '<div class="pop" role="listbox" aria-label="' + label + '" style="max-height:380px;overflow:auto" onclick="event.stopPropagation()"><div class="ph"><span>' + label + '</span>' + (on ? '<button onclick="R.' + key + '=[];' + (key === 'inst' ? 'R.fac=[];' : '') + 'R.page=1;render()">Clear</button>' : '') + '</div>' +
+      options.map(([v, l]) => '<label><input type="checkbox"' + (sel.includes(v) || sel.includes(String(v)) ? ' checked' : '') + ' onchange="togg(\'' + key + '\',\'' + resc(v) + '\')"> <span>' + l + '</span><span class="n">' + (counts ? counts(v) : '') + '</span></label>').join('') + '</div>' : '') + '</span>';
+}
+function periodDD(){
+  const open = R.open === 'period', label = periodLabel().charAt(0).toUpperCase() + periodLabel().slice(1);
+  const r = R.range || {from:isoAgo(30), to:isoAgo(0)};
+  return '<span class="ctl on" role="button" tabindex="0" aria-haspopup="listbox" aria-expanded="' + open + '" onclick="event.stopPropagation();rSetOpen(\'period\')">' + ICO.cal + label + CHEV +
+    (open ? '<div class="pop period" onclick="event.stopPropagation()"><div class="ph"><span>Period</span></div>' +
+      [[30, 'Last 30 days'], [90, 'Last 90 days'], [365, 'This year']].map(([v, l]) => '<button class="o" role="option" aria-selected="' + (R.period === v) + '" onclick="setPeriod(' + v + ')">' + ICO.check.replace('<svg', '<svg class="tick"') + '<span>' + l + '</span></button>').join('') +
+      '<div class="grp">Custom range</div><div class="range"><input id="pf" type="date" value="' + r.from + '" aria-label="From"><span>to</span><input id="pt" type="date" value="' + r.to + '" aria-label="To"><button class="btn btn-primary btn-sm" onclick="setRange()">Apply</button></div></div>' : '') + '</span>';
+}
+function filterRow(){
+  const facOpts = (R.inst.length ? INST.filter(x => R.inst.includes(x[0])) : INST).flatMap(x => x[2]).filter((f, i, a) => a.indexOf(f) === i).sort().map(f => [f, f]);
+  const n = R.inst.length + R.fac.length + R.year.length + (R.final ? 1 : 0);
+  return '<div class="tb filters" aria-label="Filters">' + periodDD() + '<i class="vsep"></i>' +
+    mdd('inst', 'Institution', INST.map(([sh, nm]) => [sh, nm]), v => STU.filter(st => st.inst === v).length) +
+    mdd('fac', 'Faculty', facOpts, v => STU.filter(st => st.fac === v && (!R.inst.length || R.inst.includes(st.inst))).length) +
+    mdd('year', 'Year of study', YEARS.map(y => [y, y]), v => STU.filter(st => st.year === v).length) +
+    '<button class="ctl' + (R.final ? ' on' : '') + '" aria-pressed="' + R.final + '" title="Graduating ' + THIS_YEAR + '" onclick="setFinal(!R.final)">Final years</button>' +
+    (n ? '<button class="reset" onclick="resetAll()">Clear all</button>' : '') + '</div>';
+}
+function toolbar(){
+  return filterRow();
+}
+function storyLine(pool){
+  const chip = (label, undo, cls) => '<span class="chip' + (cls ? ' ' + cls : '') + '">' + label + '<button aria-label="Remove ' + label + '" onclick="' + undo + '">×</button></span>';
+  const parts = [];
+  if (R.seg !== 'all' && !QUESTIONS.some(x => x.k === R.seg)) parts.push(chip(grp().l, "setQ('" + questionOf().k + "','" + questionOf().lens + "')", grp().danger ? 'fy' : ''));
+  if (R.final) parts.push(chip('Final years', 'setFinal(false)', 'fy'));
+  R.inst.forEach(i => parts.push(chip(INST.find(x => x[0] === i)[1], "togg('inst','" + i + "')")));
+  R.fac.forEach(f => parts.push(chip(f, "togg('fac','" + resc(f) + "')")));
+  R.year.forEach(y => parts.push(chip(y, "togg('year','" + y + "')")));
+  R.grad.forEach(g => parts.push(chip('Graduating ' + g, "togg('grad','" + g + "')")));
+  R.types.forEach(t => parts.push(chip(t, "togg('types','" + t + "')")));
+  R.field.forEach(f => parts.push(chip(f, "togg('field','" + f + "')")));
+  const n = groupList(pool).length, q = questionOf();
+  const lead = '<b>' + n + '</b> of ' + pool.length + ' scholars ' + (R.seg === q.k ? q.hint : grp().l.toLowerCase()) + ' · ' + periodLabel();
+  return '<div class="story">' + lead + (parts.length ? '<span class="in">in</span>' + parts.join('') : '') + '</div>';
+}
+
+/* ---- tiles ---- */
+const QUESTIONS = [
+  {k:'notapplied', lens:'activity', q:'Not applying', c:'amber', hint:'did not apply'},
+  {k:'applied', lens:'activity', q:'Applied', c:'green', hint:'applied'},
+  {k:'offer', lens:'offers', q:'Has an offer', c:'blue', hint:'hold an offer'},
+  {k:'none', lens:'offers', q:'No offer', c:'red', hint:'hold no offer'}
+];
+const questionOf = () => QUESTIONS.find(x => x.k === R.seg || (x.k === 'offer' && R.seg === 'multi') || (x.k === 'none' && R.seg === 'none-quiet') || (x.k === 'notapplied' && /^(lapsed|never|gap)$/.test(R.seg)) || (x.k === 'none' && /^fy-/.test(R.seg))) || QUESTIONS[0];
+const setQ = (k, lens) => { R.lens = lens; R.seg = k; R.page = 1; R.all = false; render(); };
+function tiles(pool){
+  return '<div class="qs" role="tablist" aria-label="Question" data-walk>' + QUESTIONS.map(x => { const g = GROUPS[x.k], n = pool.filter(g.f).length, share = pct(n, pool.length);
+    const prev = x.lens === 'activity' && hasPrev() ? pct(pool.filter(x.k === 'applied' ? appliedPrev : st => !appliedPrev(st)).length, pool.length) : null;
+    const d = prev === null ? '' : '<small class="d">' + (share - prev === 0 ? '· 0' : (share > prev ? '▲ ' : '▼ ') + Math.abs(share - prev)) + ' pts</small>';
+    return '<button class="q q-' + x.c + '" role="tab" aria-selected="' + (questionOf().k === x.k) + '" onclick="setQ(\'' + x.k + '\',\'' + x.lens + '\')"><span class="l">' + x.q + '</span><span class="v">' + n + '</span><span class="s">' + share + '%' + d + '</span></button>'; }).join('') + '</div>';
+}
+
+/* ---- panel chrome ---- */
+function acts(key, extra){ return '<span class="acts">' + (extra || '') + '<button class="iconbtn-sm" aria-pressed="' + R.view[key] + '" title="Table view" aria-label="Table view" onclick="R.view.' + key + '=!R.view.' + key + ';render()">' + RICO.table + '</button><button class="iconbtn-sm" title="Export" aria-label="Export this panel" onclick="openExport(null,\'' + key + '\')">' + RICO.download + '</button></span>'; }
+function tview(cols, rows){ return '<div class="tview"><table><thead><tr>' + cols.map(c => '<th>' + c + '</th>').join('') + '</tr></thead><tbody>' + rows.map(r => '<tr>' + r.map(v => '<td>' + v + '</td>').join('') + '</tr>').join('') + '</tbody></table></div>'; }
+function crumbs(){ const inst = R.inst.length === 1 ? INST.find(x => x[0] === R.inst[0]) : null;
+  return '<nav class="crumbs" aria-label="Drill path">' + (inst ? '<button onclick="R.inst=[];R.fac=[];R.page=1;render()">All institutions</button><span>›</span>' + (R.fac.length === 1 ? '<button onclick="R.fac=[];R.page=1;render()">' + inst[0] + '</button><span>›</span><b>' + R.fac[0] + '</b>' : '<b>' + inst[1] + '</b>') : '<b>All institutions</b>' + (R.inst.length > 1 ? '<span>· ' + R.inst.length + ' selected</span>' : '') + (R.fac.length && !inst ? '<span>· ' + R.fac.join(', ') + '</span>' : '')) + '</nav>'; }
+const scopeWords = () => { const bits = [].concat(R.inst.map(i => INST.find(x => x[0] === i)[0]), R.fac, R.field); return bits.length ? bits.join(' · ') : 'all institutions'; };
+
+/* ---- final years panel ---- */
+function fyPanel(){
+  const pool = STU.filter(st => (!R.inst.length || R.inst.includes(st.inst)) && (!R.fac.length || R.fac.includes(st.fac)) && (!R.field.length || R.field.includes(st.field)) && isFinal(st));
+  const o = pool.filter(st => st.offers > 0).length, a = pool.filter(st => st.offers === 0 && applied(st)).length, q = pool.filter(st => st.offers === 0 && !applied(st)).length, qn = pool.filter(st => st.offers === 0 && !applied(st) && stateOf(st) === 'never').length;
+  const note = (R.seg !== 'all' || R.year.length || R.grad.length) ? ' · all final years, not filtered by tile or year' : '';
+  const head = '<div class="card-head"><h2>Final years</h2><span class="n">4th year and Honours graduating ' + THIS_YEAR + ' · ' + pool.length + ' at ' + scopeWords() + note + '</span>' + acts('fy') + '</div>';
+  if (!pool.length) return '<section class="card fy">' + head + '<div class="empty-line">No final years in this scope</div></section>';
+  const rows = sortWorst(rowsFor(pool, keyFn()), r => pct(r.fyQ, r.fyN), r => r.fyQ);
+  const press = k => "setFinal(true);setSeg('" + k + "');scrollNames()";
+  const strip = '<div class="strip">' +
+    '<button class="fig" onclick="' + press('fy-offer') + '"><span class="l"><i class="i-pos"></i>Has an offer</span><span class="v">' + o + '<small>· ' + pct(o, pool.length) + '%</small></span></button>' +
+    '<button class="fig" onclick="' + press('fy-applying') + '"><span class="l"><i class="i-soft"></i>Applied, no offer yet</span><span class="v">' + a + '<small>· ' + pct(a, pool.length) + '%</small></span></button>' +
+    '<button class="fig hero" onclick="' + press('fy-neither') + '"><span class="l"><span class="flag">' + RICO.alert + 'needs a call</span>No offer, did not apply</span><span class="v">' + q + '<small>· ' + pct(q, pool.length) + '%</small></span><span class="l">' + qn + ' never started</span></button></div>';
+  const body = R.view.fy ? tview(['Group', 'Final years', 'Has an offer', 'Applied, no offer', 'No offer, did not apply'], rows.map(r => [r.k, r.fyN, r.fyO + ' · ' + pct(r.fyO, r.fyN) + '%', r.fyA, r.fyQ + ' · ' + pct(r.fyQ, r.fyN) + '%']))
+    : '<div class="fy-body">' + strip + '<div class="fyrows" data-walk><div class="fyhead"><span>By ' + LEVEL_WORD[level()] + '</span><span>Has an offer</span><span>Applied, no offer</span><span class="scale"><span>No offer, did not apply · 0%</span><span>100%</span></span></div>' +
+      rows.map(r => { const small = r.fyN < SMALL_N; const c = {t:r.k + ' · ' + r.fyN + ' final years', rows:[{sw:'#2362B4', l:'Has an offer', v:r.fyO + ' · ' + pct(r.fyO, r.fyN) + '%'}, {sw:'#9DBDE8', l:'Applied, no offer', v:r.fyA + ' · ' + pct(r.fyA, r.fyN) + '%'}, {sw:'#7D8B9A', l:'No offer, did not apply', v:r.fyQ + ' · ' + pct(r.fyQ, r.fyN) + '%'}], f:(r.fyQ ? r.members.filter(st => st.offers === 0 && !applied(st) && stateOf(st) === 'never').length + ' never started' : '')};
+        return '<button class="fyrow"' + card(c) + ' aria-label="' + r.k + ': ' + r.fyQ + ' of ' + r.fyN + ' final years have no offer and did not apply" onclick="drillTo(\'' + resc(r.k) + '\',true)"' + (level() === 'year' ? ' style="cursor:default" disabled' : '') + '><span class="nm">' + r.k + '<small>· ' + r.fyN + '</small></span><span class="c">' + r.fyO + (small ? '' : '<small>' + pct(r.fyO, r.fyN) + '%</small>') + '</span><span class="c">' + r.fyA + '</span><span class="q"><span class="track"><em style="width:' + (small ? 0 : pct(r.fyQ, r.fyN)) + '%"></em></span><span class="val">' + r.fyQ + (small ? '' : ' · ' + pct(r.fyQ, r.fyN) + '%') + '</span></span></button>'; }).join('') + '</div></div>';
+  return '<section class="card fy">' + head + body + '</section>';
+}
+
+/* ---- breakdown panel ---- */
+function bdPanel(pool){
+  const rows0 = sortWorst(rowsFor(pool, keyFn()), r => pct(r.b, r.n), r => r.b), rows = foldFaculties(rows0);
+  const scopeShare = pct(pool.filter(inBucket).length, pool.length);
+  const title = 'By ' + LEVEL_WORD[level()];
+  const legend = '<span class="legend"><span><i class="' + (bucketIsPos() ? 'i-pos' : 'i-rem') + '"></i>' + bucketLabel() + '</span>' + (hasPrev() ? '<span><i class="ghost"></i>previous ' + R.period + ' days</span>' : '') + '</span>';
+  const head = '<div class="card-head"><h2>' + title + '</h2><span class="n">share who ' + questionOf().hint + '</span>' + acts('bd', hasPrev() ? '<span class="legend"><span><i class="ghost"></i>previous ' + R.period + ' days</span></span>' : '') + crumbs() + '</div>';
+  const off = R.lens === 'offers';
+  const cardFor = r => ({t:r.k + ' · ' + r.n + ' scholars', rows:R.lens === 'activity' ? [{sw:'#2362B4', l:'Applied', v:r.a + ' · ' + pct(r.a, r.n) + '%'}, {sw:'#7D8B9A', l:'Did not apply', v:(r.n - r.a) + ' · ' + pct(r.n - r.a, r.n) + '%'}].concat(hasPrev() ? [{sw:'ghost', l:'Previous ' + R.period + ' days, ' + bucketLabel().toLowerCase(), v:pct(r.prevB, r.n) + '%'}] : []) : [{sw:'#2362B4', l:'Has an offer', v:r.o + ' · ' + pct(r.o, r.n) + '%'}, {ind:true, l:'More than one', v:r.m}, {sw:'#7D8B9A', l:'No offer', v:(r.n - r.o) + ' · ' + pct(r.n - r.o, r.n) + '%'}, {ind:true, l:'Of which did not apply', v:r.q}], f:hasPrev() ? 'Change ' + (pct(r.b, r.n) - pct(r.prevB, r.n) >= 0 ? '▲ ' : '▼ ') + Math.abs(pct(r.b, r.n) - pct(r.prevB, r.n)) + ' pts' : ''});
+  const rowHtml = r => { const small = r.n < SMALL_N, share = pct(r.b, r.n), act = r.fold ? "drillFold(" + JSON.stringify(r.fold).replace(/"/g, '&quot;') + ")" : level() === 'year' ? "togg('year','" + r.k + "')" : "drillTo('" + resc(r.k) + "')";
+    return '<button class="brow' + (off ? ' offers' : '') + '"' + card(cardFor(r)) + ' aria-label="' + r.k + ': ' + r.b + ' of ' + r.n + ' ' + bucketLabel().toLowerCase() + ' · ' + share + '%" onclick="' + act + '"><span class="nm">' + r.k + '<small>· ' + r.n + '</small></span><span class="bar' + (small ? ' small' : '') + '">' + (small ? '' : '<em class="' + (bucketIsPos() ? 'pos' : '') + '" style="width:' + share + '%"></em>') + (hasPrev() && !small ? '<span class="ghost" style="left:' + pct(r.prevB, r.n) + '%"></span>' : '') + '</span><span class="val">' + r.b + (small ? '' : ' · ' + share + '%') + '</span>' + (off ? '' : '<span class="d">' + (hasPrev() && !small ? delta(share, pct(r.prevB, r.n)) : '') + '</span>') + '</button>'; };
+  const body = R.view.bd ? tview([LEVEL_WORD[level()], 'Scholars', 'Applied', 'Did not apply', 'Has an offer'].concat(hasPrev() ? ['Previous ' + bucketLabel().toLowerCase() + ' %'] : []), rows.map(r => [r.k, r.n, r.a, r.n - r.a, r.o].concat(hasPrev() ? [pct(r.prevB, r.n) + '%'] : [])))
+    : '<div class="bd-body"><div class="bd-rows" data-walk><div class="bhead' + (off ? ' offers' : '') + '"><span></span><span class="ax"><span>0%</span><span>100%</span></span><span>' + bucketLabel() + '</span>' + (off ? '' : '<span>Change</span>') + '</div>' +
+      (rows.length ? rows.map(rowHtml).join('') : '<div class="empty-line">Nobody in this scope</div>') + '<span class="refline" data-share="' + scopeShare + '"></span></div></div>';
+  return '<section class="card bd">' + head + body + '<div class="card-foot"><span>' + (level() === 'year' ? 'Click a year to filter by it' : 'Click a row to narrow to it') + '</span></div></section>';
+}
+/* ---- heatmap ---- */
+const HM = ['#AEB7C1','#99A3AF','#6A7583','#44505E'];
+const binOf = p => p < 25 ? 0 : p < 40 ? 1 : p < 55 ? 2 : 3;
+function hmPanel(){
+  const pool = scopedBase(true), lv = level();
+  const quiet = st => R.lens === 'activity' ? !applied(st) : st.offers === 0;
+  let rows = sortWorst(rowsFor(pool, keyFn()).map(r => ({...r, qn:r.members.filter(quiet).length})), r => pct(r.qn, r.n), r => r.qn);
+  let ctx = null;
+  if (lv === 'year') { const instPool = scopedBase(true, true); const r = stat(INST.find(x => x[0] === R.inst[0])[1] + ' · all faculties', instPool); ctx = {...r, qn:r.members.filter(quiet).length}; rows = [stat(R.fac[0], pool)].map(r => ({...r, qn:r.members.filter(quiet).length})); }
+  const legend = '<span class="hmleg">' + ['0–24%','25–39%','40–54%','55%+'].map((l, i) => '<span><i style="background:' + HM[i] + '"></i>' + l + '</span>').join('') + '</span>';
+  const head = '<div class="card-head"><h2>Which years are quiet, where</h2><span class="n">' + (R.lens === 'activity' ? 'share who did not apply' : 'share with no offer') + '</span>' + acts('hm', legend) + '</div>';
+  const allSmall = rows.every(r => YEARS.every(y => r.members.filter(st => st.year === y).length < SMALL_N));
+  if (allSmall) return '<section class="card">' + head + '<div class="empty-line">Too few scholars per cell at this depth · the breakdown above carries the years</div></section>';
+  const cell = (r, y, isCtx) => { const l = r.members.filter(st => st.year === y), n = l.length, qn = l.filter(quiet).length, p = pct(qn, n), small = n < SMALL_N;
+    const c = {t:r.k + ' · ' + y, rows:[{sw:'#7D8B9A', l:R.lens === 'activity' ? 'Did not apply' : 'No offer', v:qn + ' · ' + p + '%'}, {sw:'#2362B4', l:R.lens === 'activity' ? 'Applied' : 'Has an offer', v:(n - qn) + ' · ' + pct(n - qn, n) + '%'}], f:n + ' scholars'};
+    const act = isCtx ? '' : lv === 'inst' ? "R.inst=['" + instShort(r.k) + "'];R.fac=[];R.year=['" + y + "'];R.page=1;render()" : lv === 'fac' ? "R.fac=['" + resc(r.k) + "'];R.year=['" + y + "'];R.page=1;render()" : "togg('year','" + y + "')";
+    if (!n) return '<td><span class="hc small" style="display:grid;place-items:center">–</span></td>';
+    return '<td><button class="hc' + (small ? ' small' : (binOf(p) >= 2 ? ' ink-w' : '')) + (R.year.includes(y) ? ' sel' : '') + (isCtx ? ' ctx' : '') + '" style="background:' + (small ? '' : HM[binOf(p)]) + '"' + card(c) + ' aria-label="' + r.k + ' ' + y + ': ' + qn + ' of ' + n + ' · ' + p + '%"' + (isCtx ? ' disabled' : ' onclick="' + act + '"') + '>' + (small ? n : p + '%') + '</button></td>'; };
+  const body = R.view.hm ? tview([LEVEL_WORD[lv]].concat(YEARS).concat(['All']), (ctx ? [ctx] : []).concat(rows).map(r => [r.k].concat(YEARS.map(y => { const l = r.members.filter(st => st.year === y); return l.length ? l.filter(quiet).length + ' / ' + l.length : '–'; })).concat([r.qn + ' / ' + r.n])))
+    : '<div class="hm" data-walk data-cols="5"><table><thead><tr><th class="rl"></th>' + YEARS.map(y => '<th><button aria-pressed="' + R.year.includes(y) + '" onclick="togg(\'year\',\'' + y + '\')">' + YEAR_SHORT[y] + '</button></th>').join('') + '</tr><tr><th colspan="4"></th><th colspan="2" class="brk"><button aria-pressed="' + R.final + '" onclick="setFinal(!R.final)">Final years</button></th></tr></thead><tbody>' +
+      (ctx ? '<tr><td class="rl ctx" title="' + ctx.k + '">' + ctx.k + '</td>' + YEARS.map(y => cell(ctx, y, true)).join('') + '</tr>' : '') +
+      rows.map(r => '<tr><td class="rl" title="' + r.k + '">' + r.k + '<small>· ' + r.n + '</small></td>' + YEARS.map(y => cell(r, y, false)).join('') + '</tr>').join('') + '</tbody></table>' +
+      (rows.some(r => YEARS.some(y => { const n = r.members.filter(st => st.year === y).length; return n && n < SMALL_N; })) ? '<div class="cap" style="margin-top:8px">Cells with fewer than ' + SMALL_N + ' scholars show a count, not a share</div>' : '') + '</div>';
+  return '<section class="card">' + head + body + '</section>';
+}
+
+/* ---- funnel ---- */
+function fnPanel(pool){
+  const stages = [['Signed in', signedIn, 'st-signed'], ['Viewed listings', null, null], ['Applied', st => signedIn(st) && applied(st), 'st-applied'], ['Interview', stInterview, 'st-interview'], ['Offer', stOffer, 'st-offer']];
+  const counts = stages.map(([l, f]) => f ? pool.filter(f).length : null), base = counts[0] || 1;
+  const tracked = stages.map((s, i) => i).filter(i => counts[i] !== null);
+  const convs = {}; let worst = null; for (let k = 1; k < tracked.length; k++) { const a = tracked[k - 1], b = tracked[k]; convs[b] = counts[a] ? Math.round(counts[b] / counts[a] * 100) : 0; if (worst === null || convs[b] < convs[worst]) worst = b; }
+  const head = '<div class="card-head"><h2>Where scholars drop off</h2><span class="n">' + periodLabel() + '</span>' + acts('fn') + '</div>';
+  const body = R.view.fn ? tview(['Stage', 'Scholars', '% of previous'], stages.map(([l], i) => [l, counts[i] === null ? 'Not tracked' : counts[i], convs[i] !== undefined ? convs[i] + '%' : '']))
+    : '<div class="fn">' + stages.map(([l, f, g], i) => { const prevTracked = tracked[tracked.indexOf(i) - 1];
+      const conv = convs[i] !== undefined ? '<div class="fconv"><span></span><button class="' + (i === worst ? 'big' : '') + '" onclick="' + (prevTracked === 0 && i === 2 ? "setSeg('gap');scrollNames()" : "setSeg('" + stages[prevTracked][2] + "');scrollNames()") + '" title="' + (prevTracked === 0 && i === 2 ? 'Show scholars who signed in but did not apply' : 'Show scholars at the previous stage') + '">' + convs[i] + '% of previous' + (i === worst ? ' · biggest drop' : '') + '</button></div>' : '';
+      const c = counts[i] === null ? null : {t:l, rows:[{sw:'#2362B4', l:'Scholars', v:counts[i]}, {sw:'none', l:'% of signed in', v:pct(counts[i], base) + '%'}].concat(convs[i] !== undefined ? [{sw:'none', l:'% of previous stage', v:convs[i] + '%'}] : [])};
+      return conv + '<div class="fstage"><span class="l">' + l + '</span>' + (counts[i] === null ? '<span class="fbar nt"><span class="nt">Not tracked</span></span>' : '<button class="fbar"' + card(c) + ' aria-label="' + l + ': ' + counts[i] + ' scholars" onclick="setSeg(\'' + g + '\');scrollNames()"><em style="width:' + pct(counts[i], base) + '%"></em><span class="c">' + counts[i] + '</span></button>') + '</div>'; }).join('') +
+      '<div class="foot">Each stage counts scholars who also reached the stage before it. Interview and offer are recorded by students and lag.</div></div>';
+  return '<section class="card">' + head + body + '</section>';
+}
+
+/* ---- names ---- */
+const SORTS = {
+  status:(a, b) => (applied(a) - applied(b)) || ((lastApp(b) ?? 9999) - (lastApp(a) ?? 9999)) || (a.offers - b.offers),
+  name:(a, b) => a.name.localeCompare(b.name), year:(a, b) => YEARS.indexOf(a.year) - YEARS.indexOf(b.year) || a.name.localeCompare(b.name),
+  apps:(a, b) => appsIn(a).length - appsIn(b).length, login:(a, b) => (b.login ?? 9999) - (a.login ?? 9999)
+};
+function statusChip(st){
+  if (isFinal(st) && st.offers === 0 && !applied(st)) return '<span class="chip-st is-danger">' + RICO.alert + 'No offer, did not apply<span class="d">· final year</span></span>';
+  if (R.lens === 'offers') return st.offers ? '<span class="chip-st is-on">' + RICO.check + st.offers + (st.offers > 1 ? ' offers' : ' offer') + '</span>' : '<span class="chip-st is-off">' + RICO.minus + 'No offer</span>';
+  const s = stateOf(st);
+  if (s === 'applied') return '<span class="chip-st is-on">' + RICO.check + 'Applied<span class="d">· ' + lastApp(st) + 'd ago</span></span>';
+  return '<span class="chip-st is-off">' + RICO.slash + 'Did not apply</span>';
+}
+const EXPLORER = [['bd', 'By institution'], ['hm', 'By year of study'], ['fy', 'Final years'], ['fn', 'Where they drop off']];
+function explorer(pool){
+  const label = {bd:level() === 'inst' ? 'By institution' : level() === 'fac' ? 'By faculty' : 'By year of study'};
+  return '<div class="xp"><div class="seg xtabs" role="tablist" aria-label="Explore">' + EXPLORER.map(([k, l]) => '<button role="tab" aria-selected="' + (R.tab === k) + '" aria-pressed="' + (R.tab === k) + '" onclick="R.tab=\'' + k + '\';render()">' + (label[k] || l) + '</button>').join('') + '</div>' +
+    (R.tab === 'bd' ? bdPanel(pool) : R.tab === 'hm' ? hmPanel() : R.tab === 'fy' ? fyPanel() : fnPanel(pool)) + '</div>';
+}
+function namesPanel(pool){
+  const list = groupList(pool).sort((a, b) => R.sort.dir * SORTS[R.sort.col](a, b));
+  const pages = Math.max(1, Math.ceil(list.length / 25)); R.page = Math.max(1, Math.min(R.page, pages));
+  const shown = R.all ? list.slice((R.page - 1) * 25, R.page * 25) : list.slice(0, 10);
+  const th = (col, label, num) => '<th class="' + (num ? 'num ' : '') + (R.sort.col === col ? 'sorted' : '') + '"' + (R.sort.col === col ? ' aria-sort="' + (R.sort.dir === 1 ? 'ascending' : 'descending') + '"' : '') + '><button onclick="R.sort=R.sort.col===\'' + col + '\'?{col:\'' + col + '\',dir:-R.sort.dir}:{col:\'' + col + '\',dir:1};render()">' + label + (R.sort.col === col ? (R.sort.dir === 1 ? RICO.up : RICO.down) : '') + '</button></th>';
+  const title = (R.seg === 'all' ? 'All scholars' : grp().l) + ' · ' + scopeWords() + (R.final && !grp().fy ? ' · final years' : '') + (R.year.length ? ' · ' + R.year.join(', ') : '');
+  return '<section class="card names"><div class="card-head"><h2>' + title + '</h2><span class="n">' + list.length + (R.sort.col === 'status' && R.sort.dir === 1 ? ' · quietest first' : '') + '</span><span class="acts"><button class="iconbtn-sm" title="Export these scholars" aria-label="Export these scholars" onclick="openExport(R.seg,\'names\')">' + RICO.download + '</button></span></div>' +
+    '<table class="rt"><thead><tr>' + th('name', 'Scholar') + th('year', 'Year') + th('status', R.lens === 'activity' ? 'Status' : 'Offers') + th('apps', 'Applications', true) + th('login', 'Last login') + '</tr></thead><tbody>' +
+    (shown.length ? shown.map(st => '<tr><td class="nm">' + st.name + '<div class="sm">' + st.inst + ' · ' + st.fac + '</div></td><td>' + st.year + (isFinal(st) ? '<span class="sm"> · final</span>' : '') + '</td><td>' + statusChip(st) + '</td><td class="num">' + appsIn(st).length + '</td><td class="' + (st.login === null || st.login > R.period ? 'muted' : '') + '">' + (st.login === null ? 'Never' : st.login === 0 ? 'Today' : st.login + 'd ago') + '</td></tr>').join('') : '<tr><td colspan="5" class="sm" style="text-align:center;padding:28px">Nobody matches. Remove a filter above.</td></tr>') + '</tbody></table>' +
+    '<div class="card-foot"><span>' + (R.all ? 'Page ' + R.page + ' of ' + pages + ' · ' + list.length + ' scholars' : shown.length + ' of ' + list.length) + '</span>' +
+    (R.all && pages > 1 ? '<span class="pager"><button aria-label="Previous page" onclick="R.page--;render()"' + (R.page === 1 ? ' disabled' : '') + '>‹</button>' + Array.from({length:pages}, (_, i) => '<button aria-current="' + (R.page === i + 1 ? 'page' : 'false') + '" onclick="R.page=' + (i + 1) + ';render()">' + (i + 1) + '</button>').join('') + '<button aria-label="Next page" onclick="R.page++;render()"' + (R.page === pages ? ' disabled' : '') + '>›</button></span>' : '') +
+    (list.length > 10 ? '<button class="lnk" onclick="R.all=!R.all;R.page=1;render()">' + (R.all ? 'Show first 10' : 'View all ' + list.length + ' →') + '</button>' : '') + '</div></section>';
+}
+
+/* ---- export chooser ---- */
+const PANEL_ROWS = {bd:() => foldFaculties(rowsFor(scoped(), keyFn())).length, fy:() => rowsFor(STU.filter(st => (!R.inst.length || R.inst.includes(st.inst)) && (!R.fac.length || R.fac.includes(st.fac)) && isFinal(st)), keyFn()).length, hm:() => rowsFor(scopedBase(true), keyFn()).length * YEARS.length, fn:() => 5};
+const openExport = (preset, source) => {
+  const src = source || 'header', q = questionOf(), fy = preset === 'fy-neither' || src === 'fy';
+  R.xd = {what:['bd', 'fy', 'hm', 'fn'].includes(src) ? 'rows' : 'scholars', source:src, open:null,
+    applied:fy ? 'no' : q.k === 'applied' ? 'yes' : q.k === 'notapplied' ? 'no' : 'any',
+    offer:fy ? 'no' : q.k === 'offer' ? 'yes' : q.k === 'none' ? 'no' : 'any',
+    final:fy || R.final, inst:[...R.inst], fac:[...R.fac], years:[...R.year], contact:true, detail:true};
+  R.open = null; renderExport();
+};
+const closeExport = () => { const m = document.getElementById('xmodal'); if (m) m.remove(); R.xd = null; };
+function renderExport(){ const old = document.getElementById('xmodal'); if (old) old.remove(); if (!R.xd) return; const m = document.createElement('div'); m.id = 'xmodal'; m.className = 'xmask'; m.innerHTML = exportPop(); m.addEventListener('click', e => { if (e.target === m) closeExport(); }); document.body.appendChild(m); const f = m.querySelector('input:not([disabled])'); f && f.focus(); }
+window.__xtg = (key, v) => { const a = R.xd[key], i = a.indexOf(v); if (i < 0) a.push(v); else a.splice(i, 1); if (key === 'inst') R.xd.fac = R.xd.fac.filter(f => !R.xd.inst.length || INST.some(x => R.xd.inst.includes(x[0]) && x[2].includes(f))); renderExport(); };
+function xdd(key, label, options){
+  const d = R.xd, sel = d[key], on = sel.length > 0, open = d.open === key;
+  const text = !on ? label : sel.length === 1 ? ((options.find(o => String(o[0]) === String(sel[0])) || [])[1] || sel[0]) : label + ' · ' + sel.length;
+  return '<span class="menuwrap xdd"><span class="ctl' + (on ? ' on' : '') + '" role="button" tabindex="0" aria-haspopup="listbox" aria-expanded="' + open + '" onclick="event.stopPropagation();R.xd.open=R.xd.open===\'' + key + '\'?null:\'' + key + '\';renderExport()">' + text + CHEV + '</span>' +
+    (open ? '<div class="pop" role="listbox" aria-label="' + label + '" style="max-height:300px;overflow:auto" onclick="event.stopPropagation()"><div class="ph"><span>' + label + '</span>' + (on ? '<button onclick="R.xd.' + key + '=[];' + (key === 'inst' ? 'R.xd.fac=[];' : '') + 'renderExport()">Clear</button>' : '') + '</div>' +
+      options.map(([v, l]) => '<label><input type="checkbox"' + (sel.includes(v) ? ' checked' : '') + ' onchange="__xtg(\'' + key + '\',\'' + resc(v) + '\')"> <span>' + l + '</span></label>').join('') + '</div>' : '') + '</span>';
+}
+const xseg = (key, opts) => '<div class="seg xseg" role="group">' + opts.map(([v, l]) => '<button aria-pressed="' + (R.xd[key] === v) + '" onclick="R.xd.' + key + '=\'' + v + '\';renderExport()">' + l + '</button>').join('') + '</div>';
+const exportList = () => { const d = R.xd; return STU.filter(st => (!d.inst.length || d.inst.includes(st.inst)) && (!d.fac.length || d.fac.includes(st.fac)) && (!d.years.length || d.years.includes(st.year)) && (!d.final || isFinal(st)) && (d.applied === 'any' || (d.applied === 'yes') === applied(st)) && (d.offer === 'any' || (d.offer === 'yes') === (st.offers > 0))); };
+function exportPop(){
+  const d = R.xd, list = exportList();
+  const rowsN = PANEL_ROWS[d.source] ? PANEL_ROWS[d.source]() : 0;
+  const n = d.what === 'rows' ? rowsN : list.length;
+  const bits = [d.applied === 'yes' ? 'applied' : d.applied === 'no' ? 'did-not-apply' : '', d.offer === 'yes' ? 'has-offer' : d.offer === 'no' ? 'no-offer' : '', d.final ? 'final-years' : ''].filter(Boolean);
+  const fname = ['moshal', d.what === 'rows' ? d.source + '-rows' : (bits.join('_') || 'all-scholars')].concat(d.inst, d.fac.map(f => f.replace(/[^\w]+/g, '-')), d.years.map(y => y.replace(/\s+/g, '')), [periodLabel().replace(/[^\w]+/g, '-')]).join('_') + '.csv';
+  const facOpts = (d.inst.length ? INST.filter(x => d.inst.includes(x[0])) : INST).flatMap(x => x[2]).filter((f, i, a) => a.indexOf(f) === i).sort().map(f => [f, f]);
+  return '<div class="xdlg xexport" role="dialog" aria-modal="true" aria-label="Export CSV" onclick="if(!event.target.closest(\'.xdd\')&&R.xd.open){R.xd.open=null;renderExport()}"><div class="xh"><span>Export CSV</span><button class="xclose" aria-label="Close" onclick="closeExport()">×</button></div><div class="pb">' +
+    (PANEL_ROWS[d.source] ? '<div><span class="eyebrow">What</span><label><input type="radio" name="xw"' + (d.what === 'rows' ? ' checked' : '') + ' onchange="R.xd.what=\'rows\';renderExport()"> <span>Summary rows at this level</span><span class="n">' + rowsN + '</span></label><label><input type="radio" name="xw"' + (d.what === 'scholars' ? ' checked' : '') + ' onchange="R.xd.what=\'scholars\';renderExport()"> <span>The scholars behind them</span><span class="n">' + list.length + '</span></label></div>' : '') +
+    (d.what === 'scholars' ? '<div><span class="eyebrow">Who</span><div class="xrow"><span class="xlab">Applied</span>' + xseg('applied', [['any', 'Any'], ['yes', 'Applied'], ['no', 'Did not apply']]) + '</div>' +
+      '<div class="xrow"><span class="xlab">Offer</span>' + xseg('offer', [['any', 'Any'], ['yes', 'Has an offer'], ['no', 'No offer']]) + '</div>' +
+      '<div class="xrow"><span class="xlab"></span><button class="ctl' + (d.final ? ' on' : '') + '" aria-pressed="' + d.final + '" onclick="R.xd.final=!R.xd.final;renderExport()">Final years</button><span class="cap">graduating ' + THIS_YEAR + '</span></div></div>' +
+      '<div><span class="eyebrow">Where</span><div class="xrow">' + xdd('inst', 'Institution', INST.map(([sh, nm]) => [sh, nm])) + xdd('fac', 'Faculty', facOpts) + xdd('years', 'Year of study', YEARS.map(y => [y, y])) + '</div></div>' +
+      '<div><span class="eyebrow">Columns</span><label><input type="checkbox" checked disabled> <span>Name, institution, faculty, field, year, graduating</span></label><label><input type="checkbox"' + (d.contact ? ' checked' : '') + ' onchange="R.xd.contact=this.checked"> <span>Email and phone</span></label><label><input type="checkbox"' + (d.detail ? ' checked' : '') + ' onchange="R.xd.detail=this.checked"> <span>Application and offer status</span></label></div>' : '') +
+    '</div><div class="pf"><span class="fn">' + fname + '</span><span style="display:flex;gap:8px"><button class="btn btn-ghost btn-sm" onclick="closeExport()">Cancel</button><button class="btn btn-primary btn-sm"' + (n ? '' : ' disabled') + ' onclick="toast(\'CSV ' + fname + ' · ' + n + (d.what === 'rows' ? ' rows' : ' scholars') + ' would download here\');closeExport()">Export ' + n + (d.what === 'rows' ? ' rows' : ' scholars') + '</button></span></div></div>';
+}
+
+/* The programme reference line is placed from the rendered bar column, so it survives any column width. */
+function placeRef(){ const line = document.querySelector('.refline'), ax = document.querySelector('.bhead .ax'); if (!line || !ax) return; line.style.left = (ax.offsetLeft + ax.offsetWidth * (+line.dataset.share || 0) / 100) + 'px'; }
+if (!window.__rpResize) { window.__rpResize = true; window.addEventListener('resize', placeRef); }
+
+/* ---- the page ---- */
+V.admin = () => {
+  const pool = scoped();
+  setTimeout(placeRef, 0);
+  return '<div class="rp" data-q="' + questionOf().c + '"><div class="page-head"><h1>Reporting</h1><button class="iconbtn" title="Export this view · ' + groupList(pool).length + ' scholars" aria-label="Export this view" onclick="openExport(R.seg)"' + (pool.length ? '' : ' disabled') + '>' + RICO.download + '</button></div>' +
+    toolbar() + storyLine(pool) + tiles(pool) + explorer(pool) + namesPanel(pool) + '</div>';
+};
+
+const sb = document.getElementById('sb');
+sb.addEventListener('navigate', e => nav(e.detail.key));
+const PAGE_ROLE = {submit:'champion', subs:'champion', queue:'admin', admin:'admin', postres:'admin', postevent:'admin'};
+const title = (t, n) => '<div class="page-head' + (PAGE_ROLE[S.view] !== undefined ? (PAGE_ROLE[S.view] ? ' r-' + PAGE_ROLE[S.view] : '') : ' r-scholar') + '"><h1>' + t + '</h1>' + (n ? '<span class="n">' + n + '</span>' : '') + '</div>';
+document.addEventListener('click', () => { if (S.open) { S.open = null; render(); } });
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { if (S.dlg) { S.dlg = null; render(); } else if (S.open) { S.open = null; render(); } else if (S.navOpen) { S.navOpen = false; render(); } return; }
+});
+syncNav();
+render();
+</script>
+</body>
+</html>
