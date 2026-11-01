@@ -5,7 +5,7 @@ Program in South Africa, with screens for scholars, career champions and the pro
 design material, not shipped code: plain HTML, CSS and JavaScript with example data, no build step.
 
 Open `index.html` in a browser, or run `node serve.js` and visit <http://localhost:4321>. It opens on a
-prefilled sign-in; the account menu top right switches between the three roles.
+prefilled sign-in; the account menu top right switches between all five people, for demos.
 
 | File | What it is |
 |------|------------|
@@ -19,98 +19,185 @@ Narkiss Block, the brand typeface, is a commercial font and is not redistributed
 declares it first in its font stack and falls back to the system sans-serif, so layouts hold but
 type will differ from the branded original.
 
-## The prototype
+## Personas
 
-- `index.html` is the whole app shell: every screen, plus Reporting.
-- The dashboard is the greeting, the hero search and Recommended for you. The row of count tiles
-  is gone, since the sidebar badges already carry those numbers, and there is no line about what
-  closes soon: Recommended lists the soonest-closing listings first and each card says "Closes in
-  9 days" in amber, which is the same fact where the eye already is. Beside the greeting sits a
-  four-dot journey chip, Dreamer to Leader with the person's stage lit and "3rd year of 4" after
-  it: two words and four dots.
-- The dashboard search shows a ghost typing example searches when the field is empty: a phrase
-  types out at a calm pace with a blinking caret, holds, clears, and the next one follows. It is
-  drawn over the field, never as its value, so there is nothing to clear. Focusing the field or
-  pressing a key stops it and the plain placeholder takes over; it resumes only if the field is
-  left empty and unfocused for a few seconds. Under reduced motion the plain placeholder shows.
-- It opens on a sign-in screen in the brand:
-  the hero on the left, email and password on the right, "Sign in →". The form opens prefilled with
-  Cassidy's details and signs in as the scholar; the account menu switches role once inside, and
-  Sign out there returns to the form. On a phone it is one screen: the brand fills the background,
-  the logo and headline sit in the top half, and the form rises from the bottom as a white sheet.
-- It is a live prototype, not a picture. Every control does what it says: the Opportunities
-  search and the study field, location and type dropdowns filter the list and read back as chips, and
-  the sort sits on the list itself; the bookmark saves; Apply records the application and it
-  appears in My applications; resources open and mark as done; events save a place; the post form
-  validates, previews the card as the champion types, and publishes; a scholar can report a
-  listing and it lands in the admin's flagged list. Nothing is stored, so a reload returns the
-  example data.
-- A listing shows scholars exactly what the champion entered and nothing else: title, employer,
-  location, type, study field, closing date if one was given, and the description if one was
-  written. The detail page keeps Apply, the facts and Save in a side rail so the action is visible
-  without scrolling.
-- The account menu switches between Cassidy (scholar), Mickey (career champion) and Leah
-  (admin). The sidebar changes with the role, which is how all three sets of screens are reached.
-  A champion sees the scholar's screens plus My listings. The programme team's sidebar has no
-  scholar screens: Reporting and Flagged listings under "Programme team", and Opportunities,
-  Career resources and Events under "Content". Leah lands on Reporting.
-- Posting is an action on the page, not a place in the sidebar. Champions and the programme team
-  see a Post button in the Opportunities header; the programme team sees one on Career resources
-  too. Those allowed can also edit what is there: a champion edits their own listings from the
-  listing or from My listings, and the programme team edits or unpublishes any listing and edits
-  or removes any resource. The post form is the edit form, prefilled.
-- A resource is written in a rich editor: headings and subheadings, quotes, bold, italic and
-  underline, bulleted and numbered lists, links, images (uploaded or by address), YouTube, Vimeo
-  or video-file embeds, three brand fonts (Narkiss Block, Frank Ruhl Libre, Lora) and
-  three text sizes. Each resource has a cover image, uploaded or by address; without one, scholars
-  see the default cover with the title's initial. Covers show as thumbnails in the list and at
-  the top of the article. Embedded HTML is cleaned before it is stored.
-- The programme team also runs Events & updates: Add an event, Edit, and Cancel on each one, with
-  the date deciding whether it sits under Upcoming or Past.
-- When the programme team posts an opportunity, a resource or an event, a "Who sees this" row
-  picks the audience: everyone, or only the years of study they choose. A scholar sees only what
-  is for their year, in every list and count; the programme team sees everything, with "For 3rd
-  year, Honours" marked on each targeted item. Champions post to everyone.
-- The sidebar header is the Moshal logo with "Careers Hub" under it, which settles into place
-  once on sign-in: the letters draw together as they fade in, then a short rule in the Scholars
-  blue draws under them. The footer is a still brand card instead of the signed-in name, which
-  the account menu already shows: one line, "From campus to career", over a faint watermark of
-  the Moshal mark in the corner. It says what the platform is for. The collapsed rail hides it.
+Sign in with any of these; the prototype does not check the password.
 
-## Brand
+| Email | Role | Lands on |
+|-------|------|----------|
+| `cassidy.rinquest@myuct.ac.za` | Scholar | Home, with the announcement board |
+| `mickey.mpofu@wits.ac.za` | Career champion | Home; new listings wait for approval |
+| `lisa.mtshali@karooanalytics.co.za` | Partner recruiter | Home; listings wait, events and resources go live |
+| `sipho.dlamini@uj.ac.za` | Exco | Overview: approvals, flagged listings, job listings, announcements, content |
+| `leah.isaacs@moshal.org` | Admin | Overview, plus users and roles, the listings and scholar reports, and the activity log |
 
-The brand assets the prototype needs sit in `brand/`: the Narkiss Block typeface and
-the official Moshal Program logo as SVG, used in the sidebar and on the phone frame. Narkiss Block
-ships Regular and Medium only, so Medium is the heaviest weight anywhere on the page, and nothing
-is set in bold.
+For demos, the account menu (the avatar, top right) also lists all five people under "Switch
+profile", marked Demo only. Switching lands each person where signing in would. The real hub has
+no switcher.
 
-The palette has one structural family and three status colours, nothing else.
+## My profile
 
-**Structure** is the Moshal Program blue family: navy `#16385C` for the sidebar and headings,
-blue `#2362B4` for anything you can click or that is selected, and a light-blue tint for selected
-and hover surfaces. On the navy sidebar the selected mark is the Scholars light blue `#41C3FF`, the
-same family one step lighter so it shows on dark. The dashboard hero closes with a single rule in
-that light blue.
+"My profile" in the account menu shows the person's avatar, name, role line and email. It also
+lists what the hub keeps and states what it never asks for: ID number, phone, address, date of
+birth, gender or race.
 
-**Status** colours appear only when something has a state, never as decoration:
+| Field | Who sets it | Why it is kept |
+|-------|-------------|----------------|
+| First name, surname | The person | Shown to the programme team and on listings |
+| Email | Invitation; read-only | Sign-in |
+| University (or organisation) | Invitation; read-only | Scope in the reports |
+| Faculty, degree | Scholar | Matching opportunities; the reports |
+| Year of study | Scholar | Who a listing is for; the reports |
+| Expected graduation year | Scholar | Final years in the Scholar report |
 
-| Sub-brand | Hex | Means |
-|-----------|-----|-------|
-| Moshal Alumni | `#EBB22A` | Needs your attention: closing soon, a flagged listing, an unread notification |
-| Moshal Dreamers | `#79BE4D` | Done or live: applied, published, a resource read |
-| Moshal Leaders | `#E15546` | Broken or destructive: a dead link, Unpublish |
+Staff, champions and recruiters see only name, email and organisation.
 
-Everything else is neutral: white cards, one hairline, slate text. Status colours are darkened
-where text sits on a tint so the contrast holds.
+The prototype's today is 9 October 2026, so closing dates, the 7-day highlight and expiry line up
+with the example data.
 
-The four sub-brands are also the programme's audiences, so they appear a second way, as the
-**stages of one journey**: Dreamers, Scholars, Alumni, Leaders. That shows in four places and
-nowhere else: a strip at the foot of the sign-in hero; the colour of each person's avatar (a
-scholar on Scholars blue, a career champion on Alumni amber, programme staff on Program blue);
-a four-dot journey chip beside the dashboard greeting with the person's stage lit; and a "Giving back"
-card on the champion's My listings with the Alumni rule. Lists, tags and events never take a
-stage colour, so the pages stay quiet.
+## My applications
 
-Motion is kept to what helps you follow a change: the page content eases in when you navigate,
-a card lifts a pixel under the pointer, a bookmark pops when saved, menus drop and toasts rise.
-Everything is under 300ms and switches off with the system's reduced-motion setting.
+Scholars apply on the employer's site, so the hub never holds an application they could withdraw.
+"Apply on employer website" adds the opportunity to My applications as **In progress**. From
+there the scholar moves it through Applied, Interview, Offer and Not successful.
+
+Choosing **Offer** opens a step that cannot be closed: the scholar has to record the offer in
+Salesforce, the programme's system of record. Escape, clicking outside and moving to another page
+all leave it open, and it reappears after the next sign-in until it is done. "I have updated
+Salesforce" unlocks only after "Open Salesforce" has opened the link in a new tab. "I chose Offer by
+mistake" sets the stage back. The address is `SALESFORCE_URL` in `index.html`, currently a
+placeholder until the programme supplies the real one.
+
+## Monthly activity report
+
+"Monthly report" sits in the Scholar report header and exports one month as a CSV that opens in
+Excel. The current month runs up to today. It covers every scholar, whatever the page's filters
+are, with one row per scholar or one row per university. The columns are: signed in, status that
+month (Applied, Stopped applying or Never applied), applications, interviews and offers. A scholar
+who applied in the month counts as signed in.
+
+## Video in resources
+
+A resource can carry an uploaded video (MP4, WebM or MOV, up to 500 MB) instead of a link, and the
+article editor can upload a video into the body. The resource page plays it in place. The
+prototype keeps uploads in the browser for the session only; the real hub stores them with its
+other files.
+
+## Admin and Exco console
+
+The console opens on what needs a decision: listings awaiting approval, flagged listings, possible
+duplicates (same link once tracking parameters are stripped, or same title and employer) and
+expired listings still stored. Numbers come second. Colour follows the rest of the prototype:
+structure is blue, and red, amber and green mark state only, so a red figure always means
+something is wrong and amber always means time is short.
+
+## Reporting vocabulary
+
+The admin's job is to find the scholars who need a call. Every status below is defined so that a
+scholar is in exactly one of them, which means the tiles always add up and nobody is counted twice.
+
+### Applications report
+
+Statuses are relative to the chosen period (last 30 days, last 90 days, this year).
+
+| Status | Meaning | Row text | What to do |
+|--------|---------|----------|------------|
+| Applied | Applied to at least one opportunity in the period | "Applied · 3d ago" | Nothing; they are engaged |
+| Did not apply · lapsed | Applied before, but not in this period | "Did not apply · lapsed, last applied 54d ago" | A nudge with matching listings usually brings them back |
+| Did not apply · never started | Never applied through the portal | "Did not apply · never started" | A conversation, not a nudge |
+
+On screen there are two buckets, **Applied** and **Did not apply**. Lapsed and never started are the
+detail inside Did not apply: the tile says "570 · 65%" with "41 lapsed · 13 never started" under it,
+each row says which it is, and the export offers Did not apply, lapsed only and never started as
+separate choices. Two buckets keep the headline readable; the split is there when the admin needs
+to decide between a nudge and a call.
+
+Words we deliberately avoid: *Not applying* (a judgement, and it overlapped with Never applied),
+*Inactive* (a scholar can be reading listings every day without applying), *Dormant* (sounds like
+an account state).
+
+### Offers report
+
+| Status | Meaning |
+|--------|---------|
+| Has an offer | Holds at least one offer now; "more than one" is a link under the tile |
+| No offer | No offer yet; "also did not apply" is the link under the tile |
+
+Has an offer + No offer = every scholar in scope. An offer is a held state, so the Offers report
+draws no previous-period comparison.
+
+### Final years
+
+One rule everywhere: a final year is a scholar whose expected graduation year is this year
+(`grad === 2026`), stated on the panel as "4th year and Honours graduating 2026". The year labels
+are not used for this, because repeats and extended programmes make them disagree with graduation.
+Final years split into three exclusive groups: **Has an offer**, **Applied, no offer yet**, and
+**No offer, did not apply**. The last one is the danger list and the only thing on the page drawn
+in amber.
+
+## How the Scholar report is meant to be read
+
+The page is a dashboard for someone who is not an analyst: plain bars only, one short line under
+each title that answers it ("Most not applying: University of KwaZulu-Natal (70%)"), and no other
+text. Every bar, chip and figure is a button that lists the scholars behind it in the names table
+at the bottom. Charts grow in when the page opens or what they show changes, and stay still when
+only the names selection changes; reduced-motion users get no animation.
+
+1. **Filters**: period, Institution, Faculty, Year of study, Final years, and a "Charts show
+   Applying / Offers" switch for the university, field and year charts.
+2. **Four tiles**: Applying, Offers, Final years to call (the one amber tile) and Looking, not
+   applying (signed in but did not apply). The chips under each pick who the names table shows:
+   Applied, Not applying, Stopped (applied before, not this period), Never applied, Has an offer,
+   More than one, No offer.
+3. **Scholars applying each week** (each month for This year), with the average dashed.
+4. **From signing in to an offer**: Signed in, Applied, Interview, Offer, with the biggest drop named.
+5. **By university** (click to go down to faculty, then year) and **By field of study**.
+6. **Final years, graduating this year**: one bar split into Has an offer, Applied and waiting,
+   and Needs a call, then the number to call at each university.
+7. **By year of study**.
+8. **Names**: the scholars in the current selection, quietest first, sortable, exportable.
+
+Every chart has a table view. Export sits in the page header and on the names table.
+
+## Export
+
+Export opens prefilled with whatever the page is showing: the question becomes the Applied and
+Offer settings, and the institution, faculty, year and Final years picks carry over. Inside, the
+answers combine freely: Applied (Any / Applied / Did not apply), Offer (Any / Has an offer / No
+offer) and Final years are independent, so "no offer, did not apply, final years, UCT, Science" is
+five picks and one count. Institution, Faculty and Year of study are the same multi-select
+dropdowns as the page. The file name spells out the picks, and the Export button carries the
+count so nobody exports an empty file. Applied and Offer are segmented controls rather than
+dropdowns because each has three values and all three should be visible at once.
+
+Every chart panel has a table-view toggle (its WCAG twin) and an Export icon.
+
+### Export
+
+Export never downloads on the first click. The chooser shows the scope sentence, then asks what
+to export (summary rows at this level, or the scholars behind them), which scholars (the statuses
+above plus the three final-years groups), which years of study, and which columns. The button says
+how many rows or scholars it will produce and the footer shows the filename, which names the group,
+institution, faculty and period. The same chooser opens from the page header, every panel and the
+names list; each one presets it to what that panel shows.
+
+### Chart palette
+
+Blue `#2362B4` is the measured bucket (light blue `#9DBDE8` for earlier weeks and for applied
+final years still waiting), slate `#7D8B9A` is the remainder, and Alumni amber `#EBB22A` marks one
+idea only: final years who need a call. Green and red do not appear on this screen. There is no
+heatmap: a bar per year of study answers the same question and needs no legend.
+
+### No map
+
+Every question on the screen is "which institution" or "which faculty": a six-item named list that
+the ranked rows answer with the count and share printed beside the name. Wits and UJ are a few
+kilometres apart and UCT and Stellenbosch within 50 km, so at national scale three of the six
+markers would collide exactly where the scholars are densest, and position changes no name in the
+names list. If the programme wants a sense of place, a static outline with six labelled dots can sit
+on the Overview page with nothing encoded.
+
+### Filters we left out
+
+Search by name (that is the Students page's job), gender, degree name and location. None of them
+change who should be called this week. Add a filter only when it changes the list of names.
