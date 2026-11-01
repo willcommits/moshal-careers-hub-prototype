@@ -104,10 +104,12 @@ Two states each, nothing in between, so the tiles always add up and nobody is co
 | Has an offer | Holds at least one offer now |
 | No offer | No offer yet |
 
-The page picks who it is about with two dropdowns, Applied and Offer, each Any or one of its two
-states. They combine: Not applying + No offer is the call list, Applied + No offer is "trying, not
-landing". Any + Any cannot be picked, because every bar would read 100%. An offer is a held state, so
-offers draw no previous-period comparison.
+The page picks who it is about with two filters, Applied and Offer, that work like Institution and
+Faculty: each has its two states, reads its own name when nothing is picked, and has Clear. They
+combine: Not applying + No offer is the call list, Applied + No offer is "trying, not landing".
+With nothing picked the page is about all scholars, and the bars show how many scholars each
+university and field has rather than a share. The page opens on Not applying. An offer is a held
+state, so offers draw no previous-period comparison.
 
 ### Final years
 

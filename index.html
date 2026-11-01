@@ -931,9 +931,6 @@ table.rt.prog tr.reg td{background:var(--surface-2)} table.rt.prog .ind{padding-
 .switch input:focus-visible + i{outline:2px solid var(--brand);outline-offset:2px}
 .names.gate .gatebtn{padding:0 20px 18px}
 @media (max-width:520px){.nowtiles{grid-template-columns:1fr}}
-.ctl.sel .sk{font-size:12px;color:var(--muted);margin-right:6px}
-.ctl.sel.on .sk{color:inherit;opacity:.8}
-.pop .o[disabled]{opacity:.45;cursor:not-allowed}
 .xsel{height:36px;border:1px solid var(--line);border-radius:8px;padding:0 10px;font:inherit;font-size:14px;background:var(--surface);color:var(--ink);max-width:100%}
 .take .lnk{border:0;background:none;padding:0;font:inherit;font-weight:600;color:var(--brand);cursor:pointer;text-decoration:underline;text-underline-offset:2px}
 /* My applications stages, Salesforce step, monthly report, video upload */
@@ -1922,8 +1919,10 @@ const EXPORT_GROUPS = {
   offers:['all','offer','none','fy-neither']
 };
 /* Applied and Offer pick who the page is about: the bars show their share, the names table lists them, Export presets to them. */
-const APP_OPTS = [['any', 'Any'], ['applied', 'Applied'], ['notapplied', 'Not applying']];
-const OFF_OPTS = [['any', 'Any'], ['offer', 'Has an offer'], ['none', 'No offer']];
+const APP_OPTS = [['applied', 'Applied'], ['notapplied', 'Not applying']];
+const OFF_OPTS = [['offer', 'Has an offer'], ['none', 'No offer']];
+/* Nothing picked in either means every scholar, and the bars count heads instead of showing a share. */
+const pickedNone = () => R.app === 'any' && R.off === 'any';
 const COMBO = {applied:['applied', 'any'], notapplied:['notapplied', 'any'], offer:['any', 'offer'], none:['any', 'none'],
   'none-quiet':['notapplied', 'none'], 'fy-neither':['notapplied', 'none', true]};
 const selF = st => (R.app === 'any' || GROUPS[R.app].f(st)) && (R.off === 'any' || GROUPS[R.off].f(st));
@@ -1931,11 +1930,10 @@ const selLabel = () => { const a = R.app === 'any' ? '' : GROUPS[R.app === 'nota
   return (R.final ? 'Final years: ' : '') + (a && o ? a + ', ' + o.toLowerCase() : a || o); };
 const segOf = () => R.off === 'any' ? R.app : R.app === 'any' ? R.off : R.app === 'notapplied' && R.off === 'none' ? (R.final ? 'fy-neither' : 'none-quiet') : 'combo';
 function setSel(app, off, final){
-  if (app === 'any' && off === 'any') return;
   R.app = app; R.off = off; if (final !== undefined) R.final = final;
-  R.seg = segOf(); R.lens = R.app === 'any' ? 'offers' : 'activity'; R.page = 1; R.all = false; R.open = null; render();
+  R.seg = segOf(); R.lens = R.app === 'any' && R.off !== 'any' ? 'offers' : 'activity'; R.page = 1; R.all = false; R.open = null; render();
 }
-const grp = () => ({l:selLabel(), f:selF, fy:R.final, danger:R.final && R.app === 'notapplied' && R.off === 'none'});
+const grp = () => ({l:selLabel() || 'All scholars', f:selF, fy:R.final, danger:R.final && R.app === 'notapplied' && R.off === 'none'});
 const groupList = pool => pool.filter(selF);
 /* The bucket the breakdown prints: the remainder by default, the measured bucket when its tile is selected. */
 const inBucket = selF;
@@ -1957,7 +1955,7 @@ const instShort = name => (INST.find(x => x[1] === name) || [name])[0];
 const togg = (key, v) => { const i = R[key].indexOf(v); if (i < 0) R[key].push(v); else R[key].splice(i, 1); if (key === 'inst') R.fac = R.fac.filter(f => !R.inst.length || INST.some(x => R.inst.includes(x[0]) && x[2].includes(f))); R.page = 1; R.all = false; render(); };
 const rSetOpen = k => { R.open = R.open === k ? null : k; render(); };
 const setFinal = v => { R.final = v; R.page = 1; render(); };
-const resetAll = () => { Object.assign(R, {inst:[], fac:[], year:[], field:[], final:false, page:1, all:false, open:null}); setSel('notapplied', 'any'); };
+const resetAll = () => { Object.assign(R, {inst:[], fac:[], year:[], field:[], final:false, page:1, all:false, open:null}); setSel('any', 'any'); };
 function drillTo(k, fyFirst){
   const lv = level(); R.page = 1; R.all = false;
   if (lv === 'inst') { const inst = INST.find(x => x[1] === k); if (!inst) return; R.inst = [inst[0]]; R.fac = []; }
@@ -2020,18 +2018,18 @@ function periodDD(){
       [[30, 'Last 30 days'], [90, 'Last 90 days'], [365, 'Last 12 months']].map(([v, l]) => '<button class="o" role="option" aria-selected="' + (R.period === v) + '" onclick="setPeriod(' + v + ')">' + ICO.check.replace('<svg', '<svg class="tick"') + '<span>' + l + '</span></button>').join('') +
       '<div class="grp">Custom range</div><div class="range"><input id="pf" type="date" value="' + r.from + '" aria-label="From"><span>to</span><input id="pt" type="date" value="' + r.to + '" aria-label="To"><button class="btn btn-primary btn-sm" onclick="setRange()">Apply</button></div></div>' : '') + '</span>';
 }
+/* Applied and Offer work like the other filters: unset reads its label and means everyone; Clear unsets it. */
 function selDD(key, label, options, value){
   const open = R.open === key, other = key === 'app' ? R.off : R.app, pool = scoped(), cur = options.find(o => o[0] === value);
-  const count = v => pool.filter(st => (v === 'any' || GROUPS[v].f(st)) && (other === 'any' || GROUPS[other].f(st))).length;
+  const count = v => pool.filter(st => GROUPS[v].f(st) && (other === 'any' || GROUPS[other].f(st))).length;
   const pick = v => key === 'app' ? "setSel('" + v + "',R.off)" : "setSel(R.app,'" + v + "')";
-  return '<span class="ctl sel' + (value !== 'any' ? ' on' : '') + '" role="button" tabindex="0" aria-haspopup="listbox" aria-expanded="' + open + '" aria-label="' + label + ': ' + cur[1] + '" onclick="event.stopPropagation();rSetOpen(\'' + key + '\')" onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();rSetOpen(\'' + key + '\')}"><span class="sk">' + label + '</span>' + cur[1] + CHEV +
-    (open ? '<div class="pop" role="listbox" aria-label="' + label + '" onclick="event.stopPropagation()"><div class="ph"><span>' + label + '</span></div>' +
-      options.map(([v, l]) => { const blocked = v === 'any' && other === 'any';
-        return '<button class="o" role="option" aria-selected="' + (v === value) + '"' + (blocked ? ' aria-disabled="true" disabled title="Pick Applied or Offer first"' : ' onclick="' + pick(v) + '"') + '>' + ICO.check.replace('<svg', '<svg class="tick"') + '<span>' + l + '</span><span class="n">' + count(v) + '</span></button>'; }).join('') + '</div>' : '') + '</span>';
+  return '<span class="ctl' + (cur ? ' on' : '') + '" role="button" tabindex="0" aria-haspopup="listbox" aria-expanded="' + open + '" aria-label="' + label + (cur ? ': ' + cur[1] : '') + '" onclick="event.stopPropagation();rSetOpen(\'' + key + '\')" onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();rSetOpen(\'' + key + '\')}">' + (cur ? cur[1] : label) + CHEV +
+    (open ? '<div class="pop" role="listbox" aria-label="' + label + '" onclick="event.stopPropagation()"><div class="ph"><span>' + label + '</span>' + (cur ? '<button onclick="' + pick('any') + '">Clear</button>' : '') + '</div>' +
+      options.map(([v, l]) => '<button class="o" role="option" aria-selected="' + (v === value) + '" onclick="' + pick(v) + '">' + ICO.check.replace('<svg', '<svg class="tick"') + '<span>' + l + '</span><span class="n">' + count(v) + '</span></button>').join('') + '</div>' : '') + '</span>';
 }
 function filterRow(){
   const facOpts = (R.inst.length ? INST.filter(x => R.inst.includes(x[0])) : INST).flatMap(x => x[2]).filter((f, i, a) => a.indexOf(f) === i).sort().map(f => [f, f]);
-  const n = R.inst.length + R.fac.length + R.year.length + (R.final ? 1 : 0);
+  const n = R.inst.length + R.fac.length + R.year.length + (R.final ? 1 : 0) + (R.app !== 'any' ? 1 : 0) + (R.off !== 'any' ? 1 : 0);
   return '<div class="tb filters" aria-label="Filters">' + periodDD() + '<i class="vsep"></i>' +
     mdd('inst', 'Institution', INST.map(([sh, nm]) => [sh, nm]), v => STU.filter(st => st.inst === v).length) +
     mdd('fac', 'Faculty', facOpts, v => STU.filter(st => st.fac === v && (!R.inst.length || R.inst.includes(st.inst))).length) +
@@ -2045,6 +2043,8 @@ function toolbar(){
 function storyLine(pool){
   const chip = (label, undo, cls) => '<span class="chip' + (cls ? ' ' + cls : '') + '">' + label + '<button aria-label="Remove ' + label + '" onclick="' + undo + '">×</button></span>';
   const parts = [];
+  if (R.app !== 'any') parts.push(chip(GROUPS[R.app].l, "setSel('any',R.off)"));
+  if (R.off !== 'any') parts.push(chip(GROUPS[R.off].l, "setSel(R.app,'any')"));
   if (R.final) parts.push(chip('Final years', 'setFinal(false)', 'fy'));
   R.inst.forEach(i => parts.push(chip(INST.find(x => x[0] === i)[1], "togg('inst','" + i + "')")));
   R.fac.forEach(f => parts.push(chip(f, "togg('fac','" + resc(f) + "')")));
@@ -2092,9 +2092,14 @@ function srow(o, i){
 const rowCard = r => ({t:r.k + ' · ' + r.n + ' scholars', rows:[{sw:'#2362B4', l:'Applied', v:r.a}, {sw:'#7D8B9A', l:'Not applying', v:r.n - r.a}, {sw:'none', l:'Has an offer', v:r.o}]});
 const shareTable = (label, rows) => tview([label, 'Scholars', 'Applied', 'Not applying', 'Has an offer'], rows.map(r => [r.k, r.n, r.a, r.n - r.a, r.o]));
 function shareRows(rows, act, on){
-  return '<div class="srows">' + (rows.length ? rows.map((r, i) => srow({k:r.k, w:pct(r.b, r.n), v:pct(r.b, r.n) + '%', cls:bucketIsPos() ? 'pos' : '', on:on(r), act:act(r), c:rowCard(r)}, i)).join('') : '<div class="empty-line">Nobody here</div>') + '</div>';
+  const most = Math.max(1, ...rows.map(r => r.n));
+  return '<div class="srows">' + (rows.length ? rows.map((r, i) => srow(pickedNone() ? {k:r.k, w:pct(r.n, most), v:r.n, cls:'pos', on:on(r), act:act(r), c:rowCard(r)}
+    : {k:r.k, w:pct(r.b, r.n), v:pct(r.b, r.n) + '%', cls:bucketIsPos() ? 'pos' : '', on:on(r), act:act(r), c:rowCard(r)}, i)).join('') : '<div class="empty-line">Nobody here</div>') + '</div>';
 }
-function mostTake(rows){ const top = rows.find(r => r.n >= SORT_N); return top ? take('Highest share ' + selLabel().replace(/^Final years: /, '').toLowerCase() + ': <b>' + top.k + '</b> (' + pct(top.b, top.n) + '%)') : ''; }
+function mostTake(rows){
+  if (pickedNone()) { const top = rows.slice().sort((x, y) => y.n - x.n)[0]; return top ? take('Most scholars: <b>' + top.k + '</b> (' + top.n + ')') : ''; }
+  const top = rows.find(r => r.n >= SORT_N); return top ? take('Highest share ' + selLabel().replace(/^Final years: /, '').toLowerCase() + ': <b>' + top.k + '</b> (' + pct(top.b, top.n) + '%)') : '';
+}
 
 function kpis(pool){
   const n = pool.length, a = pool.filter(applied).length;
