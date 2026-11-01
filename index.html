@@ -750,7 +750,6 @@ h1{font-size:22px}
 .row.mod .lk{display:flex;align-items:center;gap:6px}
 .row.mod .lk svg{width:14px;height:14px;flex:none}
 .row.mod .lk a{color:var(--brand);text-decoration:underline;text-underline-offset:2px;word-break:break-all}
-.row.mod.is-dup{border-color:#F3C9C2}
 .empty.sm{padding:24px 12px}
 .annlist{display:flex;flex-direction:column;gap:8px}
 .annlist.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:12px}
@@ -1101,14 +1100,6 @@ let FLAGS = [
   {id:12, title:'Software Engineering Internship', org:'FutureLab', by:'Lisa Mtshali', why:'Reported by a scholar: "The application page says applications have closed."', src:'report', when:'Yesterday'},
   {id:13, title:'Data Science Graduate', org:'Nexa Group', by:'Kagiso Molefe', why:'Reported by a scholar: "Closing date on their site is 20 Oct, not 30 Oct."', src:'report', when:'2 days ago'}
 ];
-/* New listings from champions and partner recruiters wait here until the Exco or an admin approves them. */
-let PENDING = [
-  {id:31, title:'Graduate Engineer in Training', org:'Lesedi Power', url:'https://careers.lesedipower.example/apply', type:'Graduate programme', fields:['Engineering & Technology'], loc:'Johannesburg', closes:'20 Nov 2026', days:42, by:'Mickey Mpofu', when:'2 hours ago', age:0, desc:'Two-year programme towards professional registration, with rotations through generation and distribution.'},
-  {id:32, title:'Audit Learnership 2027', org:'Ndlovu Assurance', url:'https://careers.ndlovuassurance.example/learnership', type:'Learnership', fields:['Commerce & Finance'], loc:'Johannesburg', closes:'13 Oct 2026', days:4, by:'Kagiso Molefe', when:'5 hours ago', age:0, desc:'A SAICA-accredited learnership for BCom Accounting graduates, starting January.'},
-  {id:33, title:'Graduate Software Engineer', org:'TechNova', url:'https://careers.technova.example/graduate-software-engineer?utm_source=whatsapp', type:'Graduate programme', fields:['Engineering & Technology'], loc:'Cape Town', closes:'30 Oct 2026', days:21, by:'Naledi Khoza', when:'Yesterday', age:1, desc:'Same programme as the listing already live.'},
-  {id:34, title:'Data Science Intern', org:'Karoo Analytics', url:'https://careers.karooanalytics.example/intern', type:'Internship', fields:['Science', 'Commerce & Finance'], loc:'Remote', closes:'25 Nov 2026', days:47, by:'Lisa Mtshali', when:'Yesterday', age:1, desc:'Six months on the client analytics team, mentored by a senior data scientist.'},
-  {id:35, title:'Junior Legal Researcher', org:'Ubuntu Policy Institute', url:'https://upi.example/jobs/legal', type:'Entry-level', fields:['Law', 'Humanities'], loc:'Pretoria', closes:'4 Dec 2026', days:56, by:'Kagiso Molefe', when:'2 days ago', age:2, desc:'Research support on constitutional and municipal law projects.'}
-];
 const USERS = [
   {name:'Cassidy Rinquest', email:'cassidy.rinquest@myuct.ac.za', role:'scholar', org:'UCT', status:'active', seen:'Today'},
   {name:'Mickey Mpofu', email:'mickey.mpofu@wits.ac.za', role:'champion', org:'Wits', status:'active', seen:'Today'},
@@ -1125,10 +1116,10 @@ const USERS = [
 ];
 const ROLE_LABEL = {scholar:'Scholar', champion:'Career champion', exco:'Exco', recruiter:'Partner recruiter', admin:'Admin'};
 const ROLE_PLURAL = {scholar:'Scholars', champion:'Career champions', exco:'Exco members', recruiter:'Partner recruiters', admin:'Admins'};
-const ROLE_CAN = {scholar:'Browse, save and report listings; read content', champion:'Post listings; listings wait for approval', exco:'Approve listings, manage content and announcements', recruiter:'Post listings, events and resources for their organisation', admin:'Everything, including users, roles and reports'};
+const ROLE_CAN = {scholar:'Browse, save and report listings; read content', champion:'Post listings that go live straight away', exco:'Remove listings, manage content and announcements', recruiter:'Post listings, events and resources for their organisation', admin:'Everything, including users, roles and reports'};
 let LOG = [
-  {who:'Sipho Dlamini', what:'approved <b>Clinical Research Assistant</b> by Mickey Mpofu', when:'Today 08:12', kind:'approve'},
-  {who:'Refilwe Mokoena', what:'rejected <b>Sales Intern</b> by Kagiso Molefe: the link went to a recruitment agency', when:'Yesterday 17:40', kind:'reject'},
+  {who:'Sipho Dlamini', what:'kept <b>Clinical Research Assistant</b> by Mickey Mpofu after a scholar reported it', when:'Today 08:12', kind:'approve'},
+  {who:'Refilwe Mokoena', what:'removed <b>Sales Intern</b> by Kagiso Molefe: the link went to a recruitment agency', when:'Yesterday 17:40', kind:'reject'},
   {who:'Leah Isaacs', what:'pinned <b>Career readiness survey</b>', when:'Yesterday 09:03', kind:'content'},
   {who:'Leah Isaacs', what:'invited <b>Thabo Nkosi</b> as a career champion', when:'7 Oct 14:22', kind:'user'},
   {who:'System', what:'hid <b>Retail Management Trainee</b> after its closing date', when:'6 Oct 00:00', kind:'system'},
@@ -1204,7 +1195,6 @@ function sections(){
     return [
       {id:'mod', label:admin ? 'Programme team' : 'Exco', items:[
         {key:'console', label:'Overview', icon:'dashboard'},
-        {key:'approvals', label:'Approvals', icon:'approve', count:PENDING.length || undefined, urgent:true},
         {key:'queue', label:'Flagged listings', icon:'alert', count:FLAGS.length || undefined, urgent:true}
       ]},
       {id:'content', label:'Content', items:[
@@ -1512,7 +1502,7 @@ V.submit = () => {
     fieldPicker(o) + f('f6', 'Opportunity type', '', false, 'text', OPP_TYPES, o && o.type) +
     '<div class="field wide"><label for="f7">What the role involves</label><textarea id="f7" placeholder="A few lines about the work and who it suits.">' + attr(o && o.desc) + '</textarea></div>' + audienceField('opp:' + (o ? o.id : 'new'), o && o.years) +
     '</div><div class="preview"><span class="eyebrow">How scholars will see it</span><div id="prev"></div></div>' +
-    '<div class="form-foot"><span class="dup ok">' + ICO.checkC + (o ? 'Saves straight away' : lister() ? 'The Exco checks it, usually within a day' : 'Goes live straight away') + '</span><div class="r"><button type="button" class="btn btn-ghost" onclick="' + (o ? 'S.edit=null;openJob(' + o.id + ')' : 'nav(\'' + (lister() ? 'subs' : 'opps') + '\')') + '">Cancel</button><button class="btn btn-primary" type="submit">' + (o ? ICO.check + 'Save changes' : ICO.send + (lister() ? 'Send for approval' : 'Publish')) + '</button></div></div></form>';
+    '<div class="form-foot"><span class="dup ok">' + ICO.checkC + (o ? 'Saves straight away' : 'Goes live straight away') + '</span><div class="r"><button type="button" class="btn btn-ghost" onclick="' + (o ? 'S.edit=null;openJob(' + o.id + ')' : 'nav(\'' + (lister() ? 'subs' : 'opps') + '\')') + '">Cancel</button><button class="btn btn-primary" type="submit">' + (o ? ICO.check + 'Save changes' : ICO.send + 'Publish') + '</button></div></div></form>';
 };
 /* One or more study fields; the first one picked leads on the listing card. */
 function fieldPicker(o){
@@ -1532,50 +1522,18 @@ V.subs = () => '<div class="page-head" data-role><h1>My listings</h1><span class
   (mine().some(l => l.status === 'broken') ? '<div class="notice bad">' + ICO.link + 'A link stopped working, so that listing is hidden from scholars until you update it.</div>' : '') +
   (mine().length ? '' : '<div class="card empty"><b>Nothing listed yet</b><span>Your listings, who applied and the nightly link check all show up here.</span></div>') +
   '<div class="rows">' + mine().map(l => { const o = OPPS.find(x => x.title === l.title); return '<article class="card row"><div class="body"><h3>' + l.title + '</h3><div class="meta">' + l.org + ' · posted ' + l.posted + ' · closes ' + l.closes + ' · ' + l.applied + ' applied' + (l.check ? ' · ' + l.check : '') + '</div></div><div class="side">' +
-    (l.status === 'live' ? pill('live', 'Live') : l.status === 'pending' ? pill('', 'Awaiting approval') : l.status === 'rejected' ? pill('broken', 'Not approved') : l.status === 'broken' ? pill('broken', 'Link broken') : pill('off', 'Unpublished')) +
+    (l.status === 'live' ? pill('live', 'Live') : l.status === 'broken' ? pill('broken', 'Link broken') : pill('off', 'Unpublished')) +
     (o && l.status !== 'unpublished' ? '<button class="btn btn-ghost btn-sm" onclick="editListing(' + o.id + ')">Edit</button>' : '') +
-    (l.status === 'pending' || l.status === 'rejected' ? '' : l.status === 'broken' ? '<button class="btn btn-primary btn-sm" onclick="fixLink(' + l.id + ')">Fix link</button>' : l.status === 'live' ? '<button class="btn btn-ghost btn-sm" onclick="setListing(' + l.id + ',\'unpublished\')">Unpublish</button>' : '<button class="btn btn-ghost btn-sm" onclick="setListing(' + l.id + ',\'live\')">Publish again</button>') + '</div></article>'; }).join('') + '</div>';
+    (l.status === 'broken' ? '<button class="btn btn-primary btn-sm" onclick="fixLink(' + l.id + ')">Fix link</button>' : l.status === 'live' ? '<button class="btn btn-ghost btn-sm" onclick="setListing(' + l.id + ',\'unpublished\')">Unpublish</button>' : '<button class="btn btn-ghost btn-sm" onclick="setListing(' + l.id + ',\'live\')">Publish again</button>') + '</div></article>'; }).join('') + '</div>';
 V.queue = () => '<div class="page-head" data-role><h1>Flagged listings</h1>' + (FLAGS.length ? '<span class="n">' + FLAGS.length + ' to check</span>' : '') + '</div>' +
-  '<p class="sub">Live listings land here when a scholar reports one or the nightly link check fails. New listings are checked in Approvals before they go live.</p>' +
+  '<p class="sub">Live listings land here when a scholar reports one or the nightly link check fails.</p>' +
   (FLAGS.length ? '<div class="rows">' + FLAGS.map(f => '<article class="card row"><div class="body"><h3>' + f.title + '</h3><div class="meta">' + f.org + ' · posted by ' + f.by + ' · ' + f.when + '</div><div style="margin-top:10px">' + pill(f.src === 'link' ? 'broken' : 'warn', f.why) + '</div></div>' +
     '<div class="side"><button class="btn btn-ghost btn-sm" onclick="resolveFlag(' + f.id + ',false)">Dismiss</button><button class="btn btn-danger btn-sm" onclick="resolveFlag(' + f.id + ',true)">Unpublish</button></div></article>').join('') + '</div>'
     : '<div class="card empty">' + ICO.checkC + '<b>Nothing flagged</b><span>Reported listings and broken links will show up here.</span></div>');
 /* ---------- moderation ---------- */
 const linkOf = o => o.url || 'https://careers.' + o.org.toLowerCase().replace(/\s/g, '') + '.example/' + o.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 const normLink = u => String(u || '').trim().toLowerCase().replace(/^https?:\/\/(www\.)?/, '').replace(/[?#].*$/, '').replace(/\/+$/, '');
-/* A pending listing is a likely duplicate when its link, or its title and employer together, match a live one. */
-const dupOf = p => OPPS.find(o => normLink(linkOf(o)) === normLink(p.url) || (o.title.toLowerCase() === p.title.toLowerCase() && o.org.toLowerCase() === p.org.toLowerCase()));
 const closesChip = days => days < 0 ? pill('off', 'Expired · hidden') : days <= 7 ? pill('warn', days === 0 ? 'Closes today' : 'Closes in ' + days + ' day' + (days === 1 ? '' : 's')) : '';
-function pendingRow(p, compact){
-  const d = dupOf(p);
-  return '<article class="card row mod' + (d ? ' is-dup' : '') + '"><div class="body"><h3>' + p.title + ' <span class="org">· ' + p.org + '</span></h3>' +
-    '<div class="meta">' + p.type + ' · ' + p.fields.join(', ') + ' · ' + p.loc + ' · closes ' + p.closes + '</div>' +
-    (compact ? '' : '<div class="meta lk">' + ICO.link + '<a href="' + attr(p.url) + '" target="_blank" rel="noopener">' + p.url.replace(/^https?:\/\//, '') + '</a></div>') +
-    '<div class="meta">Posted by ' + p.by + ' · ' + p.when + '</div>' +
-    (d || p.days <= 7 ? '<div class="flags">' + (d ? pill('broken', 'Possible duplicate of ' + d.title + ' · ' + d.org) : '') + closesChip(p.days) + '</div>' : '') + '</div>' +
-    '<div class="side"><button class="btn btn-ghost btn-sm danger" onclick="rejectListing(' + p.id + ')">' + ICO.x + 'Reject</button><button class="btn btn-primary btn-sm" onclick="approveListing(' + p.id + ')">' + ICO.check + 'Approve</button></div></article>';
-}
-function approveListing(id, quiet){
-  const p = PENDING.find(x => x.id === id); if (!p) return;
-  PENDING = PENDING.filter(x => x.id !== id);
-  OPPS.unshift({...p, id:Date.now() + id, field:p.fields[0], views:0, clicks:0, saved:false, applied:false});
-  const m = allMine().find(l => l.title === p.title && l.status === 'pending'); if (m) m.status = 'live';
-  logIt('approved <b>' + p.title + '</b> by ' + p.by, 'approve');
-  if (!quiet) { syncNav(); render(); toast('Approved. ' + p.title + ' is live for scholars.'); }
-}
-function approveClean(){
-  const clean = PENDING.filter(p => !dupOf(p)); clean.forEach(p => approveListing(p.id, true));
-  syncNav(); render(); toast(clean.length + ' approved. Possible duplicates are left for you to check.');
-}
-function rejectListing(id){ S.dlg = {kind:'reject', id}; render(); }
-function confirmReject(){
-  const p = PENDING.find(x => x.id === S.dlg.id), why = (document.getElementById('rj-why') || {}).value, note = ((document.getElementById('rj-note') || {}).value || '').trim();
-  PENDING = PENDING.filter(x => x.id !== p.id);
-  const m = allMine().find(l => l.title === p.title && l.status === 'pending'); if (m) { m.status = 'rejected'; m.check = why + (note ? ': ' + note : ''); }
-  logIt('rejected <b>' + p.title + '</b> by ' + p.by + ': ' + why.toLowerCase(), 'reject');
-  S.dlg = null; syncNav(); render(); toast('Rejected. ' + p.by + ' sees the reason on their listings.');
-}
-const REJECT_WHY = ['Duplicate of a live listing', 'The link does not work', 'Not a graduate-level opportunity', 'Looks like a scam or an agency', 'Missing details'];
 
 /* ---------- admin overview ---------- */
 const longDate = iso => new Date(iso + 'T12:00:00').toLocaleDateString('en-ZA', {weekday:'long', day:'numeric', month:'long'});
@@ -1585,12 +1543,14 @@ function annMini(e){
   return '<button class="annmini" onclick="nav(\'events\')"><span class="date' + (n >= 0 && n <= 7 ? ' soon' : '') + '">' + e.d.replace(' ', '<br>') + '</span><span class="t"><b>' + (e.pinned ? ICO.pushpin.replace('<svg', '<svg class="pin"') : '') + e.title + '</b><span>' + catLabel(e.cat) + ' · ' + e.when + '</span></span>' +
     (e.scheduled ? pill('', 'Goes live ' + e.publishOn.slice(8) + ' ' + MONTHS[+e.publishOn.slice(5, 7) - 1].toLowerCase()) : n >= 0 && n <= 7 ? pill('warn', n === 0 ? 'Today' : 'In ' + n + ' day' + (n === 1 ? '' : 's')) : '') + '</button>';
 }
+/* Listings go live when posted; the Exco looks over the newest and removes what should not be there. */
+const newestRow = o => '<article class="card row mod"><div class="body"><h3><button class="lnk" onclick="openJob(' + o.id + ')">' + o.title + '</button> <span class="org">· ' + o.org + '</span></h3>' +
+  '<div class="meta">' + o.type + ' · ' + fieldsOf(o).join(', ') + ' · ' + o.loc + (o.closes ? ' · closes ' + o.closes : '') + '</div><div class="meta">Posted by ' + o.by + ' · ' + (o.age === 0 ? 'today' : o.age + ' day' + (o.age === 1 ? '' : 's') + ' ago') + '</div></div>' +
+  '<div class="side"><button class="btn btn-ghost btn-sm danger" onclick="removeListing(' + o.id + ')">' + ICO.x + 'Remove</button></div></article>';
 V.console = () => {
   const admin = S.role === 'admin', u = ROLES[S.role];
-  const live = OPPS.filter(o => o.days >= 0), dups = PENDING.filter(dupOf).length, soon = live.filter(o => o.days <= 7).length, expired = OPPS.filter(o => o.days < 0).length;
-  const att = [['approvals', 'Awaiting approval', PENDING.length, 'brand', 'Oldest ' + (PENDING.length ? PENDING[PENDING.length - 1].when.toLowerCase() : '')],
-    ['queue', 'Flagged listings', FLAGS.length, 'bad', 'Scholar reports and broken links'],
-    ['approvals', 'Possible duplicates', dups, 'bad', 'Same link or same title and employer'],
+  const live = OPPS.filter(o => o.days >= 0), soon = live.filter(o => o.days <= 7).length, expired = OPPS.filter(o => o.days < 0).length;
+  const att = [['queue', 'Flagged listings', FLAGS.length, 'bad', 'Scholar reports and broken links'],
     ['opps', 'Expired, still stored', expired, 'warn', 'Hidden from scholars; remove when ready']];
   const champs = CHAMPS(), posting = champs.filter(c => c.weeks[3]).length;
   const kpi = (l, v, s) => '<div class="kpi"><span>' + l + '</span><b>' + v + '</b>' + (s ? '<small>' + s + '</small>' : '') + '</div>';
@@ -1599,10 +1559,10 @@ V.console = () => {
     (admin ? '<button class="btn btn-ghost btn-sm" onclick="inviteUser()">' + ICO.user + 'Invite people</button>' : '') +
     '<button class="btn btn-primary btn-sm" onclick="S.editEv=null;nav(\'postevent\')">' + ICO.plus + 'Post an announcement</button></div></div>' +
     '<h2 class="eyebrow-h">Needs attention</h2><div class="att">' + att.map(([k, l, n, tone, sub]) => '<button class="attn ' + (n ? 't-' + tone : 'clear') + '" onclick="nav(\'' + k + '\')"><span class="l">' + l + '</span><b>' + n + '</b><span class="s">' + (n ? sub : 'All clear') + '</span></button>').join('') + '</div>' +
-    '<div class="kpis">' + kpi('Live listings', live.length, soon + ' close in 7 days') + kpi('Posted in the last 7 days', OPPS.filter(o => o.age <= 7).length + PENDING.length, PENDING.length + ' still waiting') +
+    '<div class="kpis">' + kpi('Live listings', live.length, soon + ' close in 7 days') + kpi('Posted in the last 7 days', OPPS.filter(o => o.age <= 7).length, 'Live as soon as they are posted') +
     kpi('Champions who posted this week', posting + ' of ' + champs.length, 'The goal is all of them') + kpi('Clicks to employers', OPPS.reduce((a, o) => a + o.clicks, 0).toLocaleString('en-ZA'), 'Last 30 days') + '</div>' +
-    '<div class="pgrid"><section class="card pnl wide"><div class="ph"><h2>Approval queue</h2><button class="lnk" onclick="nav(\'approvals\')">' + (PENDING.length ? 'Review all ' + PENDING.length : 'Open') + ICO.chevR + '</button></div>' +
-    (PENDING.length ? '<div class="rows">' + PENDING.slice().reverse().slice(0, 3).map(p => pendingRow(p, true)).join('') + '</div>' : '<div class="empty sm">' + ICO.checkC + '<b>Queue is clear</b><span>New listings from champions land here.</span></div>') + '</section>' +
+    '<div class="pgrid"><section class="card pnl wide"><div class="ph"><h2>Newest listings</h2><button class="lnk" onclick="nav(\'listings\')">All job listings' + ICO.chevR + '</button></div>' +
+    '<div class="rows">' + live.slice().sort((a, b) => a.age - b.age).slice(0, 3).map(newestRow).join('') + '</div></section>' +
     '<section class="card pnl"><div class="ph"><h2>Announcement board</h2><button class="lnk" onclick="nav(\'events\')">Manage' + ICO.chevR + '</button></div>' +
     '<div class="annlist">' + EVENTS.filter(e => !e.past).sort(annOrder).slice(0, 4).map(annMini).join('') + '</div></section>' +
     (admin ? '<section class="card pnl"><div class="ph"><h2>Users and roles</h2><button class="lnk" onclick="nav(\'users\')">Manage' + ICO.chevR + '</button></div><div class="kvlist">' +
@@ -1650,27 +1610,19 @@ function sendInvite(){
 const CHAMP_NAMES = ['Mickey Mpofu', 'Kagiso Molefe', 'Naledi Khoza', 'Ayesha Patel', 'Thabo Nkosi'];
 /* Weekly posting for the last four weeks, oldest first; the brief's goal is that every champion posts every week. */
 const CHAMP_WEEKS = {'Mickey Mpofu':[1, 1, 1, 1], 'Kagiso Molefe':[1, 0, 1, 1], 'Naledi Khoza':[1, 1, 0, 1], 'Ayesha Patel':[1, 0, 0, 0], 'Thabo Nkosi':[0, 0, 0, 0]};
-const CHAMPS = () => CHAMP_NAMES.map(n => ({name:n, weeks:CHAMP_WEEKS[n], posts:OPPS.filter(o => o.by === n).length + PENDING.filter(p => p.by === n).length, last:n === 'Ayesha Patel' ? '12 days ago' : n === 'Thabo Nkosi' ? 'Not yet' : OPPS.concat(PENDING).some(o => o.by === n && o.age <= 1) ? 'Today' : 'This week'}));
+const CHAMPS = () => CHAMP_NAMES.map(n => ({name:n, weeks:CHAMP_WEEKS[n], posts:OPPS.filter(o => o.by === n).length, last:n === 'Ayesha Patel' ? '12 days ago' : n === 'Thabo Nkosi' ? 'Not yet' : OPPS.some(o => o.by === n && o.age <= 1) ? 'Today' : 'This week'}));
 
 /* ---------- activity log ---------- */
-const LOG_KINDS = [['', 'Everything'], ['approve', 'Approvals'], ['reject', 'Rejections'], ['content', 'Content'], ['user', 'Users'], ['system', 'Automatic']];
+const LOG_KINDS = [['', 'Everything'], ['approve', 'Kept'], ['reject', 'Removed'], ['content', 'Content'], ['user', 'Users'], ['system', 'Automatic']];
 V.log = () => {
   const list = LOG.filter(x => !S.logKind || x.kind === S.logKind);
   const ic = k => k === 'approve' ? ICO.check : k === 'reject' ? ICO.x : k === 'user' ? ICO.user : k === 'system' ? ICO.clock : ICO.send;
-  return '<div class="page-head" data-role><h1>Activity log</h1><span class="n">' + LOG.length + ' entries</span></div><p class="sub">Every approval, rejection, removal and role change, with who made it. Nothing here can be edited.</p>' +
+  return '<div class="page-head" data-role><h1>Activity log</h1><span class="n">' + LOG.length + ' entries</span></div><p class="sub">Every removal, flag decision, content change and role change, with who made it. Nothing here can be edited.</p>' +
     '<div class="chipset catf">' + LOG_KINDS.map(([k, l]) => '<button aria-pressed="' + ((S.logKind || '') === k) + '" onclick="S.logKind=\'' + k + '\';render()">' + l + '</button>').join('') + '</div>' +
     '<div class="card loglist">' + (list.length ? list.map(x => '<div class="li k-' + x.kind + '"><span class="ic">' + ic(x.kind) + '</span><span class="logtx"><b>' + x.who + '</b> ' + x.what + '</span><time>' + x.when + '</time></div>').join('') : '<div class="empty sm"><b>Nothing of this kind yet</b></div>') + '</div>';
 };
 
-/* ---------- approvals and staff listings ---------- */
-V.approvals = () => {
-  const tab = S.apTab || 'all', list = PENDING.filter(p => tab === 'all' || (tab === 'dup' ? dupOf(p) : p.days <= 7)).slice().reverse();
-  const clean = PENDING.filter(p => !dupOf(p)).length;
-  return '<div class="page-head" data-role><h1>Approvals</h1><span class="n">' + PENDING.length + ' waiting</span>' + (clean ? '<div class="acts"><button class="btn btn-ghost btn-sm" onclick="approveClean()">' + ICO.check + 'Approve ' + clean + ' without issues</button></div>' : '') + '</div>' +
-    '<p class="sub">Champions and partner recruiters post here first. Approve to publish to scholars, or reject with a reason the poster sees. Oldest first.</p>' +
-    '<div class="tabs" role="tablist">' + [['all', 'All', PENDING.length], ['dup', 'Possible duplicates', PENDING.filter(dupOf).length], ['soon', 'Closing in 7 days', PENDING.filter(p => p.days <= 7).length]].map(([k, l, n]) => '<button role="tab" aria-selected="' + (tab === k) + '" onclick="S.apTab=\'' + k + '\';render()">' + l + ' · ' + n + '</button>').join('') + '</div>' +
-    (list.length ? '<div class="rows">' + list.map(p => pendingRow(p)).join('') + '</div>' : '<div class="card empty">' + ICO.checkC + '<b>Nothing waiting</b><span>New listings from champions and partner recruiters show up here.</span></div>');
-};
+/* ---------- staff listings ---------- */
 V.listings = () => {
   const tab = S.lsTab || 'live', q = (S.lq || '').toLowerCase();
   const inTab = o => tab === 'all' || (tab === 'live' ? o.days >= 0 && !hiddenListing(o) : tab === 'soon' ? o.days >= 0 && o.days <= 7 && !hiddenListing(o) : o.days < 0);
@@ -1770,8 +1722,8 @@ function signOut(){ S.auth = false; S.open = null; S.navOpen = false; S.dlg = nu
 function syncCounts(){ syncNav(); }
 function checkDup(v){
   const el = document.getElementById('dup'); if (!el) return; if (!v) { el.innerHTML = ''; return; }
-  const n = normLink(v), hit = OPPS.find(o => normLink(linkOf(o)) === n) || PENDING.find(p => normLink(p.url) === n);
-  el.innerHTML = '<div class="dup ' + (hit ? 'warn' : 'ok') + '" style="margin-top:8px">' + (hit ? ICO.alert + 'Already posted: ' + hit.title + ' at ' + hit.org + (PENDING.includes(hit) ? ', waiting for approval' : '') : ICO.checkC + 'Not posted before') + '</div>';
+  const n = normLink(v), hit = OPPS.find(o => normLink(linkOf(o)) === n);
+  el.innerHTML = '<div class="dup ' + (hit ? 'warn' : 'ok') + '" style="margin-top:8px">' + (hit ? ICO.alert + 'Already posted: ' + hit.title + ' at ' + hit.org : ICO.checkC + 'Not posted before') + '</div>';
 }
 function publishListing(){
   const val = id => (document.getElementById(id) || {}).value || '';
@@ -1788,14 +1740,10 @@ function publishListing(){
     S.edit = null; openJob(o.id); toast('Saved. Scholars see the update now.'); return;
   }
   const item = {id:Date.now() + 1, title:val('f0').trim(), org:val('f1').trim(), type:val('f6') || OPP_TYPES[0], field:fields[0], fields, loc:val('f3') || LOCS[0], url:val('f2').trim(), closes:c.closes || 'No closing date', days:c.days, by:ROLES[S.role].name, desc:val('f7').trim(), years:pickedYears(undefined, 'opp')};
-  if (lister()) {
-    mine().unshift({id:Date.now(), title:item.title, org:item.org, url:item.url, status:'pending', applied:0, posted:'Today', closes:item.closes});
-    PENDING.unshift({...item, when:'Just now', age:0});
-    nav('subs'); toast('Sent for approval. Scholars see it once the Exco approves it.'); return;
-  }
+  if (lister()) mine().unshift({id:Date.now(), title:item.title, org:item.org, url:item.url, status:'live', applied:0, posted:'Today', closes:item.closes});
   OPPS.unshift({...item, views:0, clicks:0, age:0, saved:false, applied:false});
   logIt('posted <b>' + item.title + '</b>', 'content');
-  nav('opps'); toast('Published. Scholars can see it now.');
+  nav(lister() ? 'subs' : 'opps'); toast('Live. Scholars can see it now.');
 }
 function editListing(id){ S.edit = id; nav('submit'); }
 function unpublishListing(id){ const o = byId(id); OPPS = OPPS.filter(x => x.id !== id); const m = allMine().find(l => l.title === o.title); if (m) m.status = 'unpublished'; FLAGS = FLAGS.filter(f => f.title !== o.title); nav('opps'); toast('Unpublished. Scholars can no longer see it.'); }
@@ -1807,8 +1755,8 @@ function resolveFlag(id, unpub){ const f = FLAGS.find(x => x.id === id); logIt((
 const TABS = {scholar:[['overview', 'Home', 'home'], ['opps', 'Jobs', 'search'], ['saved', 'Saved', 'bookmark'], ['resources', 'Resources', 'book']],
   champion:[['overview', 'Home', 'home'], ['opps', 'Jobs', 'search'], ['subs', 'Listings', 'brief'], ['resources', 'Resources', 'book']],
   recruiter:[['overview', 'Home', 'home'], ['opps', 'Jobs', 'search'], ['subs', 'Listings', 'brief'], ['resources', 'Resources', 'book']],
-  exco:[['console', 'Overview', 'home'], ['approvals', 'Approvals', 'check'], ['queue', 'Flagged', 'flag'], ['events', 'Notices', 'cal']],
-  admin:[['console', 'Overview', 'home'], ['approvals', 'Approvals', 'check'], ['users', 'Users', 'user'], ['insights', 'Reports', 'brief']]};
+  exco:[['console', 'Overview', 'home'], ['listings', 'Listings', 'brief'], ['queue', 'Flagged', 'flag'], ['events', 'Notices', 'cal']],
+  admin:[['console', 'Overview', 'home'], ['queue', 'Flagged', 'flag'], ['users', 'Users', 'user'], ['insights', 'Reports', 'brief']]};
 function tabbar(){
   const ic = n => n === 'bookmark' ? BOOK : (ICO[n] || ICO.brief);
   return '<nav class="tabbar" aria-label="Primary">' + TABS[S.role].map(([k, l, i]) => '<button aria-current="' + (S.view === k || (k === 'opps' && S.view === 'job')) + '" onclick="nav(\'' + k + '\')">' + ic(i) + '<span>' + l + '</span></button>').join('') + '</nav>';
@@ -1842,11 +1790,6 @@ function dialog(){
       '<div class="field"><label>Rows</label><div class="seg">' + seg('scholar', 'One per scholar') + seg('uni', 'One per university') + '</div></div>' +
       '<p style="margin:0;font-size:13px;color:var(--muted)">All ' + rows.length + ' scholars, whatever the filters on the page. Saves as ' + monthFile(m) + ', which opens in Excel.</p></div>' +
       '<div class="pf"><button class="btn btn-ghost" onclick="closeDlg()">Cancel</button><button class="btn btn-primary" onclick="exportMonth()">' + ICO.download + 'Export ' + (S.dlg.shape === 'uni' ? INST.length + ' rows' : rows.length + ' scholars') + '</button></div></div></div>'; }
-  if (S.dlg.kind === 'reject') { const p = PENDING.find(x => x.id === S.dlg.id), d = dupOf(p);
-    return '<div class="xmask" onclick="if(event.target===this)closeDlg()"><div class="xdlg" role="dialog" aria-modal="true" aria-label="Reject listing"><div class="xh"><span>Reject this listing</span><button class="xclose" aria-label="Close" onclick="closeDlg()">×</button></div>' +
-      '<div class="pb"><p style="margin:0;font-size:14px;color:var(--muted)">' + p.title + ' · ' + p.org + ' · posted by ' + p.by + '</p><div class="field"><label for="rj-why">Reason</label><select id="rj-why">' + REJECT_WHY.map((w, i) => '<option' + ((d ? i === 0 : i === 4) ? ' selected' : '') + '>' + w + '</option>').join('') + '</select></div>' +
-      '<div class="field"><label for="rj-note">Note to ' + p.by.split(' ')[0] + '</label><textarea id="rj-note" placeholder="Optional. What to change before posting again."></textarea></div></div>' +
-      '<div class="pf"><button class="btn btn-ghost" onclick="closeDlg()">Cancel</button><button class="btn btn-danger" onclick="confirmReject()">' + ICO.x + 'Reject</button></div></div></div>'; }
   if (S.dlg.kind === 'role') { const x = USERS[S.dlg.i], to = S.dlg.r;
     const chip = r => '<span class="rolechip"><span class="rdot" style="background:' + STAGES[ROLES[r].stage].bg + '"></span>' + ROLE_LABEL[r] + '</span>';
     return '<div class="xmask" onclick="if(event.target===this)closeDlg()"><div class="xdlg roledlg" role="dialog" aria-modal="true" aria-labelledby="ro-h"><div class="xh"><span id="ro-h">Change ' + x.name + '’s role?</span><button class="xclose" aria-label="Close" onclick="closeDlg()">×</button></div>' +
@@ -1857,7 +1800,7 @@ function dialog(){
       '<div class="pf"><button class="btn btn-ghost" onclick="closeDlg()">Cancel</button><button class="btn btn-primary" onclick="setUserRole(' + S.dlg.i + ',\'' + to + '\')">' + ICO.check + 'Change to ' + ROLE_LABEL[to] + '</button></div></div></div>'; }
   if (S.dlg.kind === 'targets') { const num = (id, label, v, hint) => '<div class="field"><label for="' + id + '">' + label + '</label><input id="' + id + '" type="number" min="1" value="' + v + '"><div class="hint">' + hint + '</div></div>';
     return '<div class="xmask" onclick="if(event.target===this)closeDlg()"><div class="xdlg" role="dialog" aria-modal="true" aria-label="Targets"><div class="xh"><span>Success targets</span><button class="xclose" aria-label="Close" onclick="closeDlg()">×</button></div>' +
-      '<div class="pb">' + num('t-listings', 'Listings a month', TARGETS.listings, 'Approved listings posted across the programme.') + num('t-active', 'Active scholars a month', TARGETS.active, 'Scholars who signed in or applied that month.') + num('t-weekly', 'Listings per champion a week', TARGETS.weekly, 'Each champion’s weekly goal.') + '</div>' +
+      '<div class="pb">' + num('t-listings', 'Listings a month', TARGETS.listings, 'Listings posted across the programme, not counting removed ones.') + num('t-active', 'Active scholars a month', TARGETS.active, 'Scholars who signed in or applied that month.') + num('t-weekly', 'Listings per champion a week', TARGETS.weekly, 'Each champion’s weekly goal.') + '</div>' +
       '<div class="pf"><button class="btn btn-ghost" onclick="closeDlg()">Cancel</button><button class="btn btn-primary" onclick="saveTargets()">' + ICO.check + 'Save targets</button></div></div></div>'; }
   if (S.dlg.kind === 'invite')
     return '<div class="xmask" onclick="if(event.target===this)closeDlg()"><div class="xdlg" role="dialog" aria-modal="true" aria-label="Invite people"><div class="xh"><span>Invite someone</span><button class="xclose" aria-label="Close" onclick="closeDlg()">×</button></div>' +
@@ -2333,8 +2276,8 @@ const LISTING_LOG = [];
 (() => {
   const post = (d, by, role) => {
     const field = wPick(FIELD_WEIGHT), type = wPick(TYPE_WEIGHT), r = rA(), moderated = role === 'champion' || role === 'recruiter';
-    const outcome = moderated && r < 0.07 ? 'duplicate' : moderated && r < 0.15 ? 'rejected' : 'approved';
-    const views = outcome === 'approved' ? Math.round((60 + rA() * 300) * (/Commerce|Engineering/.test(field) ? 1.2 : 0.8)) : 0;
+    const outcome = moderated && r < 0.07 ? 'duplicate' : moderated && r < 0.15 ? 'removed' : 'live';
+    const views = outcome === 'live' ? Math.round((60 + rA() * 300) * (/Commerce|Engineering/.test(field) ? 1.2 : 0.8)) : 0;
     LISTING_LOG.push({d, by, role, field, type, loc:pickA(POST_LOCS), org:pickA(EMPLOYERS), title:pickA(ROLE_TITLES[field]), outcome,
       v:splitUni(views), s:splitUni(Math.round(views * (0.05 + rA() * 0.12))), c:splitUni(Math.round(views * (0.12 + rA() * 0.16)))});
   };
@@ -2416,7 +2359,7 @@ function champStats(){
     const mine = LISTING_LOG.filter(p => p.by === n && (!A.field || p.field === A.field)), inP = mine.filter(p => p.d < A.period);
     const weeks = [3, 2, 1, 0].map(w => mine.filter(p => p.d >= w * 7 && p.d < w * 7 + 7).length);
     const last = mine.length ? Math.min(...mine.map(p => p.d)) : null, rate = k => pct(inP.filter(p => p.outcome === k).length, inP.length);
-    return {n, weeks, posts:inP.length, last, approved:rate('approved'), rejected:rate('rejected'), dup:rate('duplicate')};
+    return {n, weeks, posts:inP.length, last, removed:rate('removed'), dup:rate('duplicate')};
   });
 }
 function champPanel(){
@@ -2426,13 +2369,13 @@ function champPanel(){
   return '<section class="card wide champs"><div class="card-head"><h2>Career champions</h2><span class="acts">Not posted in ' +
       aSeg('quiet', [[7, '7 days'], [14, '14 days'], [30, '30 days']]).replace(/A\.quiet='(\d+)'/g, 'A.quiet=$1') + '</span></div>' +
     take('Target ' + TARGETS.weekly + ' a week; squares are the last four weeks, oldest first. ' + (quiet.length ? '<b>' + quiet.length + ' of ' + rows.length + '</b> have not posted in ' + A.quiet + ' days: ' + quiet.map(c => c.n).join(', ') : 'Every champion posted in the last ' + A.quiet + ' days')) +
-    '<div class="tablewrap"><table class="rt"><thead><tr><th>Champion</th><th>This week</th><th>Weekly posts</th><th class="num">Posted</th><th class="num">Approved</th><th class="num">Rejected</th><th class="num">Duplicates</th><th>Last posted</th></tr></thead><tbody>' +
+    '<div class="tablewrap"><table class="rt"><thead><tr><th>Champion</th><th>This week</th><th>Weekly posts</th><th class="num">Posted</th><th class="num">Removed</th><th class="num">Duplicates</th><th>Last posted</th></tr></thead><tbody>' +
     rows.map(c => '<tr class="' + (quiet.includes(c) ? 'quiet' : '') + '"><td><span class="who">' + avatarOf(c.n, 'champion') + '<span class="nm">' + c.n + '</span></span></td><td>' + '<span class="pill ' + (c.weeks[3] >= TARGETS.weekly ? 'live' : 'off') + '"><i></i>' + c.weeks[3] + ' of ' + TARGETS.weekly + '</span></td><td>' + wk(c) + '</td>' +
-      '<td class="num">' + c.posts + '</td><td class="num">' + (c.posts ? c.approved + '%' : '–') + '</td><td class="num">' + (c.posts ? c.rejected + '%' : '–') + '</td><td class="num">' + (c.posts ? c.dup + '%' : '–') + '</td><td>' + lastTxt(c) + '</td></tr>').join('') +
+      '<td class="num">' + c.posts + '</td><td class="num">' + (c.posts ? c.removed + '%' : '–') + '</td><td class="num">' + (c.posts ? c.dup + '%' : '–') + '</td><td>' + lastTxt(c) + '</td></tr>').join('') +
     '</tbody></table></div></section>';
 }
 V.insights = () => {
-  const posts = aPosts(), prev = A.period < 365 ? postsIn(A.period, A.period * 2) : null, live = posts.filter(p => p.outcome === 'approved');
+  const posts = aPosts(), prev = A.period < 365 ? postsIn(A.period, A.period * 2) : null, live = posts.filter(p => p.outcome === 'live');
   const sum = k => live.reduce((t, p) => t + eng(p, k), 0), views = sum('v'), saves = sum('s'), clicks = sum('c');
   const chg = prev ? (posts.length - prev.length >= 0 ? '▲ ' : '▼ ') + Math.abs(posts.length - prev.length) + ' on the period before' : 'posted';
   /* posting trend: twelve weeks, or twelve months for the year view */
@@ -2509,7 +2452,7 @@ V.content = () => {
 const progPool = () => STU.filter(st => (!A.uni || st.inst === A.uni) && (!A.region || REGION_OF[st.inst] === A.region) && (!A.field || st.field === A.field));
 const activeIn = (st, lo, hi) => st.apps.some(a => a.d >= lo && a.d <= hi) || (st.login !== null && st.login >= lo && st.login <= hi);
 const appsInM = (st, lo, hi) => st.apps.filter(a => a.d >= lo && a.d <= hi);
-const listedIn = m => LISTING_LOG.filter(p => p.d >= m.lo && p.d <= m.hi && p.outcome === 'approved').length;
+const listedIn = m => LISTING_LOG.filter(p => p.d >= m.lo && p.d <= m.hi && p.outcome === 'live').length;
 function champsWeekly(m){
   const weeks = Math.max(1, Math.floor((m.hi - m.lo + 1) / 7));
   return CHAMP_NAMES.filter(n => { const ds = LISTING_LOG.filter(p => p.by === n && p.d >= m.lo && p.d <= m.hi).map(p => Math.floor((p.d - m.lo) / 7)); return Array.from({length:weeks}, (_, w) => ds.includes(w)).every(Boolean); }).length;
@@ -2598,7 +2541,7 @@ const namesGate = pool => '<section class="card names gate"><div class="card-hea
 
 const sb = document.getElementById('sb');
 sb.addEventListener('navigate', e => nav(e.detail.key));
-const PAGE_ROLE = {submit:'champion', subs:'champion', queue:'admin', admin:'admin', postres:'admin', postevent:'admin', console:'admin', approvals:'admin', users:'admin', insights:'admin', programme:'admin', content:'admin', log:'admin'};
+const PAGE_ROLE = {submit:'champion', subs:'champion', queue:'admin', admin:'admin', postres:'admin', postevent:'admin', console:'admin', users:'admin', insights:'admin', programme:'admin', content:'admin', log:'admin'};
 const title = (t, n) => '<div class="page-head' + (PAGE_ROLE[S.view] !== undefined ? (PAGE_ROLE[S.view] ? ' r-' + PAGE_ROLE[S.view] : '') : ' r-scholar') + '"><h1>' + t + '</h1>' + (n ? '<span class="n">' + n + '</span>' : '') + '</div>';
 document.addEventListener('click', () => { if (S.open) { S.open = null; render(); } });
 document.addEventListener('keydown', e => {

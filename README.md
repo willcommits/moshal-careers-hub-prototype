@@ -26,9 +26,9 @@ Sign in with any of these; the prototype does not check the password.
 | Email | Role | Lands on |
 |-------|------|----------|
 | `cassidy.rinquest@myuct.ac.za` | Scholar | Home, with the announcement board |
-| `mickey.mpofu@wits.ac.za` | Career champion | Home; new listings wait for approval |
-| `lisa.mtshali@karooanalytics.co.za` | Partner recruiter | Home; listings wait, events and resources go live |
-| `sipho.dlamini@uj.ac.za` | Exco | Overview: approvals, flagged listings, job listings, announcements, content |
+| `mickey.mpofu@wits.ac.za` | Career champion | Home; new listings go live straight away |
+| `lisa.mtshali@karooanalytics.co.za` | Partner recruiter | Home; listings, events and resources go live straight away |
+| `sipho.dlamini@uj.ac.za` | Exco | Overview: newest listings, flagged listings, job listings, announcements, content |
 | `leah.isaacs@moshal.org` | Admin | Overview, plus users and roles, the listings and scholar reports, and the activity log |
 
 For demos, the account menu (the avatar, top right) also lists all five people under "Switch
@@ -85,9 +85,11 @@ other files.
 
 ## Admin and Exco console
 
-The console opens on what needs a decision: listings awaiting approval, flagged listings, possible
-duplicates (same link once tracking parameters are stripped, or same title and employer) and
-expired listings still stored. Numbers come second. Colour follows the rest of the prototype:
+Listings go live as soon as they are posted; there is no approval step. Brief 3A says listings
+"can be approved or rejected by the Exco", which the prototype reads as review after the fact: the
+console opens on the newest listings, each with Remove, then flagged listings and expired listings
+still stored. A champion who pastes a link already posted is warned while typing (same link once
+tracking parameters are stripped). Numbers come second. Colour follows the rest of the prototype:
 structure is blue, and red, amber and green mark state only, so a red figure always means
 something is wrong and amber always means time is short.
 
@@ -144,7 +146,7 @@ The history behind them is generated example data with its own seed.
 | Report | What it answers |
 |--------|-----------------|
 | Programme dashboard | One month against the targets (listings posted, active scholars, champions posting every week). Month-on-month bars, active scholars weekly or monthly, and a table by region and university. The Targets button sets the numbers the brief left blank. A switch emails the summary to the Careers team on the 1st |
-| Listings report | Listings posted each week or month, split by field, type, location or employer. Fields with few listings, and what is live, closing or expired today. Views, saves and clicks by field and university. Most viewed and most saved. Each champion's week against the target, the approval, rejection and duplicate rates, and who has not posted in 7, 14 or 30 days |
+| Listings report | Listings posted each week or month, split by field, type, location or employer. Fields with few listings, and what is live, closing or expired today. Views, saves and clicks by field and university. Most viewed and most saved. Each champion's week against the target, the share of their listings removed and removed as duplicates, and who has not posted in 7, 14 or 30 days |
 | Content report | Views and downloads per resource and category, with the least used named. Views, link clicks and calendar adds for each announcement and category |
 | Scholar report | Who applied, who has offers, and which final years need a call |
 
