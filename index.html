@@ -922,6 +922,27 @@ table.rt .lnk:hover{color:var(--brand)}
 .kept li{display:flex;gap:8px;align-items:center} .kept li svg{width:16px;height:16px;color:var(--ok);flex:none}
 .kept p{margin:0;font-size:13px;color:var(--muted)}
 @media (max-width:900px){.profgrid{grid-template-columns:minmax(0,1fr)}}
+.srow.static{cursor:default} .srow.static:hover{background:none}
+.srow .nm .sm{font-weight:400;color:var(--muted)}
+.weeks i.part{background:var(--pos-soft);border-color:var(--pos-soft)}
+.segrow{padding:0 20px 6px}
+.nowtiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;padding:8px 20px 20px}
+.nowt{display:grid;gap:4px;padding:16px;border:1px solid var(--line);border-radius:10px;background:var(--surface-2);font:inherit;text-align:left;cursor:pointer}
+.nowt:hover{border-color:var(--brand)} .nowt b{font-family:var(--display);font-size:30px;font-weight:500;color:var(--navy)} .nowt span{font-size:13px;color:var(--muted)}
+.nowt.amb{border-left:4px solid var(--alumni)}
+.champs .card-head .acts{font-size:12px;color:var(--muted);gap:8px} .champs tr.quiet td:first-child .nm{color:var(--muted)}
+table.rt.compact td{height:auto;padding:9px 12px} table.rt.compact th{padding:10px 12px;white-space:normal} .tablewrap table.rt.compact{min-width:0}
+table.rt.prog tr.reg td{background:var(--surface-2)} table.rt.prog .ind{padding-left:14px;display:inline-block}
+.chg.up{color:var(--ok)} .chg.down{color:var(--muted)}
+.mailcard{display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding:18px 20px}
+.mailcard .ml{display:grid;gap:2px;flex:1;min-width:220px} .mailcard .ml span{font-size:13px;color:var(--muted)}
+.switch{position:relative;display:inline-block;width:44px;height:24px;flex:none} .switch input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.switch i{position:absolute;inset:0;border-radius:999px;background:var(--line);transition:var(--t);pointer-events:none}
+.switch i::after{content:'';position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:var(--t)}
+.switch input:checked + i{background:var(--brand)} .switch input:checked + i::after{left:23px}
+.switch input:focus-visible + i{outline:2px solid var(--brand);outline-offset:2px}
+.names.gate .gatebtn{padding:0 20px 18px}
+@media (max-width:520px){.nowtiles{grid-template-columns:1fr}}
 /* My applications stages, Salesforce step, monthly report, video upload */
 .apphint{margin:-8px 0 14px;font-size:14px;color:var(--muted)}
 .stagepick select{font:inherit;font-size:13px;padding:6px 28px 6px 10px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink)}
@@ -1194,7 +1215,9 @@ function sections(){
     ].concat(admin ? [
       {id:'people', label:'People', items:[{key:'users', label:'Users and roles', icon:'users', count:USERS.filter(u => u.status === 'invited').length || undefined}]},
       {id:'insights', label:'Insights', items:[
+        {key:'programme', label:'Programme dashboard', icon:'dashboard'},
         {key:'insights', label:'Listings report', icon:'chart'},
+        {key:'content', label:'Content report', icon:'book'},
         {key:'admin', label:'Scholar report', icon:'list'},
         {key:'log', label:'Activity log', icon:'history'}
       ]}
@@ -1628,29 +1651,6 @@ const CHAMP_NAMES = ['Mickey Mpofu', 'Kagiso Molefe', 'Naledi Khoza', 'Ayesha Pa
 /* Weekly posting for the last four weeks, oldest first; the brief's goal is that every champion posts every week. */
 const CHAMP_WEEKS = {'Mickey Mpofu':[1, 1, 1, 1], 'Kagiso Molefe':[1, 0, 1, 1], 'Naledi Khoza':[1, 1, 0, 1], 'Ayesha Patel':[1, 0, 0, 0], 'Thabo Nkosi':[0, 0, 0, 0]};
 const CHAMPS = () => CHAMP_NAMES.map(n => ({name:n, weeks:CHAMP_WEEKS[n], posts:OPPS.filter(o => o.by === n).length + PENDING.filter(p => p.by === n).length, last:n === 'Ayesha Patel' ? '12 days ago' : n === 'Thabo Nkosi' ? 'Not yet' : OPPS.concat(PENDING).some(o => o.by === n && o.age <= 1) ? 'Today' : 'This week'}));
-function reportCsv(){
-  const rows = [['Study field', 'Listings', 'Views', 'Clicks', 'Click rate %']].concat(FIELDS_OPT.map(f => { const l = OPPS.filter(o => fieldsOf(o).includes(f)), v = l.reduce((a, o) => a + o.views, 0), c = l.reduce((a, o) => a + o.clicks, 0); return [f, l.length, v, c, pct(c, v)]; }));
-  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([rows.map(r => r.join(',')).join('\n')], {type:'text/csv'})); a.download = 'listings-by-study-field-last-30-days.csv'; a.click();
-  toast('Downloaded listings-by-study-field-last-30-days.csv');
-}
-V.insights = () => {
-  const views = OPPS.reduce((a, o) => a + o.views, 0), clicks = OPPS.reduce((a, o) => a + o.clicks, 0);
-  const byField = FIELDS_OPT.map(f => { const l = OPPS.filter(o => fieldsOf(o).includes(f)); return {f, n:l.length, v:l.reduce((a, o) => a + o.views, 0), c:l.reduce((a, o) => a + o.clicks, 0)}; }).sort((a, b) => b.c - a.c);
-  const maxC = Math.max(...byField.map(x => x.c), 1);
-  /* University reach comes from scholars' own activity: a view or click counts towards the scholar's institution. */
-  const byUni = INST.map(([k, name], i) => { const st = STU.filter(s => s.inst === k), act = st.filter(s => s.login !== null && s.login <= 30).length, v = Math.round(views * act / 520 * (0.9 + i * 0.03)); return {k, name, n:st.length, act, v, c:Math.round(v * (0.19 + (i % 3) * 0.02))}; });
-  const maxU = Math.max(...byUni.map(x => x.c), 1);
-  const kpi = (l, v, s) => '<div class="kpi"><span>' + l + '</span><b>' + v + '</b>' + (s ? '<small>' + s + '</small>' : '') + '</div>';
-  return '<div class="page-head" data-role><div><h1>Listings report</h1><p class="lead">Last 30 days · views and clicks by study field and university</p></div><div class="acts"><button class="btn btn-ghost btn-sm" onclick="reportCsv()">' + ICO.download + 'Export CSV</button></div></div>' +
-    '<div class="kpis">' + kpi('Listings', OPPS.length, OPPS.filter(o => o.days >= 0).length + ' live now') + kpi('Listing views', views.toLocaleString('en-ZA')) + kpi('Clicks to employers', clicks.toLocaleString('en-ZA')) + kpi('Click rate', pct(clicks, views) + '%', 'Clicks per view') + '</div>' +
-    '<div class="pgrid"><section class="card pnl"><div class="ph"><h2>By study field</h2></div><div class="tablewrap"><table class="rt bars"><thead><tr><th>Field</th><th class="num">Listings</th><th class="num">Views</th><th>Clicks</th><th class="num">Rate</th></tr></thead><tbody>' +
-    byField.map(x => '<tr><td class="nm">' + x.f + '</td><td class="num">' + x.n + '</td><td class="num">' + x.v + '</td><td><span class="hbar"><i style="width:' + Math.round(x.c / maxC * 100) + '%"></i><b>' + x.c + '</b></span></td><td class="num">' + pct(x.c, x.v) + '%</td></tr>').join('') + '</tbody></table></div></section>' +
-    '<section class="card pnl"><div class="ph"><h2>By university</h2></div><div class="tablewrap"><table class="rt bars"><thead><tr><th>University</th><th class="num">Active scholars</th><th class="num">Views</th><th>Clicks</th></tr></thead><tbody>' +
-    byUni.map(x => '<tr><td><span class="nm">' + x.k + '</span><br><span class="sm">' + x.name + '</span></td><td class="num">' + x.act + ' <span class="sm">of ' + x.n + '</span></td><td class="num">' + x.v + '</td><td><span class="hbar"><i style="width:' + Math.round(x.c / maxU * 100) + '%"></i><b>' + x.c + '</b></span></td></tr>').join('') + '</tbody></table></div></section>' +
-    '<section class="card pnl wide"><div class="ph"><h2>Career champions</h2><span class="sm">Did they post each week? Last four weeks, oldest first</span></div><div class="tablewrap"><table class="rt"><thead><tr><th>Champion</th><th>Weekly posting</th><th class="num">Listings</th><th>Last posted</th></tr></thead><tbody>' +
-    CHAMPS().map(c => { const gap = !c.weeks[3] && !c.weeks[2]; return '<tr><td><span class="who">' + avatarOf(c.name, 'champion') + '<span class="nm">' + c.name + '</span></span></td><td><span class="weeks" aria-label="Posted in ' + c.weeks.filter(Boolean).length + ' of the last 4 weeks">' + c.weeks.map(w => '<i class="' + (w ? 'on' : '') + '"></i>').join('') + '</span></td><td class="num">' + c.posts + '</td><td>' + (gap ? pill('warn', c.last === 'Not yet' ? 'Not posted yet' : 'Quiet for 2 weeks') : '<span class="muted">' + c.last + '</span>') + '</td></tr>'; }).join('') +
-    '</tbody></table></div></section></div>';
-};
 
 /* ---------- activity log ---------- */
 const LOG_KINDS = [['', 'Everything'], ['approve', 'Approvals'], ['reject', 'Rejections'], ['content', 'Content'], ['user', 'Users'], ['system', 'Automatic']];
@@ -1855,6 +1855,10 @@ function dialog(){
       '<p style="margin:0">As ' + (to === 'exco' ? 'Exco' : to === 'admin' ? 'an admin' : 'a ' + ROLE_LABEL[to].toLowerCase()) + ' they can ' + ROLE_CAN[to].charAt(0).toLowerCase() + ROLE_CAN[to].slice(1) + '.</p>' +
       '<p style="margin:0;font-size:13px;color:var(--muted)">It applies the next time they open the hub, and it is written to the activity log.</p></div>' +
       '<div class="pf"><button class="btn btn-ghost" onclick="closeDlg()">Cancel</button><button class="btn btn-primary" onclick="setUserRole(' + S.dlg.i + ',\'' + to + '\')">' + ICO.check + 'Change to ' + ROLE_LABEL[to] + '</button></div></div></div>'; }
+  if (S.dlg.kind === 'targets') { const num = (id, label, v, hint) => '<div class="field"><label for="' + id + '">' + label + '</label><input id="' + id + '" type="number" min="1" value="' + v + '"><div class="hint">' + hint + '</div></div>';
+    return '<div class="xmask" onclick="if(event.target===this)closeDlg()"><div class="xdlg" role="dialog" aria-modal="true" aria-label="Targets"><div class="xh"><span>Success targets</span><button class="xclose" aria-label="Close" onclick="closeDlg()">×</button></div>' +
+      '<div class="pb">' + num('t-listings', 'Listings a month', TARGETS.listings, 'Approved listings posted across the programme.') + num('t-active', 'Active scholars a month', TARGETS.active, 'Scholars who signed in or applied that month.') + num('t-weekly', 'Listings per champion a week', TARGETS.weekly, 'Each champion’s weekly goal.') + '</div>' +
+      '<div class="pf"><button class="btn btn-ghost" onclick="closeDlg()">Cancel</button><button class="btn btn-primary" onclick="saveTargets()">' + ICO.check + 'Save targets</button></div></div></div>'; }
   if (S.dlg.kind === 'invite')
     return '<div class="xmask" onclick="if(event.target===this)closeDlg()"><div class="xdlg" role="dialog" aria-modal="true" aria-label="Invite people"><div class="xh"><span>Invite someone</span><button class="xclose" aria-label="Close" onclick="closeDlg()">×</button></div>' +
       '<div class="pb"><div class="field" id="w-iv-email"><label for="iv-email">Email</label><input id="iv-email" type="email" placeholder="name.surname@myuct.ac.za" oninput="document.getElementById(\'w-iv-email\').classList.remove(\'bad\')"><div class="err">Use a university (ac.za) or moshal.org address. Partner recruiters may use their company email.</div></div>' +
@@ -2164,7 +2168,7 @@ const prevOk = () => typeof R.period === 'number' && R.period !== 365;
 const MEASURES = [['notapplied', 'activity', 'Applying'], ['none', 'offers', 'Offers']];
 const measureSeg = () => '<div class="seg msr" role="group" aria-label="Charts show">' + MEASURES.map(([k, lens, l]) => '<button aria-pressed="' + (R.lens === lens) + '" onclick="setQ(\'' + k + '\',\'' + lens + '\')">' + l + '</button>').join('') + '</div>';
 const LENS_OF = {applied:'activity', notapplied:'activity', lapsed:'activity', never:'activity', gap:'activity', offer:'offers', multi:'offers', none:'offers', 'fy-neither':'offers'};
-function pickGroup(k){ if (LENS_OF[k]) R.lens = LENS_OF[k]; R.seg = k; R.page = 1; R.all = false; render(); setTimeout(scrollNames, 0); }
+function pickGroup(k){ R.showNames = true; if (LENS_OF[k]) R.lens = LENS_OF[k]; R.seg = k; R.page = 1; R.all = false; render(); setTimeout(scrollNames, 0); }
 const MOST = {notapplied:'Most not applying', applied:'Most applying', offer:'Most offers', none:'Most without an offer'};
 /* Charts animate only when what they show changes, not when the names selection does. */
 const chartKey = () => JSON.stringify([R.period, R.range, R.inst, R.fac, R.year, R.field, R.final, R.lens, R.view]);
@@ -2307,6 +2311,257 @@ function exportPop(){
 }
 
 /* ---- the page ---- */
+/* ---------- programme analytics: example history (deterministic, its own seed so the scholar data does not move) ---------- */
+/* Regions group the universities for month-on-month trends. */
+const REGION_OF = {UCT:'Western Cape', SU:'Western Cape', Wits:'Gauteng', UJ:'Gauteng', UP:'Gauteng', UKZN:'KwaZulu-Natal'};
+const REGIONS = ['Western Cape', 'Gauteng', 'KwaZulu-Natal'];
+/* The brief leaves the success targets blank ("x listings per month, x active scholars"); these stand in until the Careers team sets them. */
+const TARGETS = {listings:40, active:450, weekly:2, email:false};
+let seedA = 23; const rA = () => (seedA = (seedA * 16807) % 2147483647) / 2147483647;
+const pickA = arr => arr[Math.floor(rA() * arr.length)];
+const wPick = list => { let r = rA() * list.reduce((t, x) => t + x[1], 0); for (const x of list) { r -= x[1]; if (r <= 0) return x[0]; } return list[0][0]; };
+const UNI_W = [0.2, 0.19, 0.16, 0.17, 0.15, 0.13];
+const splitUni = n => UNI_W.map(w => Math.round(n * w * (0.85 + rA() * 0.3)));
+const uniPick = () => { let r = rA(); for (let i = 0; i < UNI_W.length; i++) { r -= UNI_W[i]; if (r <= 0) return INST[i][0]; } return INST[0][0]; };
+const EMPLOYERS = ['TechNova', 'CapeBridge', 'FutureLab', 'Karoo Analytics', 'Drakensberg Structures', 'Baobab Life', 'Umthunzi Health Trust', 'Ndlovu Attorneys', 'Highveld Minerals', 'Spaza Digital', 'Lesedi Power', 'Ubuntu Policy Institute', 'Fynbos Bank', 'Mzansi Telecom'];
+const POST_LOCS = ['Cape Town', 'Johannesburg', 'Durban', 'Pretoria', 'Stellenbosch', 'Remote'];
+const ROLE_TITLES = {'Engineering & Technology':['Graduate Software Engineer', 'Civil Engineering Graduate', 'Electrical Engineer in Training', 'Data Engineer'], 'Commerce & Finance':['Finance Graduate Analyst', 'Audit Trainee', 'Business Analyst', 'Actuarial Analyst'], 'Health Sciences':['Clinical Research Assistant', 'Pharmacy Intern'], 'Science':['Laboratory Analyst', 'Data Scientist'], 'Law':['Candidate Attorney'], 'Humanities':['Policy Researcher', 'Communications Assistant']};
+const FIELD_WEIGHT = [['Engineering & Technology', 34], ['Commerce & Finance', 34], ['Science', 14], ['Health Sciences', 9], ['Humanities', 6], ['Law', 3]];
+const TYPE_WEIGHT = [['Graduate programme', 30], ['Internship', 30], ['Vacation work', 14], ['Bursary', 12], ['Learnership', 8], ['Entry-level', 6]];
+const POST_RATE = {'Mickey Mpofu':0.95, 'Kagiso Molefe':0.8, 'Naledi Khoza':0.8, 'Ayesha Patel':0.5, 'Thabo Nkosi':0};
+const LISTING_LOG = [];
+(() => {
+  const post = (d, by, role) => {
+    const field = wPick(FIELD_WEIGHT), type = wPick(TYPE_WEIGHT), r = rA(), moderated = role === 'champion' || role === 'recruiter';
+    const outcome = moderated && r < 0.07 ? 'duplicate' : moderated && r < 0.15 ? 'rejected' : 'approved';
+    const views = outcome === 'approved' ? Math.round((60 + rA() * 300) * (/Commerce|Engineering/.test(field) ? 1.2 : 0.8)) : 0;
+    LISTING_LOG.push({d, by, role, field, type, loc:pickA(POST_LOCS), org:pickA(EMPLOYERS), title:pickA(ROLE_TITLES[field]), outcome,
+      v:splitUni(views), s:splitUni(Math.round(views * (0.05 + rA() * 0.12))), c:splitUni(Math.round(views * (0.12 + rA() * 0.16)))});
+  };
+  for (let w = 0; w < 52; w++) {
+    CHAMP_NAMES.forEach(n => { const k = w < 4 ? (CHAMP_WEEKS[n][3 - w] ? 1 + Math.floor(rA() * 3) : 0) : rA() < POST_RATE[n] ? 1 + Math.floor(rA() * 3) : 0; for (let j = 0; j < k; j++) post(w * 7 + Math.floor(rA() * 7), n, 'champion'); });
+    if (rA() < 0.5) post(w * 7 + Math.floor(rA() * 7), 'Lisa Mtshali', 'recruiter');
+    if (rA() < 0.35) { const team = rA() < 0.5; post(w * 7 + Math.floor(rA() * 7), team ? 'Leah Isaacs' : 'Sipho Dlamini', team ? 'admin' : 'exco'); }
+  }
+})();
+/* Content and announcement use, one row per view, download, link click or calendar add, with the scholar's university and field. */
+const RES_EVENTS = [], ANN_EVENTS = [];
+(() => {
+  const pop = [1.4, 1.1, 0.9, 0.6, 0.3, 1.0, 0.12, 0.8];
+  RESOURCES.forEach((r, i) => { const n = Math.round(420 * pop[i % pop.length]);
+    for (let j = 0; j < n; j++) { const e = {id:r.id, d:Math.floor(Math.pow(rA(), 1.2) * 365), uni:uniPick(), field:pickA(FIELDS)}; RES_EVENTS.push({...e, kind:'view'}); if ((r.format === 'document' || r.format === 'video') && rA() < 0.45) RES_EVENTS.push({...e, kind:'download'}); } });
+  EVENTS.forEach(e => { const n = 120 + Math.floor(rA() * 380);
+    for (let j = 0; j < n; j++) { const x = {id:e.id, d:Math.floor(rA() * 45), uni:uniPick(), field:pickA(FIELDS)}; ANN_EVENTS.push({...x, kind:'view'}); if (e.link && rA() < 0.3) ANN_EVENTS.push({...x, kind:'click'}); if (rA() < 0.14) ANN_EVENTS.push({...x, kind:'cal'}); } });
+})();
+const roleOfName = n => /Lisa Mtshali/.test(n || '') ? 'recruiter' : CHAMP_NAMES.includes(n) ? 'champion' : 'team';
+const roleGroup = r => r === 'admin' || r === 'exco' ? 'team' : r;
+
+/* ---------- shared report state, filters and pieces ---------- */
+const A = {period:30, field:'', uni:'', role:'', split:'field', eng:'v', quiet:14, month:1, region:'', grain:'month', chartKey:null};
+const A_PERIODS = [[30, 'Last 30 days'], [90, 'Last 90 days'], [365, 'Last 12 months']];
+const A_ROLES = [['champion', 'Career champions'], ['recruiter', 'Partner recruiters'], ['team', 'Programme team']];
+const sumArr = a => a.reduce((t, x) => t + x, 0);
+const uniIdx = () => A.uni ? INST.findIndex(i => i[0] === A.uni) : -1;
+const eng = (p, k) => uniIdx() < 0 ? sumArr(p[k]) : p[k][uniIdx()];
+const postsIn = (lo, hi) => LISTING_LOG.filter(p => p.d >= lo && p.d < hi && (!A.field || p.field === A.field) && (!A.role || roleGroup(p.role) === A.role));
+const aPosts = () => postsIn(0, A.period);
+const fmtN = n => n.toLocaleString('en-ZA');
+const aPeriodWord = () => ({30:'last 30 days', 90:'last 90 days', 365:'last 12 months'})[A.period];
+function aFilters(opts){
+  const pick = (key, label, list, value, prop, numeric) => dropdown(key, label, list, value, 'A.' + prop + '=' + (numeric ? '+' : '') + '%v;S.open=null;render()', true);
+  return '<div class="tb filters" aria-label="Filters">' +
+    (opts.month ? dropdown('a-mon', 'Month', MONTHS_BACK().map((m, i) => [i, m.label]), A.month, 'A.month=+%v;S.open=null;render()') : dropdown('a-per', 'Period', A_PERIODS, A.period, 'A.period=+%v;S.open=null;render()')) + '<i class="vsep"></i>' +
+    pick('a-fld', 'Field of study', (opts.scholarFields ? FIELDS : FIELDS_OPT).map(f => [f, f]), A.field, 'field') +
+    (opts.region ? pick('a-reg', 'Region', REGIONS.map(r => [r, r]), A.region, 'region') : '') +
+    pick('a-uni', 'University', INST.map(([k, n]) => [k, n]), A.uni, 'uni') +
+    (opts.role ? pick('a-role', 'Posted by', A_ROLES, A.role, 'role') : '') +
+    (opts.note ? '<span class="mlab">' + opts.note + '</span>' : '') + '</div>';
+}
+function aWrap(view, html){
+  const key = JSON.stringify([view, A.period, A.field, A.uni, A.role, A.split, A.eng, A.quiet, A.month, A.region, A.grain, R.view, TARGETS]), still = key === A.chartKey && S.lastView === view;
+  A.chartKey = key; if (!still) setTimeout(countUp, 0);
+  return '<div class="rp' + (still ? ' still' : '') + '">' + html + '</div>';
+}
+const aTile = (label, value, sub, meterPct, cls) => '<div class="kt' + (cls ? ' ' + cls : '') + '"><span class="kh">' + label + '</span><span class="kv" data-n="' + value + '">' + fmtN(value) + '</span><span class="ks">' + sub + '</span>' +
+  (meterPct === undefined ? '' : '<span class="meter" aria-hidden="true"><em style="width:' + Math.min(100, meterPct) + '%"></em></span>') + '</div>';
+/* A plain bar row; it is a button only when it does something. */
+function brow(o, i){
+  const inner = '<span class="nm">' + o.k + '</span><span class="bar"><em class="' + (o.cls || 'pos') + '" style="width:' + o.w + '%"></em></span><span class="val">' + o.v + '</span>';
+  return o.act ? '<button class="srow' + (o.on ? ' on' : '') + '" style="--i:' + i + '"' + (o.c ? card(o.c) : '') + ' onclick="' + o.act + '">' + inner + '</button>'
+    : '<div class="srow static" style="--i:' + i + '"' + (o.c ? card(o.c) : '') + '>' + inner + '</div>';
+}
+const brows = rows => '<div class="srows">' + (rows.length ? rows.map(brow).join('') : '<div class="empty-line">Nothing in this selection</div>') + '</div>';
+const aSeg = (prop, opts) => '<div class="seg msr" role="group">' + opts.map(([k, l]) => '<button aria-pressed="' + (A[prop] === k) + '" onclick="A.' + prop + '=\'' + k + '\';render()">' + l + '</button>').join('') + '</div>';
+/* Twelve bars with a dashed reference line: the average, or the target when there is one. */
+function barTrend(title, key, cols, ref, refLabel, takeHtml){
+  const max = Math.max(1, ref || 0, ...cols.map(c => c.n)), h = v => Math.round(v / max * 85), nb = cols.length;
+  const body = R.view[key] ? tview(['From', 'Count'], cols.map(c => [c.label, c.n])) :
+    '<div class="trend"><div class="tplot"><span class="avg" style="bottom:' + h(ref) + '%"><i>' + refLabel + '</i></span>' +
+      cols.map((c, i) => '<button class="tc' + ((cols.some(x => x.now) ? c.now : i === nb - 1) ? ' now' : '') + '" style="--i:' + i + '"' + card({t:c.tip, rows:c.rows || [{sw:'#2362B4', l:'Count', v:c.n}]}) + ' aria-label="' + c.tip + ': ' + c.n + '"><span class="tv">' + c.n + '</span><em style="height:' + h(c.n) + '%"></em></button>').join('') + '</div>' +
+      '<div class="tx">' + cols.map((c, i) => '<span>' + (i % 3 === 2 || i === nb - 1 ? c.short : '') + '</span>').join('') + '</div></div>';
+  return '<section class="card">' + chead(title, key) + take(takeHtml) + body + '</section>';
+}
+const monthCols = count => MONTHS_BACK().slice(0, 12).reverse().map((m, i) => ({m, label:m.label, short:m.label.slice(0, 3), tip:m.label, n:count(m), now:11 - i === A.month}));
+
+/* ---------- Listings report ---------- */
+function listingsCsv(){
+  const rows = [['Posted', 'Title', 'Employer', 'Field of study', 'Type', 'Location', 'Posted by', 'Role', 'Outcome', 'Views', 'Saves', 'Clicks']]
+    .concat(aPosts().sort((a, b) => a.d - b.d).map(p => [isoAgo(p.d), p.title, p.org, p.field, p.type, p.loc, p.by, A_ROLES.find(r => r[0] === roleGroup(p.role))[1], p.outcome, eng(p, 'v'), eng(p, 's'), eng(p, 'c')]));
+  const q = v => '"' + String(v).replace(/"/g, '""') + '"', name = 'listings-' + aPeriodWord().replace(/ /g, '-') + (A.field ? '-' + A.field.toLowerCase().replace(/[^a-z]+/g, '-') : '') + (A.uni ? '-' + A.uni.toLowerCase() : '') + '.csv';
+  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([rows.map(r => r.map(q).join(',')).join('\n')], {type:'text/csv'})); a.download = name; a.click();
+  toast('Downloaded ' + name);
+}
+function champStats(){
+  return CHAMP_NAMES.map(n => {
+    const mine = LISTING_LOG.filter(p => p.by === n && (!A.field || p.field === A.field)), inP = mine.filter(p => p.d < A.period);
+    const weeks = [3, 2, 1, 0].map(w => mine.filter(p => p.d >= w * 7 && p.d < w * 7 + 7).length);
+    const last = mine.length ? Math.min(...mine.map(p => p.d)) : null, rate = k => pct(inP.filter(p => p.outcome === k).length, inP.length);
+    return {n, weeks, posts:inP.length, last, approved:rate('approved'), rejected:rate('rejected'), dup:rate('duplicate')};
+  });
+}
+function champPanel(){
+  const rows = champStats(), quiet = rows.filter(c => c.last === null || c.last >= A.quiet);
+  const wk = c => '<span class="weeks" aria-label="Weekly posts, oldest first: ' + c.weeks.join(', ') + '">' + c.weeks.map(x => '<i class="' + (x >= TARGETS.weekly ? 'on' : x ? 'part' : '') + '" title="' + x + ' posted"></i>').join('') + '</span>';
+  const lastTxt = c => c.last === null ? 'Never' : c.last === 0 ? 'Today' : c.last + 'd ago';
+  return '<section class="card wide champs"><div class="card-head"><h2>Career champions</h2><span class="acts">Not posted in ' +
+      aSeg('quiet', [[7, '7 days'], [14, '14 days'], [30, '30 days']]).replace(/A\.quiet='(\d+)'/g, 'A.quiet=$1') + '</span></div>' +
+    take('Target ' + TARGETS.weekly + ' a week; squares are the last four weeks, oldest first. ' + (quiet.length ? '<b>' + quiet.length + ' of ' + rows.length + '</b> have not posted in ' + A.quiet + ' days: ' + quiet.map(c => c.n).join(', ') : 'Every champion posted in the last ' + A.quiet + ' days')) +
+    '<div class="tablewrap"><table class="rt"><thead><tr><th>Champion</th><th>This week</th><th>Weekly posts</th><th class="num">Posted</th><th class="num">Approved</th><th class="num">Rejected</th><th class="num">Duplicates</th><th>Last posted</th></tr></thead><tbody>' +
+    rows.map(c => '<tr class="' + (quiet.includes(c) ? 'quiet' : '') + '"><td><span class="who">' + avatarOf(c.n, 'champion') + '<span class="nm">' + c.n + '</span></span></td><td>' + '<span class="pill ' + (c.weeks[3] >= TARGETS.weekly ? 'live' : 'off') + '"><i></i>' + c.weeks[3] + ' of ' + TARGETS.weekly + '</span></td><td>' + wk(c) + '</td>' +
+      '<td class="num">' + c.posts + '</td><td class="num">' + (c.posts ? c.approved + '%' : '–') + '</td><td class="num">' + (c.posts ? c.rejected + '%' : '–') + '</td><td class="num">' + (c.posts ? c.dup + '%' : '–') + '</td><td>' + lastTxt(c) + '</td></tr>').join('') +
+    '</tbody></table></div></section>';
+}
+V.insights = () => {
+  const posts = aPosts(), prev = A.period < 365 ? postsIn(A.period, A.period * 2) : null, live = posts.filter(p => p.outcome === 'approved');
+  const sum = k => live.reduce((t, p) => t + eng(p, k), 0), views = sum('v'), saves = sum('s'), clicks = sum('c');
+  const chg = prev ? (posts.length - prev.length >= 0 ? '▲ ' : '▼ ') + Math.abs(posts.length - prev.length) + ' on the period before' : 'posted';
+  /* posting trend: twelve weeks, or twelve months for the year view */
+  const yr = A.period === 365, size = yr ? 30 : 7;
+  const cols = Array.from({length:12}, (_, i) => { const lo = (11 - i) * size, hi = lo + size, n = postsIn(lo, hi).length; return {n, label:fmtD(isoAgo(hi - 1)), short:fmtD(isoAgo(hi - 1)), tip:(yr ? '' : 'Week of ') + fmtD(isoAgo(hi - 1))}; });
+  const avg = Math.round(sumArr(cols.map(c => c.n)) / 12);
+  /* split: what was posted, by field, type, location or employer */
+  const SPLIT = {field:['Field', p => p.field], type:['Type', p => p.type], loc:['Location', p => p.loc], org:['Employer', p => p.org]}, sk = SPLIT[A.split][1];
+  const splitRows = Object.entries(posts.reduce((m, p) => (m[sk(p)] = (m[sk(p)] || 0) + 1, m), {})).sort((a, b) => b[1] - a[1]).slice(0, 8);
+  const splitMax = Math.max(1, ...splitRows.map(r => r[1]));
+  /* what scholars can see today, from the live list in Job listings */
+  const now = OPPS.filter(o => !hiddenListing(o)), liveNow = now.filter(o => o.days >= 0), soonNow = liveNow.filter(o => o.days <= 7), expNow = OPPS.filter(o => o.days < 0);
+  const byFieldNow = FIELDS_OPT.map(f => ({f, n:liveNow.filter(o => fieldsOf(o).includes(f)).length})).sort((a, b) => a.n - b.n), fewMax = Math.max(1, ...byFieldNow.map(x => x.n));
+  const thin = byFieldNow.filter(x => x.n <= 1);
+  /* engagement */
+  const EK = {v:'Views', s:'Saves', c:'Clicks'}, ek = A.eng;
+  const fRows = FIELDS_OPT.map(f => ({k:f, n:live.filter(p => p.field === f).reduce((t, p) => t + eng(p, ek), 0)})).sort((a, b) => b.n - a.n), fMax = Math.max(1, ...fRows.map(r => r.n));
+  const uRows = INST.map(([k, nm], i) => ({k, nm, n:live.reduce((t, p) => t + p[ek][i], 0)})).sort((a, b) => b.n - a.n), uMax = Math.max(1, ...uRows.map(r => r.n));
+  const top = k => live.slice().sort((a, b) => eng(b, k) - eng(a, k)).slice(0, 5);
+  const topRows = k => { const t = top(k), m = Math.max(1, ...t.map(p => eng(p, k))); return brows(t.map((p, i) => ({k:p.title + '<span class="sm"> · ' + p.org + '</span>', w:pct(eng(p, k), m), v:fmtN(eng(p, k)), i}))); };
+  return aWrap('insights', '<div class="page-head"><h1>Listings report</h1><button class="iconbtn" title="Export these listings" aria-label="Export CSV" onclick="listingsCsv()">' + RICO.download + '</button></div>' +
+    aFilters({role:true, note:A.uni ? 'University applies to views, saves and clicks' : ''}) +
+    '<div class="kts">' + aTile('Listings posted', posts.length, chg) + aTile('Views', views, aPeriodWord()) + aTile('Saves', saves, pct(saves, views) + '% of views') + aTile('Clicks to employers', clicks, pct(clicks, views) + '% of views') + '</div>' +
+    '<div class="dg">' + barTrend('Listings posted each ' + (yr ? 'month' : 'week'), 'lp', cols, avg, 'average ' + avg, '<b>' + cols[11].n + '</b> this ' + (yr ? 'month' : 'week') + ' · average ' + avg) +
+      '<section class="card">' + chead('What was posted', 'ls') + '<div class="segrow">' + aSeg('split', [['field', 'Field'], ['type', 'Type'], ['loc', 'Location'], ['org', 'Employer']]) + '</div>' +
+        (R.view.ls ? tview([SPLIT[A.split][0], 'Listings'], splitRows) : brows(splitRows.map(([k, n], i) => ({k, w:pct(n, splitMax), v:n, act:A.split === 'field' ? "A.field='" + resc(k) + "';render()" : ''})))) + '</section></div>' +
+    '<div class="dg">' +
+      '<section class="card">' + chead('Fields with few listings', 'lf') + take(thin.length ? '<b>' + thin.map(x => x.f).join(', ') + '</b> ' + (thin.length === 1 ? 'has' : 'have') + ' one listing or none. Ask champions to look.' : 'Every field has at least two live listings') +
+        (R.view.lf ? tview(['Field', 'Live listings'], byFieldNow.map(x => [x.f, x.n])) : brows(byFieldNow.map((x, i) => ({k:x.f, w:pct(x.n, fewMax), v:x.n ? x.n + ' live' : 'None', act:"A.field='" + resc(x.f) + "';render()"})))) + '</section>' +
+      '<section class="card">' + chead('Live listings right now', 'ln') + take('From Job listings, today') +
+        '<div class="nowtiles">' + [['live', 'Live', liveNow.length, ''], ['soon', 'Closing in 7 days', soonNow.length, 'amb'], ['expired', 'Expired, still stored', expNow.length, 'rem']].map(([tab, l, n, cls]) => '<button class="nowt ' + cls + '" onclick="S.lsTab=\'' + tab + '\';nav(\'listings\')"><b>' + n + '</b><span>' + l + '</span></button>').join('') + '</div></section>' +
+    '</div>' +
+    '<div class="dg">' +
+      '<section class="card">' + chead(EK[ek] + ' by field of study', 'le') + '<div class="segrow">' + aSeg('eng', [['v', 'Views'], ['s', 'Saves'], ['c', 'Clicks']]) + '</div>' +
+        (R.view.le ? tview(['Field', EK[ek]], fRows.map(r => [r.k, r.n])) : brows(fRows.map((r, i) => ({k:r.k, w:pct(r.n, fMax), v:fmtN(r.n), act:"A.field='" + resc(r.k) + "';render()", on:A.field === r.k})))) + '</section>' +
+      '<section class="card">' + chead(EK[ek] + ' by university', 'lu') + take('Counted by the scholar’s university') +
+        (R.view.lu ? tview(['University', EK[ek]], uRows.map(r => [r.nm, r.n])) : brows(uRows.map((r, i) => ({k:r.k, w:pct(r.n, uMax), v:fmtN(r.n), act:"A.uni=A.uni==='" + r.k + "'?'':'" + r.k + "';render()", on:A.uni === r.k})))) + '</section>' +
+    '</div>' +
+    '<div class="dg">' +
+      '<section class="card">' + chead('Most viewed', 'mv') + (R.view.mv ? tview(['Listing', 'Employer', 'Views'], top('v').map(p => [p.title, p.org, eng(p, 'v')])) : topRows('v')) + '</section>' +
+      '<section class="card">' + chead('Most saved', 'ms') + (R.view.ms ? tview(['Listing', 'Employer', 'Saves'], top('s').map(p => [p.title, p.org, eng(p, 's')])) : topRows('s')) + '</section>' +
+    '</div>' + champPanel());
+};
+
+/* ---------- Content report: the library and the announcement board ---------- */
+const resIn = e => e.d < A.period && (!A.field || e.field === A.field) && (!A.uni || e.uni === A.uni);
+V.content = () => {
+  const res = RESOURCES.filter(r => !A.role || roleOfName(r.by) === A.role), anns = EVENTS.filter(e => !e.scheduled && (!A.role || roleOfName(e.by || e.who) === A.role));
+  const rv = RES_EVENTS.filter(resIn), av = ANN_EVENTS.filter(resIn);
+  const count = (list, id, kind) => list.filter(e => e.id === id && e.kind === kind).length;
+  const rRows = res.map(r => ({r, v:count(rv, r.id, 'view'), dl:count(rv, r.id, 'download')})).sort((a, b) => b.v - a.v), rMax = Math.max(1, ...rRows.map(x => x.v));
+  const least = rRows.slice(-2).filter(x => rRows.length > 3);
+  const cRows = RCATS.map(c => ({k:c, v:rRows.filter(x => x.r.group === c).reduce((t, x) => t + x.v, 0), dl:rRows.filter(x => x.r.group === c).reduce((t, x) => t + x.dl, 0)})).sort((a, b) => b.v - a.v), cMax = Math.max(1, ...cRows.map(x => x.v));
+  const aRows = anns.map(e => ({e, v:count(av, e.id, 'view'), cl:count(av, e.id, 'click'), cal:count(av, e.id, 'cal')})).sort((a, b) => b.v - a.v);
+  const acRows = ANN_CATS.map(([k, l]) => ({k:l, v:aRows.filter(x => x.e.cat === k).reduce((t, x) => t + x.v, 0), cl:aRows.filter(x => x.e.cat === k).reduce((t, x) => t + x.cl, 0), cal:aRows.filter(x => x.e.cat === k).reduce((t, x) => t + x.cal, 0)})), acMax = Math.max(1, ...acRows.map(x => x.v));
+  const tot = (rows, k) => rows.reduce((t, x) => t + x[k], 0);
+  return aWrap('content', '<div class="page-head"><h1>Content report</h1></div>' + aFilters({role:true, scholarFields:true}) +
+    '<div class="kts">' + aTile('Resource views', tot(rRows, 'v'), aPeriodWord()) + aTile('Downloads', tot(rRows, 'dl'), 'documents and videos') + aTile('Announcement views', tot(aRows, 'v'), aPeriodWord()) + aTile('Sign-ups and calendar adds', tot(aRows, 'cl') + tot(aRows, 'cal'), tot(aRows, 'cl') + ' link clicks · ' + tot(aRows, 'cal') + ' calendar adds') + '</div>' +
+    '<div class="dg">' +
+      '<section class="card">' + chead('Resources', 'cr') + take(rRows.length ? 'Most used: <b>' + rRows[0].r.title + '</b>' + (least.length ? ' · least used: <b>' + least.map(x => x.r.title).join(', ') + '</b>, worth refreshing or retiring' : '') : 'Nothing posted') +
+        (R.view.cr ? tview(['Resource', 'Category', 'Views', 'Downloads'], rRows.map(x => [x.r.title, x.r.group, x.v, x.dl])) : brows(rRows.map((x, i) => ({k:x.r.title, w:pct(x.v, rMax), v:fmtN(x.v), cls:least.includes(x) ? 'rem' : '', c:{t:x.r.title, rows:[{sw:'#2362B4', l:'Views', v:x.v}, {sw:'none', l:'Downloads', v:x.dl}]}, act:'openResource(' + x.r.id + ')'})))) + '</section>' +
+      '<section class="card">' + chead('Resources by category', 'cc') + take('Views across each category') +
+        (R.view.cc ? tview(['Category', 'Views', 'Downloads'], cRows.map(x => [x.k, x.v, x.dl])) : brows(cRows.map((x, i) => ({k:x.k, w:pct(x.v, cMax), v:fmtN(x.v), c:{t:x.k, rows:[{sw:'#2362B4', l:'Views', v:x.v}, {sw:'none', l:'Downloads', v:x.dl}]}})))) + '</section>' +
+    '</div>' +
+    '<div class="dg">' +
+      '<section class="card">' + chead('Announcements by category', 'ac') + take('Views, with sign-up clicks and calendar adds on hover') +
+        (R.view.ac ? tview(['Category', 'Views', 'Link clicks', 'Calendar adds'], acRows.map(x => [x.k, x.v, x.cl, x.cal])) : brows(acRows.map((x, i) => ({k:x.k, w:pct(x.v, acMax), v:fmtN(x.v), c:{t:x.k, rows:[{sw:'#2362B4', l:'Views', v:x.v}, {sw:'none', l:'Link clicks', v:x.cl}, {sw:'none', l:'Calendar adds', v:x.cal}]}})))) + '</section>' +
+      '<section class="card">' + chead('Each announcement', 'aa') + '<div class="tablewrap"><table class="rt compact"><thead><tr><th>Announcement</th><th class="num">Views</th><th class="num">Link clicks</th><th class="num">Calendar adds</th></tr></thead><tbody>' +
+        aRows.map(x => '<tr><td><span class="nm">' + x.e.title + '</span><br><span class="sm">' + catLabel(x.e.cat) + (x.e.past ? ' · ended' : '') + '</span></td><td class="num">' + fmtN(x.v) + '</td><td class="num">' + (x.e.link ? fmtN(x.cl) : '–') + '</td><td class="num">' + fmtN(x.cal) + '</td></tr>').join('') + '</tbody></table></div></section>' +
+    '</div>');
+};
+
+/* ---------- Programme dashboard: one month against the targets, and month on month by university and region ---------- */
+const progPool = () => STU.filter(st => (!A.uni || st.inst === A.uni) && (!A.region || REGION_OF[st.inst] === A.region) && (!A.field || st.field === A.field));
+const activeIn = (st, lo, hi) => st.apps.some(a => a.d >= lo && a.d <= hi) || (st.login !== null && st.login >= lo && st.login <= hi);
+const appsInM = (st, lo, hi) => st.apps.filter(a => a.d >= lo && a.d <= hi);
+const listedIn = m => LISTING_LOG.filter(p => p.d >= m.lo && p.d <= m.hi && p.outcome === 'approved').length;
+function champsWeekly(m){
+  const weeks = Math.max(1, Math.floor((m.hi - m.lo + 1) / 7));
+  return CHAMP_NAMES.filter(n => { const ds = LISTING_LOG.filter(p => p.by === n && p.d >= m.lo && p.d <= m.hi).map(p => Math.floor((p.d - m.lo) / 7)); return Array.from({length:weeks}, (_, w) => ds.includes(w)).every(Boolean); }).length;
+}
+function progCsv(){
+  const ms = MONTHS_BACK(), m = ms[A.month], pm = ms[A.month + 1], pool = progPool();
+  const rows = [['University', 'Region', 'Active scholars', 'Active the month before', 'Applications', 'Offers']].concat(INST.filter(([k]) => pool.some(st => st.inst === k)).map(([k, nm]) => { const p = pool.filter(st => st.inst === k);
+    return [nm, REGION_OF[k], p.filter(st => activeIn(st, m.lo, m.hi)).length, pm ? p.filter(st => activeIn(st, pm.lo, pm.hi)).length : '', p.reduce((t, st) => t + appsInM(st, m.lo, m.hi).length, 0), p.reduce((t, st) => t + appsInM(st, m.lo, m.hi).filter(a => a.status === 'offer').length, 0)]; }));
+  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([rows.map(r => r.join(',')).join('\n')], {type:'text/csv'})); a.download = 'moshal-programme-summary-' + m.key + '.csv'; a.click();
+  toast('Downloaded moshal-programme-summary-' + m.key + '.csv');
+}
+function setMonthlyEmail(on){ TARGETS.email = on; logIt((on ? 'turned on' : 'turned off') + ' the monthly summary email', 'system'); render(); toast(on ? 'The summary goes to careers@moshal.org on the 1st of each month.' : 'Monthly email turned off.'); }
+function sendSummaryNow(){ const m = MONTHS_BACK()[A.month]; logIt('sent the <b>' + m.label + '</b> summary to careers@moshal.org', 'system'); toast(m.label + ' summary sent to careers@moshal.org.'); }
+function saveTargets(){
+  const v = id => Math.max(1, parseInt((document.getElementById(id) || {}).value, 10) || 0);
+  TARGETS.listings = v('t-listings'); TARGETS.active = v('t-active'); TARGETS.weekly = v('t-weekly');
+  logIt('set the targets to ' + TARGETS.listings + ' listings and ' + TARGETS.active + ' active scholars a month, ' + TARGETS.weekly + ' listings per champion a week', 'system');
+  closeDlg(); toast('Targets saved.');
+}
+V.programme = () => {
+  const ms = MONTHS_BACK(), m = ms[A.month], pm = ms[A.month + 1], pool = progPool();
+  const act = pool.filter(st => activeIn(st, m.lo, m.hi)).length, actPrev = pm ? pool.filter(st => activeIn(st, pm.lo, pm.hi)).length : null;
+  const apps = pool.reduce((t, st) => t + appsInM(st, m.lo, m.hi).length, 0), offers = pool.reduce((t, st) => t + appsInM(st, m.lo, m.hi).filter(a => a.status === 'offer').length, 0);
+  const listed = listedIn(m), listedPrev = pm ? listedIn(pm) : null, weekly = champsWeekly(m);
+  const diff = (a, b) => b === null ? '' : ' · ' + (a - b >= 0 ? '▲ ' : '▼ ') + Math.abs(a - b) + ' on ' + pm.label.split(' ')[0];
+  const lCols = monthCols(listedIn), weekly7 = A.grain === 'week';
+  /* Weekly view: the twelve weeks up to the end of the chosen month. */
+  const aCols = weekly7 ? Array.from({length:12}, (_, i) => { const lo = m.lo + (11 - i) * 7, hi = lo + 6, from = fmtD(isoAgo(hi)); return {label:from, short:from, tip:'Week of ' + from, n:pool.filter(st => activeIn(st, lo, hi)).length}; })
+    : monthCols(x => pool.filter(st => activeIn(st, x.lo, x.hi)).length);
+  const wkAvg = Math.round(sumArr(aCols.map(c => c.n)) / 12);
+  const uniRows = REGIONS.filter(r => !A.region || r === A.region).map(reg => { const unis = INST.filter(([k]) => REGION_OF[k] === reg && (!A.uni || k === A.uni)).map(([k, nm]) => { const p = pool.filter(st => st.inst === k);
+      return {k, nm, n:p.length, a:p.filter(st => activeIn(st, m.lo, m.hi)).length, ap:pm ? p.filter(st => activeIn(st, pm.lo, pm.hi)).length : 0, apps:p.reduce((t, st) => t + appsInM(st, m.lo, m.hi).length, 0), off:p.reduce((t, st) => t + appsInM(st, m.lo, m.hi).filter(a => a.status === 'offer').length, 0)}; });
+    return {reg, unis, a:sumArr(unis.map(u => u.a)), ap:sumArr(unis.map(u => u.ap)), apps:sumArr(unis.map(u => u.apps)), off:sumArr(unis.map(u => u.off)), n:sumArr(unis.map(u => u.n))}; }).filter(r => r.unis.length);
+  const chgCell = (a, b) => '<td class="num"><span class="chg ' + (a > b ? 'up' : a < b ? 'down' : '') + '">' + (a > b ? '▲ ' : a < b ? '▼ ' : '') + Math.abs(a - b) + '</span></td>';
+  const row = (cls, name, x) => '<tr class="' + cls + '"><td>' + name + '</td><td class="num">' + x.a + ' <span class="sm">of ' + x.n + '</span></td>' + (pm ? chgCell(x.a, x.ap) : '<td></td>') + '<td class="num">' + x.apps + '</td><td class="num">' + x.off + '</td></tr>';
+  return aWrap('programme', '<div class="page-head"><h1>Programme dashboard</h1><button class="btn btn-ghost btn-sm" onclick="S.dlg={kind:\'targets\'};render()">Targets</button><button class="iconbtn" title="Download this month" aria-label="Download CSV" onclick="progCsv()">' + RICO.download + '</button></div>' +
+    aFilters({month:true, region:true, scholarFields:true}) +
+    '<div class="kts">' +
+      aTile('Listings posted', listed, 'target ' + TARGETS.listings + diff(listed, listedPrev), pct(listed, TARGETS.listings)) +
+      aTile('Active scholars', act, 'target ' + TARGETS.active + diff(act, actPrev), pct(act, TARGETS.active)) +
+      aTile('Champions posting every week', weekly, 'of ' + CHAMP_NAMES.length + ' champions', pct(weekly, CHAMP_NAMES.length)) +
+      aTile('Applications', apps, offers + ' offers') + '</div>' +
+    '<div class="dg">' + barTrend('Listings posted each month', 'pl', lCols, TARGETS.listings, 'target ' + TARGETS.listings, '<b>' + listed + '</b> in ' + m.label + ' · target ' + TARGETS.listings) +
+      barTrend('Active scholars each ' + (weekly7 ? 'week' : 'month'), 'pa', aCols, weekly7 ? wkAvg : TARGETS.active, weekly7 ? 'average ' + wkAvg : 'target ' + TARGETS.active,
+        (weekly7 ? '<b>' + aCols[11].n + '</b> in the week of ' + aCols[11].short : '<b>' + act + '</b> in ' + m.label) + ' · signed in or applied' + (A.uni ? ' · ' + A.uni : '')).replace('</h2>', '</h2>' + aSeg('grain', [['month', 'Monthly'], ['week', 'Weekly']])) + '</div>' +
+    '<section class="card"><div class="card-head"><h2>By region and university</h2></div>' + take(m.label + (pm ? ', with the change on ' + pm.label.split(' ')[0] : '')) +
+      '<div class="tablewrap"><table class="rt prog"><thead><tr><th>Where</th><th class="num">Active scholars</th><th class="num">Change</th><th class="num">Applications</th><th class="num">Offers</th></tr></thead><tbody>' +
+      uniRows.map(r => row('reg', '<b>' + r.reg + '</b>', r) + r.unis.map(u => row('', '<span class="ind">' + u.nm + '</span>', u)).join('')).join('') + '</tbody></table></div></section>' +
+    '<section class="card mailcard"><div class="ml"><b>Email this summary every month</b><span>On the 1st, to careers@moshal.org: the four numbers above and the table by region.</span></div>' +
+      '<label class="switch"><input type="checkbox"' + (TARGETS.email ? ' checked' : '') + ' onchange="setMonthlyEmail(this.checked)" aria-label="Email the monthly summary"><i></i></label>' +
+      '<button class="btn btn-ghost btn-sm" onclick="sendSummaryNow()">' + ICO.send + 'Send ' + m.label.split(' ')[0] + ' now</button></section>');
+};
 /* Months are counted back from the prototype's today; the current month runs to today. Data reaches back 365 days. */
 const MONTHS_BACK = () => { const t = new Date(TODAY_ISO + 'T12:00:00'), out = [];
   for (let i = 0; i < 12; i++) { const a = new Date(t.getFullYear(), t.getMonth() - i, 1, 12), b = i ? new Date(t.getFullYear(), t.getMonth() - i + 1, 0, 12) : t;
@@ -2336,12 +2591,14 @@ V.admin = () => {
     '<div class="dg">' + trendPanel(pool) + funnelPanel(pool) + '</div>' +
     '<div class="dg">' + placePanel(pool) + fieldPanel(pool) + '</div>' +
     '<div class="dg">' + finalPanel() + yearPanel() + '</div>' +
-    namesPanel(pool) + '</div>';
+    (R.showNames ? namesPanel(pool) : namesGate(pool)) + '</div>';
 };
+const namesGate = pool => '<section class="card names gate"><div class="card-head"><h2>Names</h2></div>' + take('<b>' + groupList(pool).length + ' scholars</b> in this selection. The report shows totals; open the names only when you need to contact someone.') +
+  '<div class="gatebtn"><button class="btn btn-ghost btn-sm" onclick="R.showNames=true;render();setTimeout(scrollNames,0)">' + ICO.user + 'Show names</button></div></section>';
 
 const sb = document.getElementById('sb');
 sb.addEventListener('navigate', e => nav(e.detail.key));
-const PAGE_ROLE = {submit:'champion', subs:'champion', queue:'admin', admin:'admin', postres:'admin', postevent:'admin', console:'admin', approvals:'admin', users:'admin', insights:'admin', log:'admin'};
+const PAGE_ROLE = {submit:'champion', subs:'champion', queue:'admin', admin:'admin', postres:'admin', postevent:'admin', console:'admin', approvals:'admin', users:'admin', insights:'admin', programme:'admin', content:'admin', log:'admin'};
 const title = (t, n) => '<div class="page-head' + (PAGE_ROLE[S.view] !== undefined ? (PAGE_ROLE[S.view] ? ' r-' + PAGE_ROLE[S.view] : '') : ' r-scholar') + '"><h1>' + t + '</h1>' + (n ? '<span class="n">' + n + '</span>' : '') + '</div>';
 document.addEventListener('click', () => { if (S.open) { S.open = null; render(); } });
 document.addEventListener('keydown', e => {

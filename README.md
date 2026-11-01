@@ -135,6 +135,25 @@ Final years split into three exclusive groups: **Has an offer**, **Applied, no o
 **No offer, did not apply**. The last one is the danger list and the only thing on the page drawn
 in amber.
 
+## Reports
+
+The admin's Insights section has four reports. Each one has the same filter row: period (or
+month), field of study and university, plus who posted where that applies. Each has a CSV export.
+The history behind them is generated example data with its own seed.
+
+| Report | What it answers |
+|--------|-----------------|
+| Programme dashboard | One month against the targets (listings posted, active scholars, champions posting every week). Month-on-month bars, active scholars weekly or monthly, and a table by region and university. The Targets button sets the numbers the brief left blank. A switch emails the summary to the Careers team on the 1st |
+| Listings report | Listings posted each week or month, split by field, type, location or employer. Fields with few listings, and what is live, closing or expired today. Views, saves and clicks by field and university. Most viewed and most saved. Each champion's week against the target, the approval, rejection and duplicate rates, and who has not posted in 7, 14 or 30 days |
+| Content report | Views and downloads per resource and category, with the least used named. Views, link clicks and calendar adds for each announcement and category |
+| Scholar report | Who applied, who has offers, and which final years need a call |
+
+Named scholars appear only in the Scholar report, and only after "Show names" or picking a group.
+Everything else shows totals.
+
+Regions group the universities: Western Cape (UCT, Stellenbosch), Gauteng (Wits, UP, UJ) and
+KwaZulu-Natal (UKZN). The Careers team may define regions differently.
+
 ## How the Scholar report is meant to be read
 
 The page is a dashboard for someone who is not an analyst: plain bars only, one short line under
