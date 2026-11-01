@@ -146,7 +146,6 @@ h3{font-family:var(--display);font-size:16px;font-weight:500;color:var(--navy);m
 .rrow:hover b{color:var(--brand)}
 .rrow p{margin:2px 0 0;font-size:13px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .rrow .m{font-size:13px;color:var(--muted);text-align:right}
-.rrow .m.done{color:var(--ok)}
 .rrow svg{width:16px;height:16px;color:var(--faint)}
 .rrow .ok-ic{color:var(--ok)}
 .progress{display:flex;align-items:center;gap:12px;font-size:13px;color:var(--muted);margin:-12px 0 20px}
@@ -801,8 +800,7 @@ table.rt .lnk:hover{color:var(--brand)}
 .loglist .li:first-child{border-top:0}
 .loglist .ic{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--brand-soft);color:var(--brand)}
 .loglist .ic svg{width:14px;height:14px}
-.loglist .k-approve .ic{background:var(--ok-soft);color:var(--ok)}
-.loglist .k-reject .ic{background:var(--bad-soft);color:var(--bad)}
+.loglist .k-listing .ic{background:var(--brand-soft);color:var(--brand)}
 .loglist .k-system .ic{background:var(--surface-2);color:var(--muted)}
 .loglist .logtx b{color:var(--navy)}
 .loglist time{font-size:12px;color:var(--muted);white-space:nowrap}
@@ -831,6 +829,7 @@ table.rt .lnk:hover{color:var(--brand)}
 .rp .tb.filters .mlab{font-size:12px;color:var(--muted);margin-left:auto}
 .rp .seg.msr button{height:30px;font-size:13px}
 .kts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:20px}
+.kts.k3{grid-template-columns:repeat(3,minmax(0,1fr))}
 .kt{display:flex;flex-direction:column;gap:4px;padding:16px 18px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);min-width:0;transition:var(--t)}
 .kt.on{border-color:var(--brand);box-shadow:inset 0 0 0 1px var(--brand)}
 .kt.warn{border-left:4px solid var(--alumni)}
@@ -878,20 +877,10 @@ table.rt .lnk:hover{color:var(--brand)}
 .srow .val{font-size:13px;font-weight:600;color:var(--navy);text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
 .fun .bar{background:none;display:flex;justify-content:center}
 .fun .bar em{transform-origin:center}
-.fys{padding:10px 20px 6px}
-.fystack{display:flex;height:22px;border-radius:6px;overflow:hidden;background:var(--track)}
-.fystack button{border:0;padding:0;cursor:pointer;transform-origin:left}
-.fystack button:hover{filter:brightness(.9)}
-.s-o{background:var(--pos)} .s-a{background:var(--pos-soft)} .s-q{background:var(--alumni)}
-.fyleg{display:flex;flex-wrap:wrap;gap:4px 16px;margin-top:10px}
-.fyleg button{border:0;background:none;padding:4px 0;font:inherit;font-size:13px;color:var(--ink);cursor:pointer;display:flex;align-items:center;gap:6px}
-.fyleg button:hover{color:var(--brand)}
-.fyleg i{width:10px;height:10px;border-radius:3px}
-.fyleg b{color:var(--navy);font-weight:600}
 @keyframes growX{from{transform:scaleX(0)}}
 @keyframes growY{from{transform:scaleY(0)}}
 @keyframes rise{from{opacity:0;transform:translateY(8px)}}
-.rp .bar em,.meter em,.fystack button{transform-origin:left;animation:growX .8s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(var(--i,0) * 70ms + 120ms)}
+.rp .bar em,.meter em{transform-origin:left;animation:growX .8s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(var(--i,0) * 70ms + 120ms)}
 .rp .fun .bar em{transform-origin:center}
 .tc em{transform-origin:bottom;animation:growY .8s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(var(--i,0) * 45ms + 120ms)}
 .tc .tv{animation:rise .5s ease-out both;animation-delay:calc(var(--i,0) * 45ms + 500ms)}
@@ -942,6 +931,11 @@ table.rt.prog tr.reg td{background:var(--surface-2)} table.rt.prog .ind{padding-
 .switch input:focus-visible + i{outline:2px solid var(--brand);outline-offset:2px}
 .names.gate .gatebtn{padding:0 20px 18px}
 @media (max-width:520px){.nowtiles{grid-template-columns:1fr}}
+.ctl.sel .sk{font-size:12px;color:var(--muted);margin-right:6px}
+.ctl.sel.on .sk{color:inherit;opacity:.8}
+.pop .o[disabled]{opacity:.45;cursor:not-allowed}
+.xsel{height:36px;border:1px solid var(--line);border-radius:8px;padding:0 10px;font:inherit;font-size:14px;background:var(--surface);color:var(--ink);max-width:100%}
+.take .lnk{border:0;background:none;padding:0;font:inherit;font-weight:600;color:var(--brand);cursor:pointer;text-decoration:underline;text-underline-offset:2px}
 /* My applications stages, Salesforce step, monthly report, video upload */
 .apphint{margin:-8px 0 14px;font-size:14px;color:var(--muted)}
 .stagepick select{font:inherit;font-size:13px;padding:6px 28px 6px 10px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink)}
@@ -950,14 +944,10 @@ table.rt.prog tr.reg td{background:var(--surface-2)} table.rt.prog .ind{padding-
 .sfgo{margin-top:8px;border-color:#EBB22A;background:#FFF6DE;color:#6B4E00}
 .sfdlg .pb{display:grid;gap:14px} .sfopen{justify-self:start} .sfdlg .pf{justify-content:space-between}
 .sfdlg .pf .btn[disabled]{opacity:.5;cursor:not-allowed}
-.msum{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
-.msum div{display:grid;gap:2px;padding:10px;border-radius:10px;background:var(--surface-2);text-align:center}
-.msum b{font-size:20px;font-weight:500;color:var(--ink)} .msum span{font-size:12px;color:var(--muted)}
-.page-head .monthbtn{margin-left:auto} .page-head .monthbtn svg{width:16px;height:16px}
 .vidup{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:8px}
 .vchip{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink)} .vchip svg{width:16px;height:16px;color:var(--ok)}
 .resgo video,.rich video{width:100%;max-height:480px;border-radius:10px;background:#000}
-@media (max-width:520px){.msum{grid-template-columns:repeat(3,minmax(0,1fr))} .sfdlg .pf{flex-direction:column-reverse;align-items:stretch}}
+@media (max-width:520px){.sfdlg .pf{flex-direction:column-reverse;align-items:stretch}}
 </style>
 </head>
 <body>
@@ -1008,7 +998,7 @@ const OPP_TYPES = ['Graduate programme','Internship','Learnership','Entry-level'
 let OPPS = [
   {id:1, title:'Graduate Software Engineer', org:'TechNova', views:412, clicks:96, age:2, type:'Graduate programme', field:'Engineering & Technology', loc:'Cape Town', closes:'30 Oct 2026', days:21, by:'Mickey Mpofu', saved:true, applied:false,
    desc:'Build digital solutions in an agile engineering team. Collaborate with developers, designers and product specialists in an inclusive graduate environment, with a mentor for your first year.'},
-  {id:2, title:'Finance Graduate Analyst', org:'CapeBridge', views:380, clicks:71, age:5, type:'Graduate programme', field:'Commerce & Finance', loc:'Cape Town', closes:'31 Oct 2026', days:22, by:'Mickey Mpofu', saved:false, applied:true, stage:'interview',
+  {id:2, title:'Finance Graduate Analyst', org:'CapeBridge', views:380, clicks:71, age:5, type:'Graduate programme', field:'Commerce & Finance', loc:'Cape Town', closes:'31 Oct 2026', days:22, by:'Mickey Mpofu', saved:false, applied:true, stage:'applied',
    desc:'A two-year rotation through corporate finance, treasury and risk, with study support towards CFA Level I.'},
   {id:3, title:'Business Analyst Internship', org:'FutureLab', views:295, clicks:48, age:9, type:'Internship', field:'Commerce & Finance', loc:'Cape Town', closes:'15 Nov 2026', days:37, by:'Mickey Mpofu', saved:true, applied:false,
    desc:'Ten-week paid internship working with client teams on process mapping and requirements gathering.'},
@@ -1034,21 +1024,21 @@ let OPPS = [
    desc:'Twelve-month trainee programme across store operations, buying and logistics.'}
 ];
 let RESOURCES = [
-  {id:1, group:'CV tips and templates', kind:'CV tips and templates', format:'article', title:'CV writing toolkit', icon:'book', mins:12, done:true, blurb:'The one-page format South African graduate recruiters expect, with two worked examples.',
+  {id:1, group:'CV tips and templates', format:'article', title:'CV writing toolkit', icon:'book', mins:12, blurb:'The one-page format South African graduate recruiters expect, with two worked examples.',
    body:['Recruiters spend under a minute on a first read, so the top third of the page has to carry your degree, your graduation year and one line about what you are looking for.','Keep it to one page until you have three years of work behind you. Vacation work, tutoring and society roles all count as experience: name what you did and what changed because you did it.','List your referees only when you have asked them. "References available on request" is fine, and it saves a line.']},
-  {id:2, group:'Interview preparation', kind:'Interview preparation', format:'article', title:'Interview question bank', icon:'user', mins:18, done:false, blurb:'Forty questions graduate panels actually ask, grouped by what they are testing.',
+  {id:2, group:'Interview preparation', format:'article', title:'Interview question bank', icon:'user', mins:18, blurb:'Forty questions graduate panels actually ask, grouped by what they are testing.',
    body:['Every graduate interview tests three things: can you do the work, will you fit the team, and will you still be here in two years.','Prepare four stories you can tell in two minutes each: a time you fixed something, a time you worked with someone difficult, a time you were wrong, and a time you led without being in charge.','Ask two questions at the end. The best ones are about what the first six months look like and how the team decides what to work on.']},
-  {id:3, group:'Cover letters', kind:'Cover letters', format:'article', title:'Graduate cover letter', icon:'send', mins:8, done:false, blurb:'A three-paragraph structure you can fill in for any application in twenty minutes.',
+  {id:3, group:'Cover letters', format:'article', title:'Graduate cover letter', icon:'send', mins:8, blurb:'A three-paragraph structure you can fill in for any application in twenty minutes.',
    body:['Paragraph one: the role you are applying for and the one thing about the organisation that made you apply. Be specific; a line anyone could have written reads as a template.','Paragraph two: the evidence. Two examples from your degree or your vacation work that match what the advert asked for.','Paragraph three: what you want to learn and when you are available. Close politely and stop.']},
-  {id:4, group:'Assessments and psychometric tests', kind:'Assessments and psychometric tests', format:'article', title:'Numerical assessment guide', icon:'brief', mins:15, done:false, blurb:'What the online tests measure and how to practise without paying for a course.',
+  {id:4, group:'Assessments and psychometric tests', format:'article', title:'Numerical assessment guide', icon:'brief', mins:15, blurb:'What the online tests measure and how to practise without paying for a course.',
    body:['Most graduate numerical tests are percentages, ratios and reading a table under time pressure. The maths is school level; the pressure is the test.','Practise with a timer from the start. Twenty minutes of timed questions beats an hour of relaxed ones.','If a question is taking more than ninety seconds, guess and move on. The scoring rewards finishing.']},
-  {id:5, group:'Networking', kind:'Networking', format:'article', title:'Networking checklist', icon:'pin', mins:10, done:false, blurb:'How to use a careers fair or an alumni event when you do not know anyone.',
+  {id:5, group:'Networking', format:'article', title:'Networking checklist', icon:'pin', mins:10, blurb:'How to use a careers fair or an alumni event when you do not know anyone.',
    body:['Arrive early. The first twenty minutes are the only time recruiters are not three deep.','Have one sentence ready: your degree, your year, and the kind of work you are after. That is the whole introduction.','Ask for a name and a next step, not a job. Follow up within two days, referencing something you actually spoke about.']},
-  {id:6, group:'Workplace readiness', kind:'Workplace readiness', format:'article', title:'Workplace readiness', icon:'checkC', mins:14, done:false, blurb:'The first ninety days in a graduate role, and the habits that make them go well.',
+  {id:6, group:'Workplace readiness', format:'article', title:'Workplace readiness', icon:'checkC', mins:14, blurb:'The first ninety days in a graduate role, and the habits that make them go well.',
    body:['Write down what you are told in your first week. Nobody expects you to remember it; everybody notices when you ask twice.','Find the person who has been there two years longer than you and ask them how things really work.','Set up a monthly check-in with your manager yourself. Waiting to be managed is the most common graduate mistake.']},
-  {id:7, group:'CV tips and templates', kind:'CV tips and templates', format:'document', url:'https://careers.moshal.example/templates/graduate-cv.docx', title:'One-page graduate CV template', icon:'download', mins:3, done:false, blurb:'A Word template in the layout the CV toolkit describes. Download it and fill in your own details.',
+  {id:7, group:'CV tips and templates', format:'document', url:'https://careers.moshal.example/templates/graduate-cv.docx', title:'One-page graduate CV template', icon:'download', mins:3, blurb:'A Word template in the layout the CV toolkit describes. Download it and fill in your own details.',
    body:['Open the template in Word or Google Docs, save a copy, and replace every grey line with your own details. Delete any section you have nothing for rather than leaving it empty.']},
-  {id:8, group:'Assessments and psychometric tests', kind:'Assessments and psychometric tests', format:'video', url:'https://careers.moshal.example/videos/psychometric-tests', title:'What psychometric tests measure', icon:'checkC', mins:9, done:false, blurb:'A nine-minute recorded talk from the careers team on verbal, numerical and personality tests.',
+  {id:8, group:'Assessments and psychometric tests', format:'video', url:'https://careers.moshal.example/videos/psychometric-tests', title:'What psychometric tests measure', icon:'checkC', mins:9, blurb:'A nine-minute recorded talk from the careers team on verbal, numerical and personality tests.',
    body:['Recorded at the August assessment clinic. Watch it before your first online test, then try the numerical assessment guide for practice.']}
 ];
 /* The prototype's today, matching the closing dates above. */
@@ -1057,15 +1047,15 @@ const daysTo = iso => iso ? Math.round((new Date(iso + 'T12:00:00') - new Date(T
 const ANN_CATS = [['training', 'Training and workshops'], ['survey', 'Surveys'], ['event', 'Career events'], ['general', 'General notices']];
 const catLabel = k => (ANN_CATS.find(c => c[0] === k) || ANN_CATS[3])[1];
 let EVENTS = [
-  {id:3, cat:'survey', title:'Career readiness survey', date:'2026-10-14', time:'23:59', where:'Online', link:'https://forms.moshal.example/readiness-2026', linkLabel:'Take the survey', pinned:true, going:false, who:'Moshal programme team', about:'Ten minutes. It decides which workshops we run next term, so it is worth your time.'},
-  {id:7, cat:'general', title:'Portal offline for an update', date:'2026-10-11', time:'06:00', where:'Careers Hub', expires:'2026-10-11', going:false, who:'Moshal programme team', about:'The Careers Hub is offline between 06:00 and 07:00 on Sunday. Saved jobs are kept.'},
-  {id:1, cat:'training', title:'CV Masterclass', date:'2026-10-15', time:'15:00', where:'Online', link:'https://meet.moshal.example/cv-masterclass', linkLabel:'Register', going:false, who:'Hosted by the Moshal careers team', about:'Bring a draft CV. We rewrite three live, then you work on yours with feedback from the room.'},
-  {id:2, by:'Lisa Mtshali', cat:'training', title:'Interview skills workshop', date:'2026-10-20', time:'16:30', where:'Online', link:'https://meet.moshal.example/interviews', linkLabel:'Register', going:true, who:'Hosted by Karoo Analytics recruiters', about:'A mock panel, then small-group practice. Recruiters from two partner employers stay for questions.'},
-  {id:8, cat:'event', title:'Wits careers fair', date:'2026-10-28', time:'09:00', where:'Great Hall, Wits, Johannesburg', link:'https://www.wits.ac.za/', linkLabel:'Fair details', going:false, who:'Wits Career Development Unit', about:'Over forty graduate employers. Bring printed CVs; the Moshal stand is next to the main entrance.'},
-  {id:9, cat:'general', title:'Exco applications open', date:'2026-10-30', time:'17:00', where:'Online', link:'https://forms.moshal.example/exco-2027', linkLabel:'Apply', publishOn:'2026-10-16', going:false, who:'Moshal programme team', about:'Past career champions can apply to join the 2027 Exco, who review listings and run the announcement board.'},
-  {id:4, cat:'event', title:'Networking evening', date:'2026-11-03', time:'18:00', where:'Cape Town · In person', link:'https://meet.moshal.example/networking', linkLabel:'Register', going:false, who:'Moshal Alumni chapter', about:'Alumni working in finance, engineering and health sciences. Dress smart casual; snacks provided.'},
-  {id:5, cat:'training', title:'Bursary application clinic', date:'2026-09-28', time:'14:00', where:'Online', going:false, who:'Moshal programme team', about:'Recording and slides are available on request from the careers team.'},
-  {id:6, by:'Lisa Mtshali', cat:'event', title:'Meet the engineers', date:'2026-09-12', time:'10:00', where:'Johannesburg · In person', going:false, who:'Lesedi Power', about:'Site visit and panel with graduate engineers in their second year.'}
+  {id:3, cat:'survey', title:'Career readiness survey', date:'2026-10-14', time:'23:59', where:'Online', link:'https://forms.moshal.example/readiness-2026', pinned:true, who:'Moshal programme team', about:'Ten minutes. It decides which workshops we run next term, so it is worth your time.'},
+  {id:7, cat:'general', title:'Portal offline for an update', date:'2026-10-11', time:'06:00', where:'Careers Hub', expires:'2026-10-11', who:'Moshal programme team', about:'The Careers Hub is offline between 06:00 and 07:00 on Sunday. Saved jobs are kept.'},
+  {id:1, cat:'training', title:'CV Masterclass', date:'2026-10-15', time:'15:00', where:'Online', link:'https://meet.moshal.example/cv-masterclass', who:'Hosted by the Moshal careers team', about:'Bring a draft CV. We rewrite three live, then you work on yours with feedback from the room.'},
+  {id:2, by:'Lisa Mtshali', cat:'training', title:'Interview skills workshop', date:'2026-10-20', time:'16:30', where:'Online', link:'https://meet.moshal.example/interviews', who:'Hosted by Karoo Analytics recruiters', about:'A mock panel, then small-group practice. Recruiters from two partner employers stay for questions.'},
+  {id:8, cat:'event', title:'Wits careers fair', date:'2026-10-28', time:'09:00', where:'Great Hall, Wits, Johannesburg', link:'https://www.wits.ac.za/', who:'Wits Career Development Unit', about:'Over forty graduate employers. Bring printed CVs; the Moshal stand is next to the main entrance.'},
+  {id:9, cat:'general', title:'Exco applications open', date:'2026-10-30', time:'17:00', where:'Online', link:'https://forms.moshal.example/exco-2027', publishOn:'2026-10-16', who:'Moshal programme team', about:'Past career champions can apply to join the 2027 Exco, who review listings and run the announcement board.'},
+  {id:4, cat:'event', title:'Networking evening', date:'2026-11-03', time:'18:00', where:'Cape Town · In person', link:'https://meet.moshal.example/networking', who:'Moshal Alumni chapter', about:'Alumni working in finance, engineering and health sciences. Dress smart casual; snacks provided.'},
+  {id:5, cat:'training', title:'Bursary application clinic', date:'2026-09-28', time:'14:00', where:'Online', who:'Moshal programme team', about:'Recording and slides are available on request from the careers team.'},
+  {id:6, by:'Lisa Mtshali', cat:'event', title:'Meet the engineers', date:'2026-09-12', time:'10:00', where:'Johannesburg · In person', who:'Lesedi Power', about:'Site visit and panel with graduate engineers in their second year.'}
 ];
 /* Derived display fields: an announcement hides itself after its date, or its expiry when it has one. */
 function annNorm(e){
@@ -1078,7 +1068,7 @@ function annNorm(e){
 }
 let NOTIFS = [
   {id:1, text:'<b>Graduate Data Analyst</b> at Karoo Analytics closes in 11 days.', when:'2 hours ago', unread:true, go:() => openJob(4)},
-  {id:2, text:'Your application to <b>CapeBridge</b> moved to interview.', when:'Yesterday', unread:true, go:() => nav('applications')},
+  {id:2, text:'Heard back from <b>CapeBridge</b>? Update your application.', when:'Yesterday', unread:true, go:() => nav('applications')},
   {id:3, text:'New resource: <b>Interview question bank</b>.', when:'3 days ago', unread:false, go:() => openResource(2)}
 ];
 /* Champions publish straight to scholars. A listing reaches an admin only when a scholar reports it or the nightly link check fails. */
@@ -1118,11 +1108,11 @@ const ROLE_LABEL = {scholar:'Scholar', champion:'Career champion', exco:'Exco', 
 const ROLE_PLURAL = {scholar:'Scholars', champion:'Career champions', exco:'Exco members', recruiter:'Partner recruiters', admin:'Admins'};
 const ROLE_CAN = {scholar:'Browse, save and report listings; read content', champion:'Post listings that go live straight away', exco:'Remove listings, manage content and announcements', recruiter:'Post listings, events and resources for their organisation', admin:'Everything, including users, roles and reports'};
 let LOG = [
-  {who:'Sipho Dlamini', what:'kept <b>Clinical Research Assistant</b> by Mickey Mpofu after a scholar reported it', when:'Today 08:12', kind:'approve'},
-  {who:'Refilwe Mokoena', what:'removed <b>Sales Intern</b> by Kagiso Molefe: the link went to a recruitment agency', when:'Yesterday 17:40', kind:'reject'},
+  {who:'Sipho Dlamini', what:'kept <b>Clinical Research Assistant</b> by Mickey Mpofu after a scholar reported it', when:'Today 08:12', kind:'listing'},
+  {who:'Refilwe Mokoena', what:'removed <b>Sales Intern</b> by Kagiso Molefe: the link went to a recruitment agency', when:'Yesterday 17:40', kind:'listing'},
   {who:'Leah Isaacs', what:'pinned <b>Career readiness survey</b>', when:'Yesterday 09:03', kind:'content'},
   {who:'Leah Isaacs', what:'invited <b>Thabo Nkosi</b> as a career champion', when:'7 Oct 14:22', kind:'user'},
-  {who:'System', what:'hid <b>Retail Management Trainee</b> after its closing date', when:'6 Oct 00:00', kind:'system'},
+  {who:'System', what:'hid <b>Retail Management Trainee</b> after its closing date', when:'6 Oct 00:00', kind:'listing'},
   {who:'Leah Isaacs', what:'suspended <b>Jason Adams</b>', when:'1 Oct 10:15', kind:'user'}
 ];
 const logIt = (what, kind) => LOG.unshift({who:ROLES[S.role].name, what, when:'Just now', kind});
@@ -1158,18 +1148,18 @@ const esc = v => String(v).replace(/'/g, "\\'");
 const attr = v => String(v == null ? '' : v).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
 const staff = () => S.role === 'admin' || S.role === 'exco';
 const canPost = () => S.role !== 'scholar' && S.role !== 'exco';
-const myYear = () => YEARS[(ROLES.scholar.year || 1) - 1];
-const visibleTo = x => !x.years || !x.years.length || x.years.includes(myYear());
+/* Items are for everyone, or only for final years (the scholar's last year of study). */
+const visibleTo = x => !x.years || !x.years.length || (x.years.includes('Final years') && ROLES.scholar.year >= ROLES.scholar.years);
 /* Staff see everything; everyone else never sees an expired listing or an announcement that is not yet published. */
 const hiddenListing = o => !!o.title && allMine().some(l => l.title === o.title && l.status !== 'live');
 const forMe = list => staff() ? list : list.filter(x => (S.role !== 'scholar' || visibleTo(x)) && !(x.days < 0) && !x.scheduled && !hiddenListing(x));
 const fieldsOf = o => o.fields || [o.field];
-const audienceNote = x => x.years && x.years.length ? 'For ' + x.years.join(', ') : '';
+const audienceNote = x => x.years && x.years.includes('Final years') ? 'Final years only' : '';
 function audienceField(key, current){
   if (!(staff() || (S.role === 'recruiter' && !key.startsWith('opp:')))) return '';
   if (S.audFor !== key) { S.aud = [...(current || [])]; S.audFor = key; }
   const a = S.aud;
-  return '<div class="field wide"><label>Who sees this</label><div class="chipset aud">' + ['Everyone'].concat(YEARS).map(y => '<button type="button" aria-pressed="' + (y === 'Everyone' ? !a.length : a.includes(y)) + '" onclick="toggleAud(\'' + y + '\',this)">' + y + '</button>').join('') + '</div><div class="hint">Everyone, or only the years you pick. Scholars outside the pick never see it.</div></div>';
+  return '<div class="field wide"><label>Who sees this</label><div class="chipset aud">' + ['Everyone', 'Final years'].map(y => '<button type="button" aria-pressed="' + (y === 'Everyone' ? !a.length : a.includes(y)) + '" onclick="toggleAud(\'' + y + '\',this)">' + y + '</button>').join('') + '</div><div class="hint">Everyone, or only the years you pick. Scholars outside the pick never see it.</div></div>';
 }
 function toggleAud(y, btn){ const a = S.aud || (S.aud = []); if (y === 'Everyone') a.length = 0; else { const i = a.indexOf(y); if (i < 0) a.push(y); else a.splice(i, 1); } [...btn.parentElement.children].forEach(b => b.setAttribute('aria-pressed', b.textContent === 'Everyone' ? !a.length : a.includes(b.textContent))); }
 const pickedYears = (existing, kind) => staff() || (S.role === 'recruiter' && kind !== 'opp') ? [...(S.aud || [])] : [...(existing || [])];
@@ -1182,8 +1172,8 @@ const toISO = text => { const d = new Date(text); return isNaN(d) ? '' : d.getFu
 const savedList = () => OPPS.filter(o => o.saved);
 const appliedList = () => OPPS.filter(o => o.applied);
 /* Scholars apply on the employer's site, so the hub tracks only the stage they report. */
-const APP_STAGES = [['progress', 'In progress'], ['applied', 'Applied'], ['interview', 'Interview'], ['offer', 'Offer'], ['unsuccessful', 'Not successful']];
-const stageLabel = o => (APP_STAGES.find(x => x[0] === (o.stage || 'progress')) || APP_STAGES[0])[1];
+const APP_STAGES = [['applied', 'Applied'], ['offer', 'Offer'], ['unsuccessful', 'Not successful']];
+const stageLabel = o => (APP_STAGES.find(x => x[0] === (o.stage || 'applied')) || APP_STAGES[0])[1];
 /* Offers are recorded in Salesforce, the programme's system of record. Replace with the real scholar portal address. */
 const SALESFORCE_URL = 'https://moshal.my.salesforce.example/scholars/offers';
 const unread = () => NOTIFS.filter(n => n.unread).length;
@@ -1215,10 +1205,10 @@ function sections(){
   }
   const s = [{id:'scholar', label:S.role === 'recruiter' ? 'Explore' : 'Scholar', items:[
     {key:'overview', label:'Overview', icon:'home'},
-    {key:'opps', label:'Opportunities', icon:'search', count:forMe(OPPS).length},
-    {key:'saved', label:'Saved jobs', icon:'bookmark', count:savedList().length || undefined},
+    {key:'opps', label:'Job listings', icon:'search', count:forMe(OPPS).length},
+    {key:'saved', label:'Saved listings', icon:'bookmark', count:savedList().length || undefined},
     {key:'applications', label:'My applications', icon:'check', count:appliedList().length || undefined},
-    {key:'resources', label:'Career resources', icon:'book'},
+    {key:'resources', label:'Content library', icon:'book'},
     {key:'events', label:'Announcements', icon:'megaphone', count:forMe(EVENTS).filter(e => !e.past).length}
   ]}];
   if (lister()) s.push({id:S.role, label:S.role === 'champion' ? 'Career champion' : 'Partner recruiter', items:[
@@ -1274,18 +1264,17 @@ function toggleSave(id){ const o = byId(id); o.saved = !o.saved; syncNav(); rend
 function openJob(id){ S.job = id; S.view = 'job'; S.open = null; syncNav(); render(); window.scrollTo(0, 0); }
 function openResource(id){ S.res = id; S.view = 'res'; S.open = null; syncNav(); render(); window.scrollTo(0, 0); }
 function applyTo(id){ const o = byId(id); if (o.applied) { nav('applications'); return; } S.dlg = {kind:'apply', id}; render(); }
-function confirmApply(){ const o = byId(S.dlg.id); window.open(linkOf(o), '_blank', 'noopener'); o.applied = true; o.stage = 'progress'; S.dlg = null; syncNav(); render(); toast('In My applications as In progress. Update the stage as it moves.'); }
+function confirmApply(){ const o = byId(S.dlg.id); window.open(linkOf(o), '_blank', 'noopener'); o.applied = true; o.stage = 'applied'; S.dlg = null; syncNav(); render(); toast('In My applications as Applied. Update it if you get an offer or hear back.'); }
 function setStage(id, v){
   const o = byId(id);
-  if (v === 'offer' && o.stage !== 'offer') { o.prevStage = o.stage || 'progress'; o.stage = 'offer'; o.sfPending = true; S.dlg = {kind:'sf', id}; render(); return; }
+  if (v === 'offer' && o.stage !== 'offer') { o.prevStage = o.stage || 'applied'; o.stage = 'offer'; o.sfPending = true; S.dlg = {kind:'sf', id}; render(); return; }
   o.stage = v; if (v !== 'offer') { o.sfPending = false; o.sfDone = false; } render(); toast('Stage updated to ' + stageLabel(o) + '.');
 }
 function sfOpened(){ S.dlg.opened = true; render(); }
 function sfDone(){ const o = byId(S.dlg.id); o.sfPending = false; o.sfDone = true; S.dlg = null; render(); toast('Thank you. Your offer is recorded.'); }
-function sfUndo(){ const o = byId(S.dlg.id); o.stage = o.prevStage || 'progress'; o.sfPending = false; S.dlg = null; render(); toast('Stage set back to ' + stageLabel(o) + '.'); }
+function sfUndo(){ const o = byId(S.dlg.id); o.stage = o.prevStage || 'applied'; o.sfPending = false; S.dlg = null; render(); toast('Stage set back to ' + stageLabel(o) + '.'); }
 function editResource(id){ S.editRes = id; S.coverFor = null; nav('postres'); }
 function removeResource(id){ RESOURCES = RESOURCES.filter(x => x.id !== id); nav('resources'); toast('Removed. Scholars can no longer read it.'); }
-function markResource(id){ const r = RESOURCES.find(x => x.id === id); r.done = !r.done; render(); toast(r.done ? 'Marked as done.' : 'Marked as not done.'); }
 const MONTHS = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
 const eventDateISO = e => e.date || (() => { const m = (e.d || '').match(/^(\d{1,2}) ([A-Z]{3})$/); if (!m) return ''; const mi = MONTHS.indexOf(m[2]); return mi < 0 ? '' : THIS_YEAR_D + '-' + String(mi + 1).padStart(2, '0') + '-' + m[1].padStart(2, '0'); })();
 const THIS_YEAR_D = new Date().getFullYear();
@@ -1296,16 +1285,15 @@ function publishEvent(){
   [['e0', val('e0')], ['e1', val('e1')], ['e2', val('e2')], ['e7', !val('e7') || /^https?:\/\/\S+\.\S+/.test(val('e7')) ? 'ok' : '']].forEach(([id, v]) => { const w = document.getElementById('w-' + id); if (w) w.classList.toggle('bad', !v); if (!v) bad = true; });
   if (bad) { toast('Add a title, a date and where it happens. Links need https://'); return; }
   const pin = document.getElementById('e11'), prev = S.editEv ? EVENTS.find(x => x.id === S.editEv) : null;
-  const fields = {title:val('e0'), cat:val('e5') || 'general', date:val('e1'), time:val('e6'), where:val('e2'), who:val('e3') || 'Moshal programme team', about:val('e4'), link:val('e7'), linkLabel:val('e8') || (val('e5') === 'survey' ? 'Take the survey' : 'Register'),
+  const fields = {title:val('e0'), cat:val('e5') || 'general', date:val('e1'), time:val('e6'), where:val('e2'), who:val('e3') || 'Moshal programme team', about:val('e4'), link:val('e7'),
     expires:val('e9'), publishOn:staff() ? val('e10') : (prev && prev.publishOn) || '', pinned:pin ? pin.checked : !!(prev && prev.pinned), years:pickedYears(prev ? prev.years : [])};
   if (prev) { Object.assign(prev, fields); annNorm(prev); S.editEv = null; S.evTab = prev.past ? 'past' : 'upcoming'; logIt('edited <b>' + prev.title + '</b>', 'content'); nav('events'); toast('Saved. Scholars see the update now.'); return; }
-  const e = annNorm({id:Date.now(), going:false, by:ROLES[S.role].name, ...fields}); EVENTS.push(e);
+  const e = annNorm({id:Date.now(), by:ROLES[S.role].name, ...fields}); EVENTS.push(e);
   logIt((e.scheduled ? 'scheduled' : 'posted') + ' <b>' + e.title + '</b>', 'content');
   S.evTab = e.past ? 'past' : 'upcoming'; nav('events'); toast(e.scheduled ? 'Scheduled. Scholars see it from ' + e.publishOn.slice(8) + ' ' + MONTHS[+e.publishOn.slice(5, 7) - 1].toLowerCase() + '.' : 'Published. It is on every scholar’s home page.');
 }
 function editEvent(id){ S.editEv = id; nav('postevent'); }
-function cancelEvent(id){ const e = EVENTS.find(x => x.id === id); EVENTS = EVENTS.filter(x => x.id !== id); logIt('cancelled <b>' + e.title + '</b>', 'content'); nav('events'); toast('Cancelled. ' + (e.going ? 'Scholars who saved a place will be told.' : 'It no longer shows for scholars.')); }
-function toggleEvent(id){ const e = EVENTS.find(x => x.id === id); e.going = !e.going; render(); toast(e.going ? 'Your place at ' + e.title + ' is saved.' : 'Your place at ' + e.title + ' is released.'); }
+function cancelEvent(id){ const e = EVENTS.find(x => x.id === id); EVENTS = EVENTS.filter(x => x.id !== id); logIt('cancelled <b>' + e.title + '</b>', 'content'); nav('events'); toast('Cancelled. It no longer shows for scholars.'); }
 function reportListing(id){ const o = byId(id); S.dlg = {kind:'report', id}; render(); }
 function sendReport(){ const o = byId(S.dlg.id); const why = (document.getElementById('rwhy') || {}).value || 'Reported by a scholar'; FLAGS.unshift({id:Date.now(), title:o.title, org:o.org, by:o.by, why:'Reported by a scholar: "' + why + '"', src:'report', when:'Just now'}); S.dlg = null; syncNav(); render(); toast('Thanks. An admin will check this listing.'); }
 function closeDlg(){ S.dlg = null; render(); }
@@ -1319,12 +1307,12 @@ V.overview = () => {
     '<div class="page-head only-m"><div><h1>Your next chapter starts here</h1><p class="lead">Opportunities selected for scholars</p></div>' + journeyChip() + '</div>' +
     '<section class="hero"><h2 class="only-d">Find the opportunity that’s right for you</h2><p class="only-d">Internships, graduate programmes and bursaries, shared by career champions.</p>' +
     '<h2 class="only-m">Explore your future</h2><p class="only-m">Graduate roles, internships and career support</p>' +
-    '<form class="hero-search only-d" onsubmit="event.preventDefault();S.q=document.getElementById(\'hq\').value;nav(\'opps\')"><span class="search">' + ICO.search + '<input id="hq" placeholder="" aria-label="Search opportunities, employers or study fields" value="' + S.q + '" onfocus="ghostStop(true)" onkeydown="ghostStop(true)" oninput="ghostStop(true)" onblur="ghostResume()"><span class="ghost" aria-hidden="true"></span></span><button type="submit">Search</button></form>' +
-    '<button class="hero-go only-m" onclick="nav(\'opps\')">Browse opportunities' + ICO.chevR + '</button></section>' + annBoard() +
+    '<form class="hero-search only-d" onsubmit="event.preventDefault();S.q=document.getElementById(\'hq\').value;nav(\'opps\')"><span class="search">' + ICO.search + '<input id="hq" placeholder="" aria-label="Search job listings, employers or fields of study" value="' + S.q + '" onfocus="ghostStop(true)" onkeydown="ghostStop(true)" oninput="ghostStop(true)" onblur="ghostResume()"><span class="ghost" aria-hidden="true"></span></span><button type="submit">Search</button></form>' +
+    '<button class="hero-go only-m" onclick="nav(\'opps\')">Browse job listings' + ICO.chevR + '</button></section>' + annBoard() +
     '<div class="page-head"><h2 style="margin:0">Recommended for you</h2><div class="acts"><button class="btn btn-ghost btn-sm" onclick="nav(\'opps\')">See all ' + ICO.chevR + '</button></div></div>' +
     jobList(rec, '');
 };
-const CLOSE_WINDOWS = [[0, 'Any closing date'], [7, 'Closes within 7 days'], [14, 'Closes within 14 days'], [30, 'Closes within 30 days']];
+const CLOSE_WINDOWS = [[0, 'Any closing date'], [7, 'Closes within 7 days'], [30, 'Closes within 30 days']];
 V.opps = () => {
   if (staff()) return V.listings();
   let list = forMe(OPPS).filter(o => (!S.q || (o.title + ' ' + o.org + ' ' + o.desc + ' ' + fieldsOf(o).join(' ')).toLowerCase().includes(S.q.toLowerCase())) &&
@@ -1337,57 +1325,54 @@ V.opps = () => {
   if (S.loc) chips.push([S.loc, "S.loc='';render()"]);
   if (S.type) chips.push([S.type, "S.type='';render()"]);
   if (S.close) chips.push([CLOSE_WINDOWS.find(w => w[0] === S.close)[1], 'S.close=0;render()']);
-  return '<div class="page-head" data-role><h1>Opportunities</h1><span class="n">' + list.length + ' of ' + forMe(OPPS).length + '</span>' + (canPost() ? '<div class="acts"><button class="btn btn-primary btn-sm" onclick="S.edit=null;nav(\'submit\')">' + ICO.plus + 'Post an opportunity</button></div>' : '') + '</div>' +
+  return '<div class="page-head" data-role><h1>Job listings</h1><span class="n">' + list.length + ' of ' + forMe(OPPS).length + '</span>' + (canPost() ? '<div class="acts"><button class="btn btn-primary btn-sm" onclick="S.edit=null;nav(\'submit\')">' + ICO.plus + 'Post a listing</button></div>' : '') + '</div>' +
     '<div class="toolbar"><label class="search-wide">' + ICO.search + '<input id="oq" placeholder="Search jobs, employers or keywords" value="' + S.q + '" oninput="S.q=this.value;renderList()">' + (S.q ? '<button class="clear" aria-label="Clear search" onclick="S.q=\'\';render()">×</button>' : '') + '</label>' +
-    dropdown('f-field', 'Study field', [['', 'All study fields']].concat(FIELDS_OPT.map(f => [f, f, count('field', f)])), S.field, 'S.field=%v;S.open=null;render()', true) +
+    dropdown('f-field', 'Field of study', [['', 'All fields of study']].concat(FIELDS_OPT.map(f => [f, f, count('field', f)])), S.field, 'S.field=%v;S.open=null;render()', true) +
     dropdown('f-loc', 'Location', [['', 'Anywhere']].concat(LOCS.map(l => [l, l, count('loc', l)])), S.loc, 'S.loc=%v;S.open=null;render()', true) +
     dropdown('f-type', 'Type', [['', 'All types']].concat(OPP_TYPES.map(t => [t, t, count('type', t)])), S.type, 'S.type=%v;S.open=null;render()', true) +
     dropdown('f-close', 'Closing date', CLOSE_WINDOWS.map(([d, l]) => [d, l, d ? forMe(OPPS).filter(o => o.days <= d).length : undefined]), S.close, 'S.close=+%v;S.open=null;render()', true) +
     '</div>' +
     (chips.length ? '<div class="chipbar">' + chips.map(([l, u]) => '<span class="fchip">' + l + '<button aria-label="Remove ' + l + '" onclick="' + u + '">×</button></span>').join('') + '<button class="reset" onclick="S.q=\'\';S.field=\'\';S.loc=\'\';S.type=\'\';S.close=0;render()">Clear all</button></div>' : '') +
-    '<div class="listbar"><span>Sorted by</span>' + dropdown('f-sort', 'Sort', [['closing', 'Closing soonest'], ['newest', 'Newest first'], ['az', 'A to Z']], S.sort, 'S.sort=%v;S.open=null;render()') + '</div>' +
-    '<div id="olist">' + jobList(list, '<b>No opportunities match</b><span>Try clearing a filter or searching for something broader.</span><button class="btn" onclick="S.q=\'\';S.field=\'\';S.loc=\'\';S.type=\'\';S.close=0;render()">Clear all filters</button>') + '</div>';
+    '<div class="listbar"><span>Sorted by</span>' + dropdown('f-sort', 'Sort', [['closing', 'Closing soonest'], ['newest', 'Newest first']], S.sort, 'S.sort=%v;S.open=null;render()') + '</div>' +
+    '<div id="olist">' + jobList(list, '<b>No listings match</b><span>Try clearing a filter or searching for something broader.</span><button class="btn" onclick="S.q=\'\';S.field=\'\';S.loc=\'\';S.type=\'\';S.close=0;render()">Clear all filters</button>') + '</div>';
 };
 V.job = () => {
   const o = byId(S.job), soon = !!o.closes && o.days <= 14;
   const fact = (k, v) => v ? '<div><span>' + k + '</span><b>' + v + '</b></div>' : '';
-  return '<button class="btn btn-ghost btn-sm" style="margin-bottom:18px" onclick="nav(\'opps\')">← Back to ' + (staff() ? 'job listings' : 'opportunities') + '</button>' +
+  return '<button class="btn btn-ghost btn-sm" style="margin-bottom:18px" onclick="nav(\'opps\')">← Back to job listings</button>' +
     (o.applied ? '<div class="notice ok">' + ICO.checkC + 'In My applications as ' + stageLabel(o) + '. Update the stage there as it moves.</div>' : soon ? '<div class="notice warn">' + ICO.clock + 'Closes in ' + o.days + ' days, on ' + o.closes + '.</div>' : '') +
     '<div class="jobwrap"><article class="card detail"><div class="tags">' + o.type + ' · ' + fieldsOf(o).join(', ') + (staff() && audienceNote(o) ? ' · <em class="aud-note">' + audienceNote(o) + '</em>' : '') + '</div><h1>' + o.title + '</h1><div class="where">' + o.org + ' · ' + o.loc + '</div>' +
     (o.desc ? '<h3>What the role involves</h3><p>' + o.desc + '</p>' : '<p class="none">The champion did not add a description. The employer’s page has the full details.</p>') + '</article>' +
     '<aside class="card jside">' + (o.applied ? '<button class="btn" onclick="nav(\'applications\')">' + ICO.check + stageLabel(o) + ' · My applications</button>' : '<button class="btn btn-primary" onclick="applyTo(' + o.id + ')">Apply on employer website' + ICO.ext + '</button>') +
-    '<div class="kv">' + fact('Closes', o.closes ? o.closes + (soon ? '<small>in ' + o.days + ' days</small>' : '') : 'No closing date') + fact('Location', o.loc) + fact(fieldsOf(o).length > 1 ? 'Study fields' : 'Study field', fieldsOf(o).join(', ')) + (staff() ? fact('Reach', o.views + ' views · ' + o.clicks + ' clicks') : '') + fact('Type', o.type) + '</div>' +
+    '<div class="kv">' + fact('Closes', o.closes ? o.closes + (soon ? '<small>in ' + o.days + ' days</small>' : '') : 'No closing date') + fact('Location', o.loc) + fact(fieldsOf(o).length > 1 ? 'Fields of study' : 'Field of study', fieldsOf(o).join(', ')) + (staff() ? fact('Reach', o.views + ' views · ' + o.clicks + ' clicks') : '') + fact('Type', o.type) + '</div>' +
     '<div class="jacts"><button class="btn btn-ghost btn-sm" data-id="' + o.id + '" aria-pressed="' + o.saved + '" onclick="toggleSave(' + o.id + ')">' + BOOK + (o.saved ? 'Saved' : 'Save') + '</button><button class="btn btn-ghost btn-sm" onclick="reportListing(' + o.id + ')">' + ICO.flag + 'Report</button>' +
-    (canEdit(o) ? '<button class="btn btn-ghost btn-sm" onclick="editListing(' + o.id + ')">Edit</button>' : '') + (staff() ? '<button class="btn btn-ghost btn-sm danger" onclick="unpublishListing(' + o.id + ')">Unpublish</button>' : '') +
+    (canEdit(o) ? '<button class="btn btn-ghost btn-sm" onclick="editListing(' + o.id + ')">Edit</button>' : '') + (staff() ? '<button class="btn btn-ghost btn-sm danger" onclick="removeListing(' + o.id + ')">Remove</button>' : '') +
     '</div></aside></div>';
 };
 V.saved = () => {
   const list = savedList();
-  return '<div class="page-head" data-role><h1>Saved jobs</h1><span class="n">' + list.length + ' saved</span></div>' +
+  return '<div class="page-head" data-role><h1>Saved listings</h1><span class="n">' + list.length + ' saved</span></div>' +
     (list.length ? jobList(list, '') : '<div class="card empty"><b>Nothing saved yet</b><span>Tap the bookmark on any opportunity to keep it here.</span><button class="btn btn-primary" onclick="nav(\'opps\')">Browse opportunities</button></div>');
 };
 V.applications = () => {
   const list = appliedList();
   return '<div class="page-head" data-role><h1>My applications</h1><span class="n">' + list.length + '</span></div>' +
-    (list.length ? '<p class="lead apphint">You apply on the employer’s site. Keep the stage here up to date so the programme team can help.</p><div class="rows">' + list.map(o => '<article class="card row"><div class="body"><h3><button class="lnk" onclick="openJob(' + o.id + ')">' + o.title + '</button></h3><div class="meta">' + o.org + ' · ' + o.loc + (o.closes ? ' · closes ' + o.closes : '') + '</div>' +
+    (list.length ? '<p class="lead apphint">You apply on the employer’s site. Update it when you get an offer or hear it was not successful.</p><div class="rows">' + list.map(o => '<article class="card row"><div class="body"><h3><button class="lnk" onclick="openJob(' + o.id + ')">' + o.title + '</button></h3><div class="meta">' + o.org + ' · ' + o.loc + (o.closes ? ' · closes ' + o.closes : '') + '</div>' +
       (o.stage === 'offer' ? (o.sfDone ? '<div class="sfok">' + ICO.checkC + 'Recorded in Salesforce</div>' : '<button class="btn btn-sm sfgo" onclick="S.dlg={kind:\'sf\',id:' + o.id + '};render()">Record your offer in Salesforce</button>') : '') + '</div>' +
-      '<div class="side"><label class="stagepick"><span class="sr">Stage for ' + attr(o.title) + '</span><select onchange="setStage(' + o.id + ',this.value)">' + APP_STAGES.map(([k, l]) => '<option value="' + k + '"' + ((o.stage || 'progress') === k ? ' selected' : '') + '>' + l + '</option>').join('') + '</select></label></div></article>').join('') + '</div>'
+      '<div class="side"><label class="stagepick"><span class="sr">Stage for ' + attr(o.title) + '</span><select onchange="setStage(' + o.id + ',this.value)">' + APP_STAGES.map(([k, l]) => '<option value="' + k + '"' + ((o.stage || 'applied') === k ? ' selected' : '') + '>' + l + '</option>').join('') + '</select></label></div></article>').join('') + '</div>'
       : '<div class="card empty"><b>No applications yet</b><span>When you apply to an opportunity it shows up here so you can track it.</span><button class="btn btn-primary" onclick="nav(\'opps\')">Browse opportunities</button></div>');
 };
 const RCATS = ['CV tips and templates', 'Interview preparation', 'Cover letters', 'Assessments and psychometric tests', 'Networking', 'Workplace readiness'];
-const RGROUPS = RCATS;
 const FORMATS = [['article', 'Article'], ['document', 'Document'], ['video', 'Video'], ['link', 'Link']];
 const formatLabel = r => (FORMATS.find(f => f[0] === (r.format || 'article')) || FORMATS[0])[1];
 V.resources = () => {
-  const done = RESOURCES.filter(r => r.done).length, admin = staff();
-  const all = forMe(RESOURCES), groups = RGROUPS.filter(h => !S.rcat || h === S.rcat).map(h => [h, all.filter(r => r.group === h)]).filter(([h, list]) => list.length);
+  const admin = staff();
+  const all = forMe(RESOURCES), groups = RCATS.filter(h => !S.rcat || h === S.rcat).map(h => [h, all.filter(r => r.group === h)]).filter(([h, list]) => list.length);
   const cats = '<div class="chipset catf" role="group" aria-label="Category">' + [['', 'All', all.length]].concat(RCATS.map(c => [c, c, all.filter(r => r.group === c).length])).map(([k, l, n]) => '<button aria-pressed="' + ((S.rcat || '') === k) + '" onclick="S.rcat=\'' + esc(k) + '\';render()">' + l + ' <span class="c">' + n + '</span></button>').join('') + '</div>';
-  return '<div class="page-head" data-role><h1>' + (staff() ? 'Content library' : 'Career resources') + '</h1><span class="n">' + all.length + '</span>' + (canAuthor() ? '<div class="acts"><button class="btn btn-primary btn-sm" onclick="S.editRes=null;S.coverFor=null;nav(\'postres\')">' + ICO.plus + (staff() ? 'Add content' : 'Post a resource') + '</button></div>' : '') + '</div>' + cats +
-    (admin ? '' : '<div class="progress"><i><b style="width:' + Math.round((all.filter(r => r.done).length) / Math.max(1, all.length) * 100) + '%"></b></i><span>' + all.filter(r => r.done).length + ' of ' + all.length + ' read</span></div>') +
+  return '<div class="page-head" data-role><h1>' + 'Content library' + '</h1><span class="n">' + all.length + '</span>' + (canAuthor() ? '<div class="acts"><button class="btn btn-primary btn-sm" onclick="S.editRes=null;S.coverFor=null;nav(\'postres\')">' + ICO.plus + 'Add content' + '</button></div>' : '') + '</div>' + cats +
     '<div class="rlist">' + groups.map(([h, list]) => '<section class="rgroup"><h2>' + h + '</h2><div class="list">' + list.map(r =>
-      '<button class="rrow" onclick="openResource(' + r.id + ')">' + coverHtml(r, 'th') + '<span><b>' + r.title + '</b><p>' + (S.role === 'admin' && audienceNote(r) ? '<em class="aud-note">' + audienceNote(r) + '</em> · ' : '') + r.blurb + '</p></span><span class="m' + (!admin && r.done ? ' done' : '') + '">' + (!admin && r.done ? 'Read' : formatLabel(r) + ' · ' + r.mins + ' min') + '</span>' + (!admin && r.done ? ICO.checkC.replace('<svg', '<svg class="ok-ic"') : ICO.chevR) + '</button>').join('') + '</div></section>').join('') + '</div>';
+      '<button class="rrow" onclick="openResource(' + r.id + ')">' + coverHtml(r, 'th') + '<span><b>' + r.title + '</b><p>' + (S.role === 'admin' && audienceNote(r) ? '<em class="aud-note">' + audienceNote(r) + '</em> · ' : '') + r.blurb + '</p></span><span class="m">' + formatLabel(r) + ' · ' + r.mins + ' min</span>' + ICO.chevR + '</button>').join('') + '</div></section>').join('') + '</div>';
 };
-const FONTS = [['Narkiss Block', 'Narkiss Block'], ['Frank Ruhl Libre', 'Frank Ruhl Libre'], ['Lora', 'Lora']];
 const coverHtml = (r, cls) => r.cover ? '<span class="' + cls + '" style="background-image:url(&quot;' + attr(r.cover) + '&quot;)" role="img" aria-label="Cover image"></span>' : '<span class="' + cls + ' dflt" aria-hidden="true"><b>' + attr((r.title || 'R').trim().charAt(0).toUpperCase()) + '</b></span>';
 const resourceHtml = r => r.html || r.body.map(p => '<p>' + p + '</p>').join('');
 function clean(html){
@@ -1402,7 +1387,6 @@ function rt(cmd, val){ const ed = document.getElementById('r4'); if (!ed) return
 function rtLink(){ const u = prompt('Link address'); if (u) rt('createLink', u); }
 function rtImageUrl(){ const u = prompt('Image address'); if (u) rt('insertHTML', '<img src="' + attr(u) + '" alt="">'); }
 function rtImageFile(input){ const f = input.files && input.files[0]; if (!f) return; const rd = new FileReader(); rd.onload = () => rt('insertHTML', '<img src="' + rd.result + '" alt="">'); rd.readAsDataURL(f); input.value = ''; }
-function rtVideo(){ const u = prompt('YouTube, Vimeo or video file address'); if (!u) return; const h = embedFor(u.trim()); if (h) rt('insertHTML', h + '<p><br></p>'); else toast('Use a YouTube or Vimeo link, or a .mp4 file.'); }
 /* Videos upload to the hub's own storage; the prototype keeps them in the browser for this session only. */
 const VIDEO_MAX_MB = 500;
 const fmtMB = b => b >= 1048576 ? Math.round(b / 1048576) + ' MB' : Math.max(1, Math.round(b / 1024)) + ' KB';
@@ -1412,7 +1396,6 @@ const videoChip = () => S.video
   : '<label class="btn btn-ghost btn-sm filebtn">Upload a video<input type="file" accept="video/mp4,video/webm,video/quicktime" onchange="videoFile(this)"></label><span class="hint">MP4, WebM or MOV, up to ' + VIDEO_MAX_MB + ' MB.</span>';
 function setVideo(v){ S.video = v; const c = document.getElementById('vid'); if (c) c.innerHTML = videoChip(); const fm = document.getElementById('r6'); if (v && fm) fm.value = 'video'; const w = document.getElementById('w-r7'); if (v && w) w.classList.remove('bad'); }
 function videoFile(input){ const f = input.files && input.files[0]; input.value = ''; if (!f || !videoOk(f)) return; setVideo({name:f.name, size:f.size, src:URL.createObjectURL(f)}); toast('Uploaded ' + f.name + '.'); }
-function rtVideoFile(input){ const f = input.files && input.files[0]; input.value = ''; if (!f || !videoOk(f)) return; rt('insertHTML', '<video controls src="' + URL.createObjectURL(f) + '"></video><p><br></p>'); }
 function setCover(v){ S.cover = v || ''; const c = document.getElementById('cov'); if (c) c.innerHTML = coverHtml({cover:S.cover, title:(document.getElementById('r0') || {}).value}, 'cover'); }
 function coverFile(input){ const f = input.files && input.files[0]; if (!f) return; const rd = new FileReader(); rd.onload = () => { setCover(rd.result); const u = document.getElementById('r5'); if (u) u.value = ''; }; rd.readAsDataURL(f); }
 V.postres = () => {
@@ -1423,7 +1406,7 @@ V.postres = () => {
   return '<div class="page-head" data-role><h1>' + (r ? 'Edit resource' : 'Post a resource') + '</h1></div>' +
     '<form class="card form" onsubmit="event.preventDefault();publishResource()"><div class="grid2">' +
     f('r0', 'Title', 'Interview question bank', true, 'text', r && r.title) +
-    '<div class="field" id="w-r1"><label for="r1">Category</label><select id="r1">' + RGROUPS.map(g => '<option' + (r && r.group === g ? ' selected' : '') + '>' + g + '</option>').join('') + '</select></div>' +
+    '<div class="field" id="w-r1"><label for="r1">Category</label><select id="r1">' + RCATS.map(g => '<option' + (r && r.group === g ? ' selected' : '') + '>' + g + '</option>').join('') + '</select></div>' +
     '<div class="field" id="w-r6"><label for="r6">Format</label><select id="r6">' + FORMATS.map(([k, l]) => '<option value="' + k + '"' + ((r && r.format || 'article') === k ? ' selected' : '') + '>' + l + '</option>').join('') + '</select></div>' +
     '<div class="field" id="w-r7"><label for="r7">Link to the document, video or page</label><input id="r7" type="url" placeholder="https://drive.moshal.example/cv-template.docx" value="' + attr(r && r.url) + '"><div class="err">Documents, videos and links need a full https:// address, or upload the video</div><div class="hint">Leave empty for an article written below.</div>' +
       '<div class="vidup" id="vid">' + videoChip() + '</div></div>' +
@@ -1431,10 +1414,9 @@ V.postres = () => {
     '<div class="field wide"><label>Cover image</label><div class="coverrow"><span id="cov">' + coverHtml({cover:S.cover, title:r && r.title}, 'cover') + '</span><div class="coverctl"><input id="r5" type="url" placeholder="Paste an image address" value="' + attr(S.cover && !S.cover.startsWith('data:') ? S.cover : '') + '" onchange="setCover(this.value.trim())"><div class="r"><label class="btn btn-ghost btn-sm filebtn">Upload an image<input type="file" accept="image/*" onchange="coverFile(this)"></label><button type="button" class="btn btn-ghost btn-sm" onclick="setCover(\'\');document.getElementById(\'r5\').value=\'\'">Use the default</button></div><div class="hint">Without one, scholars see the default cover with the title’s initial.</div></div></div></div>' +
     '<div class="field wide" id="w-r4"><label>The article<i class="req" aria-hidden="true">*</i></label>' +
     '<div class="rtbar" role="toolbar" aria-label="Formatting"><select aria-label="Paragraph style" onmousedown="event.stopPropagation()" onchange="rt(\'formatBlock\',this.value);this.selectedIndex=0"><option value="">Style</option><option value="p">Paragraph</option><option value="h2">Heading</option><option value="h3">Subheading</option><option value="blockquote">Quote</option></select>' +
-    '<select aria-label="Font" onchange="rt(\'fontName\',this.value);this.selectedIndex=0"><option value="">Font</option>' + FONTS.map(([n, v]) => '<option value="' + v + '">' + n + '</option>').join('') + '</select>' +
-    '<select aria-label="Text size" onchange="rt(\'fontSize\',this.value);this.selectedIndex=0"><option value="">Size</option><option value="2">Small</option><option value="3">Normal</option><option value="5">Large</option></select><i class="sep"></i>' +
+    '<i class="sep"></i>' +
     tb('<b>B</b>', 'bold', '', 'Bold') + tb('<i>I</i>', 'italic', '', 'Italic') + tb('<u>U</u>', 'underline', '', 'Underline') + '<i class="sep"></i>' + tb('• List', 'insertUnorderedList', '', 'Bulleted list') + tb('1. List', 'insertOrderedList', '', 'Numbered list') + '<i class="sep"></i>' +
-    '<button type="button" class="rtb" onmousedown="event.preventDefault()" onclick="rtLink()">Link</button><label class="rtb filebtn">Image<input type="file" accept="image/*" onchange="rtImageFile(this)"></label><button type="button" class="rtb" onmousedown="event.preventDefault()" onclick="rtImageUrl()">Image by link</button><button type="button" class="rtb" onmousedown="event.preventDefault()" onclick="rtVideo()">Video by link</button><label class="rtb filebtn">Upload video<input type="file" accept="video/mp4,video/webm,video/quicktime" onchange="rtVideoFile(this)"></label><i class="sep"></i>' + tb('Clear', 'removeFormat', '', 'Clear formatting') + '</div>' +
+    '<button type="button" class="rtb" onmousedown="event.preventDefault()" onclick="rtLink()">Link</button><label class="rtb filebtn">Image<input type="file" accept="image/*" onchange="rtImageFile(this)"></label><button type="button" class="rtb" onmousedown="event.preventDefault()" onclick="rtImageUrl()">Image by link</button><i class="sep"></i>' + tb('Clear', 'removeFormat', '', 'Clear formatting') + '</div>' +
     '<div id="r4" class="editor rich" contenteditable="true" aria-required="true" data-placeholder="Write it here. Use the toolbar for headings, images and video.">' + (r ? resourceHtml(r) : '') + '</div><div class="err">This one is needed</div></div>' +
     f('r2', 'Read time in minutes', 'Worked out from the length if left blank', false, 'number', r && r.mins) + audienceField('res:' + (r ? r.id : 'new'), r && r.years) +
     '</div><div class="form-foot"><span class="dup ok">' + ICO.checkC + (r ? 'Saves straight away' : 'Goes live straight away') + '</span><div class="r"><button type="button" class="btn btn-ghost" onclick="' + (r ? 'S.editRes=null;openResource(' + r.id + ')' : 'nav(\'resources\')') + '">Cancel</button><button class="btn btn-primary" type="submit">' + (r ? ICO.check + 'Save changes' : ICO.send + 'Publish') + '</button></div></div></form>';
@@ -1449,17 +1431,17 @@ function publishResource(){
   if (bad) { toast(format === 'article' ? 'Add a title, a summary and the article.' : 'Add a title, a summary and the link.'); return; }
   const body = text.split(/\n\s*\n/).map(p => p.trim()).filter(Boolean);
   const mins = Math.max(1, parseInt(val('r2'), 10) || Math.ceil(text.split(/\s+/).length / 200));
-  const fields = {group:val('r1'), kind:val('r1'), format, url, title:val('r0'), mins, blurb:val('r3'), body, html, cover:S.cover || '', video:format === 'video' ? S.video : null, years:pickedYears(S.editRes ? (RESOURCES.find(x => x.id === S.editRes) || {}).years : [])};
+  const fields = {group:val('r1'), format, url, title:val('r0'), mins, blurb:val('r3'), body, html, cover:S.cover || '', video:format === 'video' ? S.video : null, years:pickedYears(S.editRes ? (RESOURCES.find(x => x.id === S.editRes) || {}).years : [])};
   S.coverFor = null;
   if (S.editRes) { const r = RESOURCES.find(x => x.id === S.editRes); Object.assign(r, fields); S.editRes = null; openResource(r.id); toast('Saved. Scholars see the update now.'); return; }
-  RESOURCES.push({id:Date.now(), icon:'book', done:false, by:ROLES[S.role].name, ...fields});
+  RESOURCES.push({id:Date.now(), icon:'book', by:ROLES[S.role].name, ...fields});
   nav('resources'); toast('Published. Scholars can read it now.');
 }
 V.res = () => {
   const r = RESOURCES.find(x => x.id === S.res);
   return '<button class="btn btn-ghost btn-sm" style="margin-bottom:18px" onclick="nav(\'resources\')">← Back to resources</button>' +
-    '<article class="card article">' + (r.cover ? coverHtml(r, 'cover') : '') + '<span class="kind">' + r.kind + ' · ' + r.mins + ' min read</span><h1>' + r.title + '</h1>' + (r.video ? '<div class="resgo rich"><video controls preload="metadata" src="' + attr(r.video.src) + '"></video></div>' : '') + (r.url && !r.video ? '<div class="resgo">' + (r.format === 'video' && embedFor(r.url) ? '<div class="rich">' + embedFor(r.url) + '</div>' : '<a class="btn btn-primary" href="' + attr(r.url) + '" target="_blank" rel="noopener">' + (r.format === 'document' ? ICO.download + 'Download the document' : r.format === 'video' ? 'Watch the video' + ICO.ext : 'Open the page' + ICO.ext) + '</a>') + '</div>' : '') + '<div class="rich">' + resourceHtml(r) + '</div>' +
-    '<div class="foot">' + (canManage(r) ? '<button class="btn btn-primary" onclick="editResource(' + r.id + ')">Edit</button><button class="btn btn-ghost danger" onclick="removeResource(' + r.id + ')">Remove</button>' : '') + (staff() ? '' : '<button class="btn ' + (r.done ? 'btn-ghost' : 'btn-primary') + '" onclick="markResource(' + r.id + ')">' + (r.done ? 'Mark as not done' : ICO.check + 'Mark as done') + '</button>') + '<button class="btn btn-ghost" onclick="nav(\'resources\')">All resources</button></div></article>';
+    '<article class="card article">' + (r.cover ? coverHtml(r, 'cover') : '') + '<span class="kind">' + r.group + ' · ' + r.mins + ' min read</span><h1>' + r.title + '</h1>' + (r.video ? '<div class="resgo rich"><video controls preload="metadata" src="' + attr(r.video.src) + '"></video></div>' : '') + (r.url && !r.video ? '<div class="resgo">' + (r.format === 'video' && embedFor(r.url) ? '<div class="rich">' + embedFor(r.url) + '</div>' : '<a class="btn btn-primary" href="' + attr(r.url) + '" target="_blank" rel="noopener">' + (r.format === 'document' ? ICO.download + 'Download the document' : r.format === 'video' ? 'Watch the video' + ICO.ext : 'Open the page' + ICO.ext) + '</a>') + '</div>' : '') + '<div class="rich">' + resourceHtml(r) + '</div>' +
+    '<div class="foot">' + (canManage(r) ? '<button class="btn btn-primary" onclick="editResource(' + r.id + ')">Edit</button><button class="btn btn-ghost danger" onclick="removeResource(' + r.id + ')">Remove</button>' : '') + '<button class="btn btn-ghost" onclick="nav(\'resources\')">All resources</button></div></article>';
 };
 V.postevent = () => {
   const e = S.editEv ? EVENTS.find(x => x.id === S.editEv) : null;
@@ -1470,7 +1452,7 @@ V.postevent = () => {
     '<div class="field"><label for="e5">Category</label><select id="e5">' + ANN_CATS.map(([k, l]) => '<option value="' + k + '"' + ((e ? e.cat : 'training') === k ? ' selected' : '') + '>' + l + '</option>').join('') + '</select></div>' +
     f('e1', 'Date', '', true, 'date', e && e.date, 'For a survey or a deadline, the day it closes.') + f('e6', 'Time', '', false, 'time', e && e.time) +
     f('e2', 'Location or online', 'Online, or Great Hall, Wits', true, 'text', e && e.where) + f('e3', 'Hosted by', 'Moshal careers team', false, 'text', e && e.who) +
-    f('e7', 'Registration or survey link', 'https://forms.moshal.example/…', false, 'url', e && e.link) + f('e8', 'Button text', 'Register', false, 'text', e && e.linkLabel, 'What the link button says, such as Register or Take the survey.') +
+    f('e7', 'Registration or survey link', 'https://forms.moshal.example/…', false, 'url', e && e.link) +
     '<div class="field wide"><label for="e4">Short description</label><textarea id="e4" placeholder="What happens, who it is for, what to bring.">' + attr(e && e.about) + '</textarea></div>' +
     f('e9', 'Hide after', '', false, 'date', e && e.expires, 'Empty means it hides the day after the date above.') +
     (staff() ? f('e10', 'Publish on', '', false, 'date', e && e.publishOn, 'Empty publishes now. A later date schedules it.') +
@@ -1494,12 +1476,12 @@ V.submit = () => {
     (options ? '<select id="' + id + '">' + options.map(x => '<option' + (x === val ? ' selected' : '') + '>' + x + '</option>').join('') + '</select>' : '<input id="' + id + '" type="' + (type || 'text') + '" placeholder="' + ph + '" value="' + attr(val) + '"' + (req ? ' aria-required="true"' : '') + '>') +
     '<div class="err">This one is needed</div></div>';
   const link = o ? linkOf(o) : '';
-  return '<div class="page-head" data-role><h1>' + (o ? 'Edit listing' : 'Post an opportunity') + '</h1></div>' +
+  return '<div class="page-head" data-role><h1>' + (o ? 'Edit listing' : 'Post a listing') + '</h1></div>' +
     '<form class="card form" oninput="previewListing()" onchange="previewListing()" onsubmit="event.preventDefault();publishListing()"><div class="grid2">' +
     f('f0', 'Job title', 'Graduate Software Engineer', true, 'text', null, o && o.title) + f('f1', 'Employer', 'TechNova', true, 'text', null, o && o.org) +
     '<div class="field wide" id="w-f2"><label for="f2">Application link<i class="req" aria-hidden="true">*</i></label><input id="f2" type="url" aria-required="true" placeholder="https://careers.example.com/graduate" value="' + attr(link) + '"' + (o ? '' : ' oninput="checkDup(this.value)"') + '><div class="err">A full link starting with https:// is needed</div><div id="dup"></div></div>' +
     f('f3', 'Location', '', false, 'text', LOCS, o && o.loc) + f('f4', 'Closing date', '', false, 'date', null, o && toISO(o.closes)) +
-    fieldPicker(o) + f('f6', 'Opportunity type', '', false, 'text', OPP_TYPES, o && o.type) +
+    fieldPicker(o) + f('f6', 'Type', '', false, 'text', OPP_TYPES, o && o.type) +
     '<div class="field wide"><label for="f7">What the role involves</label><textarea id="f7" placeholder="A few lines about the work and who it suits.">' + attr(o && o.desc) + '</textarea></div>' + audienceField('opp:' + (o ? o.id : 'new'), o && o.years) +
     '</div><div class="preview"><span class="eyebrow">How scholars will see it</span><div id="prev"></div></div>' +
     '<div class="form-foot"><span class="dup ok">' + ICO.checkC + (o ? 'Saves straight away' : 'Goes live straight away') + '</span><div class="r"><button type="button" class="btn btn-ghost" onclick="' + (o ? 'S.edit=null;openJob(' + o.id + ')' : 'nav(\'' + (lister() ? 'subs' : 'opps') + '\')') + '">Cancel</button><button class="btn btn-primary" type="submit">' + (o ? ICO.check + 'Save changes' : ICO.send + 'Publish') + '</button></div></div></form>';
@@ -1508,7 +1490,7 @@ V.submit = () => {
 function fieldPicker(o){
   const key = o ? o.id : 'new';
   if (S.sfFor !== key) { S.sf = o ? [...fieldsOf(o)] : []; S.sfFor = key; }
-  return '<div class="field wide" id="w-f5"><label>Study fields<i class="req" aria-hidden="true">*</i></label><div class="chipset">' + FIELDS_OPT.map(f => '<button type="button" aria-pressed="' + S.sf.includes(f) + '" onclick="toggleSf(\'' + esc(f) + '\',this)">' + f + '</button>').join('') + '</div><div class="err">Pick at least one study field</div><div class="hint">Pick every field the role is open to.</div></div>';
+  return '<div class="field wide" id="w-f5"><label>Fields of study<i class="req" aria-hidden="true">*</i></label><div class="chipset">' + FIELDS_OPT.map(f => '<button type="button" aria-pressed="' + S.sf.includes(f) + '" onclick="toggleSf(\'' + esc(f) + '\',this)">' + f + '</button>').join('') + '</div><div class="err">Pick at least one field of study</div><div class="hint">Pick every field the role is open to.</div></div>';
 }
 function toggleSf(f, btn){ const i = S.sf.indexOf(f); if (i < 0) S.sf.push(f); else S.sf.splice(i, 1); btn.setAttribute('aria-pressed', i < 0); document.getElementById('w-f5').classList.remove('bad'); }
 const closeInfo = iso => { if (!iso) return {closes:'', days:999}; const d = new Date(iso.slice(0, 10) + 'T12:00:00'); return {closes:d.toLocaleDateString('en-ZA', {day:'numeric', month:'short', year:'numeric'}), days:Math.max(0, daysTo(iso.slice(0, 10)))}; };
@@ -1518,17 +1500,17 @@ function previewListing(){
   const o = {title:val('f0').trim() || 'Job title', org:val('f1').trim() || 'Employer', loc:val('f3'), type:val('f6'), saved:false, applied:false, ...closeInfo(val('f4'))};
   el.innerHTML = jobRow(o).replace(/<button/g, '<span').replace(/<\/button>/g, '</span>').replace(/ onclick="[^"]*"/g, '');
 }
-V.subs = () => '<div class="page-head" data-role><h1>My listings</h1><span class="n">' + mine().length + '</span><div class="acts"><button class="btn btn-primary btn-sm" onclick="S.edit=null;nav(\'submit\')">' + ICO.plus + 'Post an opportunity</button></div></div>' + impactCard() +
+V.subs = () => '<div class="page-head" data-role><h1>My listings</h1><span class="n">' + mine().length + '</span><div class="acts"><button class="btn btn-primary btn-sm" onclick="S.edit=null;nav(\'submit\')">' + ICO.plus + 'Post a listing</button></div></div>' + impactCard() +
   (mine().some(l => l.status === 'broken') ? '<div class="notice bad">' + ICO.link + 'A link stopped working, so that listing is hidden from scholars until you update it.</div>' : '') +
   (mine().length ? '' : '<div class="card empty"><b>Nothing listed yet</b><span>Your listings, who applied and the nightly link check all show up here.</span></div>') +
   '<div class="rows">' + mine().map(l => { const o = OPPS.find(x => x.title === l.title); return '<article class="card row"><div class="body"><h3>' + l.title + '</h3><div class="meta">' + l.org + ' · posted ' + l.posted + ' · closes ' + l.closes + ' · ' + l.applied + ' applied' + (l.check ? ' · ' + l.check : '') + '</div></div><div class="side">' +
-    (l.status === 'live' ? pill('live', 'Live') : l.status === 'broken' ? pill('broken', 'Link broken') : pill('off', 'Unpublished')) +
+    (l.status === 'live' ? pill('live', 'Live') : l.status === 'broken' ? pill('broken', 'Link broken') : pill('off', 'Removed')) +
     (o && l.status !== 'unpublished' ? '<button class="btn btn-ghost btn-sm" onclick="editListing(' + o.id + ')">Edit</button>' : '') +
-    (l.status === 'broken' ? '<button class="btn btn-primary btn-sm" onclick="fixLink(' + l.id + ')">Fix link</button>' : l.status === 'live' ? '<button class="btn btn-ghost btn-sm" onclick="setListing(' + l.id + ',\'unpublished\')">Unpublish</button>' : '<button class="btn btn-ghost btn-sm" onclick="setListing(' + l.id + ',\'live\')">Publish again</button>') + '</div></article>'; }).join('') + '</div>';
+    (l.status === 'broken' ? '<button class="btn btn-primary btn-sm" onclick="fixLink(' + l.id + ')">Fix link</button>' : l.status === 'live' ? '<button class="btn btn-ghost btn-sm" onclick="setListing(' + l.id + ',\'unpublished\')">Remove</button>' : '<button class="btn btn-ghost btn-sm" onclick="setListing(' + l.id + ',\'live\')">Publish again</button>') + '</div></article>'; }).join('') + '</div>';
 V.queue = () => '<div class="page-head" data-role><h1>Flagged listings</h1>' + (FLAGS.length ? '<span class="n">' + FLAGS.length + ' to check</span>' : '') + '</div>' +
   '<p class="sub">Live listings land here when a scholar reports one or the nightly link check fails.</p>' +
   (FLAGS.length ? '<div class="rows">' + FLAGS.map(f => '<article class="card row"><div class="body"><h3>' + f.title + '</h3><div class="meta">' + f.org + ' · posted by ' + f.by + ' · ' + f.when + '</div><div style="margin-top:10px">' + pill(f.src === 'link' ? 'broken' : 'warn', f.why) + '</div></div>' +
-    '<div class="side"><button class="btn btn-ghost btn-sm" onclick="resolveFlag(' + f.id + ',false)">Dismiss</button><button class="btn btn-danger btn-sm" onclick="resolveFlag(' + f.id + ',true)">Unpublish</button></div></article>').join('') + '</div>'
+    '<div class="side"><button class="btn btn-ghost btn-sm" onclick="resolveFlag(' + f.id + ',false)">Dismiss</button><button class="btn btn-danger btn-sm" onclick="resolveFlag(' + f.id + ',true)">Remove</button></div></article>').join('') + '</div>'
     : '<div class="card empty">' + ICO.checkC + '<b>Nothing flagged</b><span>Reported listings and broken links will show up here.</span></div>');
 /* ---------- moderation ---------- */
 const linkOf = o => o.url || 'https://careers.' + o.org.toLowerCase().replace(/\s/g, '') + '.example/' + o.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
@@ -1563,7 +1545,7 @@ V.console = () => {
     kpi('Champions who posted this week', posting + ' of ' + champs.length, 'The goal is all of them') + kpi('Clicks to employers', OPPS.reduce((a, o) => a + o.clicks, 0).toLocaleString('en-ZA'), 'Last 30 days') + '</div>' +
     '<div class="pgrid"><section class="card pnl wide"><div class="ph"><h2>Newest listings</h2><button class="lnk" onclick="nav(\'listings\')">All job listings' + ICO.chevR + '</button></div>' +
     '<div class="rows">' + live.slice().sort((a, b) => a.age - b.age).slice(0, 3).map(newestRow).join('') + '</div></section>' +
-    '<section class="card pnl"><div class="ph"><h2>Announcement board</h2><button class="lnk" onclick="nav(\'events\')">Manage' + ICO.chevR + '</button></div>' +
+    '<section class="card pnl"><div class="ph"><h2>Announcements</h2><button class="lnk" onclick="nav(\'events\')">Manage' + ICO.chevR + '</button></div>' +
     '<div class="annlist">' + EVENTS.filter(e => !e.past).sort(annOrder).slice(0, 4).map(annMini).join('') + '</div></section>' +
     (admin ? '<section class="card pnl"><div class="ph"><h2>Users and roles</h2><button class="lnk" onclick="nav(\'users\')">Manage' + ICO.chevR + '</button></div><div class="kvlist">' +
       ['scholar', 'champion', 'exco', 'recruiter', 'admin'].map(r => '<div><span class="rdot" style="background:' + STAGES[ROLES[r].stage].bg + '"></span><span>' + ROLE_PLURAL[r] + '</span><b>' + roleCount(r) + '</b></div>').join('') +
@@ -1613,38 +1595,39 @@ const CHAMP_WEEKS = {'Mickey Mpofu':[1, 1, 1, 1], 'Kagiso Molefe':[1, 0, 1, 1], 
 const CHAMPS = () => CHAMP_NAMES.map(n => ({name:n, weeks:CHAMP_WEEKS[n], posts:OPPS.filter(o => o.by === n).length, last:n === 'Ayesha Patel' ? '12 days ago' : n === 'Thabo Nkosi' ? 'Not yet' : OPPS.some(o => o.by === n && o.age <= 1) ? 'Today' : 'This week'}));
 
 /* ---------- activity log ---------- */
-const LOG_KINDS = [['', 'Everything'], ['approve', 'Kept'], ['reject', 'Removed'], ['content', 'Content'], ['user', 'Users'], ['system', 'Automatic']];
+const LOG_KINDS = [['', 'Everything'], ['listing', 'Listings'], ['content', 'Content'], ['user', 'Users']];
 V.log = () => {
   const list = LOG.filter(x => !S.logKind || x.kind === S.logKind);
-  const ic = k => k === 'approve' ? ICO.check : k === 'reject' ? ICO.x : k === 'user' ? ICO.user : k === 'system' ? ICO.clock : ICO.send;
-  return '<div class="page-head" data-role><h1>Activity log</h1><span class="n">' + LOG.length + ' entries</span></div><p class="sub">Every removal, flag decision, content change and role change, with who made it. Nothing here can be edited.</p>' +
+  const ic = k => k === 'listing' ? ICO.brief : k === 'user' ? ICO.user : k === 'system' ? ICO.clock : ICO.send;
+  return '<div class="page-head" data-role><h1>Activity log</h1><span class="n">' + LOG.length + ' entries</span></div><p class="sub">Every listing, content and role change, with who made it. Nothing here can be edited.</p>' +
     '<div class="chipset catf">' + LOG_KINDS.map(([k, l]) => '<button aria-pressed="' + ((S.logKind || '') === k) + '" onclick="S.logKind=\'' + k + '\';render()">' + l + '</button>').join('') + '</div>' +
     '<div class="card loglist">' + (list.length ? list.map(x => '<div class="li k-' + x.kind + '"><span class="ic">' + ic(x.kind) + '</span><span class="logtx"><b>' + x.who + '</b> ' + x.what + '</span><time>' + x.when + '</time></div>').join('') : '<div class="empty sm"><b>Nothing of this kind yet</b></div>') + '</div>';
 };
 
 /* ---------- staff listings ---------- */
 V.listings = () => {
-  const tab = S.lsTab || 'live', q = (S.lq || '').toLowerCase();
-  const inTab = o => tab === 'all' || (tab === 'live' ? o.days >= 0 && !hiddenListing(o) : tab === 'soon' ? o.days >= 0 && o.days <= 7 && !hiddenListing(o) : o.days < 0);
-  const list = OPPS.filter(o => inTab(o) && (!q || (o.title + ' ' + o.org + ' ' + o.by).toLowerCase().includes(q))).sort((a, b) => a.days - b.days);
+  const tab = S.lsTab === 'expired' ? 'expired' : 'live', q = (S.lq || '').toLowerCase();
+  const inTab = (o, k) => (k || tab) === 'live' ? o.days >= 0 && !hiddenListing(o) : o.days < 0;
+  const list = OPPS.filter(o => inTab(o, tab) && (!q || (o.title + ' ' + o.org + ' ' + o.by).toLowerCase().includes(q))).sort((a, b) => a.days - b.days);
   const expired = OPPS.filter(o => o.days < 0).length;
-  return '<div class="page-head" data-role><h1>Job listings</h1><span class="n">' + OPPS.filter(o => o.days >= 0 && !hiddenListing(o)).length + ' live</span><div class="acts">' + (expired ? '<button class="btn btn-ghost btn-sm danger" onclick="removeExpired()">Remove ' + expired + ' expired</button>' : '') + (S.role === 'admin' ? '<button class="btn btn-primary btn-sm" onclick="S.edit=null;nav(\'submit\')">' + ICO.plus + 'Post an opportunity</button>' : '') + '</div></div>' +
+  return '<div class="page-head" data-role><h1>Job listings</h1><span class="n">' + OPPS.filter(o => o.days >= 0 && !hiddenListing(o)).length + ' live</span><div class="acts">' + (expired ? '<button class="btn btn-ghost btn-sm danger" onclick="removeExpired()">Remove ' + expired + ' expired</button>' : '') + (S.role === 'admin' ? '<button class="btn btn-primary btn-sm" onclick="S.edit=null;nav(\'submit\')">' + ICO.plus + 'Post a listing</button>' : '') + '</div></div>' +
     '<p class="sub">Listings hide from scholars the day after they close. They stay here until someone removes them.</p>' +
-    '<div class="toolbar"><div class="tabs" role="tablist" style="margin:0">' + [['live', 'Live'], ['soon', 'Closing in 7 days'], ['expired', 'Expired'], ['all', 'All']].map(([k, l]) => '<button role="tab" aria-selected="' + (tab === k) + '" onclick="S.lsTab=\'' + k + '\';render()">' + l + ' · ' + OPPS.filter(o => k === 'all' || (k === 'live' ? o.days >= 0 : k === 'soon' ? o.days >= 0 && o.days <= 7 : o.days < 0)).length + '</button>').join('') + '</div>' +
+    '<div class="toolbar"><div class="tabs" role="tablist" style="margin:0">' + [['live', 'Live'], ['expired', 'Expired']].map(([k, l]) => '<button role="tab" aria-selected="' + (tab === k) + '" onclick="S.lsTab=\'' + k + '\';render()">' + l + ' · ' + OPPS.filter(o => inTab(o, k)).length + '</button>').join('') + '</div>' +
     '<label class="search-wide">' + ICO.search + '<input id="lq" placeholder="Search title, employer or champion" value="' + attr(S.lq || '') + '" oninput="S.lq=this.value;render();const i=document.getElementById(\'lq\');i.focus();i.setSelectionRange(i.value.length,i.value.length)"></label></div>' +
-    '<div class="card tablewrap"><table class="rt"><thead><tr><th>Listing</th><th>Study field</th><th>Posted by</th><th>Closes</th><th class="num">Views</th><th class="num">Clicks</th><th class="num"><span class="sr">Actions</span></th></tr></thead><tbody>' +
+    '<div class="card tablewrap"><table class="rt"><thead><tr><th>Listing</th><th>Field of study</th><th>Posted by</th><th>Closes</th><th class="num">Views</th><th class="num">Clicks</th><th class="num"><span class="sr">Actions</span></th></tr></thead><tbody>' +
     list.map(o => '<tr><td><button class="lnk nm" onclick="openJob(' + o.id + ')">' + o.title + '</button><br><span class="sm">' + o.org + ' · ' + o.type + ' · ' + o.loc + '</span></td><td class="sm">' + fieldsOf(o).join(', ') + '</td><td>' + o.by + '</td><td>' + (o.closes || 'No date') + (closesChip(o.days) ? '<br>' + closesChip(o.days) : '') + '</td><td class="num">' + o.views + '</td><td class="num">' + o.clicks + '</td>' +
       '<td class="num"><span class="tacts"><button class="btn btn-ghost btn-sm" onclick="editListing(' + o.id + ')">Edit</button><button class="btn btn-ghost btn-sm danger" onclick="removeListing(' + o.id + ')">Remove</button></span></td></tr>').join('') +
     '</tbody></table>' + (list.length ? '' : '<div class="empty sm"><b>No listings here</b><span>Try another tab or a broader search.</span></div>') + '</div>';
 };
-function removeListing(id){ const o = byId(id); OPPS = OPPS.filter(x => x.id !== id); FLAGS = FLAGS.filter(f => f.title !== o.title); logIt('removed <b>' + o.title + '</b>' + (o.days < 0 ? ' after it expired' : ''), 'content'); syncNav(); render(); toast('Removed. ' + o.title + ' is gone for everyone.'); }
-function removeExpired(){ const gone = OPPS.filter(o => o.days < 0); OPPS = OPPS.filter(o => o.days >= 0); gone.forEach(o => logIt('removed <b>' + o.title + '</b> after it expired', 'content')); syncNav(); render(); toast(gone.length + ' expired listing' + (gone.length === 1 ? '' : 's') + ' removed.'); }
+function removeListing(id){ const o = byId(id); OPPS = OPPS.filter(x => x.id !== id); FLAGS = FLAGS.filter(f => f.title !== o.title); logIt('removed <b>' + o.title + '</b>' + (o.days < 0 ? ' after it expired' : ''), 'listing'); syncNav(); render(); toast('Removed. ' + o.title + ' is gone for everyone.'); }
+function removeExpired(){ const gone = OPPS.filter(o => o.days < 0); OPPS = OPPS.filter(o => o.days >= 0); gone.forEach(o => logIt('removed <b>' + o.title + '</b> after it expired', 'listing')); syncNav(); render(); toast(gone.length + ' expired listing' + (gone.length === 1 ? '' : 's') + ' removed.'); }
 
 /* ---------- announcements ---------- */
+const linkLabelOf = e => e.cat === 'survey' ? 'Take the survey' : e.cat === 'general' ? 'Open the link' : 'Register';
 function annCard(e){
   const n = daysTo(e.date), soon = !e.past && n >= 0 && n <= 7, staffView = staff() || canManage(e);
   const act = e.past ? '<span class="pill off"><i></i>Finished</span>'
-    : (e.link ? '<a class="btn btn-primary btn-sm" href="' + attr(e.link) + '" target="_blank" rel="noopener">' + (e.linkLabel || 'Open') + ICO.ext + '</a>' : staff() || e.cat === 'general' || e.cat === 'survey' ? '' : '<button class="btn ' + (e.going ? 'btn-ghost' : 'btn-primary') + ' btn-sm" onclick="toggleEvent(' + e.id + ')">' + (e.going ? ICO.check + 'Going' : 'Save my place') + '</button>') +
+    : (e.link ? '<a class="btn btn-primary btn-sm" href="' + attr(e.link) + '" target="_blank" rel="noopener">' + linkLabelOf(e) + ICO.ext + '</a>' : '') +
       '<button class="btn btn-ghost btn-sm" onclick="addToCalendar(' + e.id + ')">' + ICO.cal + 'Add to calendar</button>';
   const manage = canManage(e) ? '<span class="evacts">' + (staff() && !e.past ? '<button class="btn btn-ghost btn-sm" aria-pressed="' + !!e.pinned + '" onclick="togglePin(' + e.id + ')">' + ICO.pushpin + (e.pinned ? 'Unpin' : 'Pin to top') + '</button>' : '') + '<button class="btn btn-ghost btn-sm" onclick="editEvent(' + e.id + ')">Edit</button>' + (e.past ? '' : '<button class="btn btn-ghost btn-sm danger" onclick="cancelEvent(' + e.id + ')">Cancel</button>') + '</span>' : '';
   return '<article class="card event ann' + (e.pinned && !e.past ? ' pinned' : '') + '"><span class="date' + (e.past ? ' past' : soon ? ' soon' : '') + '">' + e.d.replace(' ', '<br>') + '</span><span class="body">' +
@@ -1665,7 +1648,7 @@ function addToCalendar(id){
 function annBoard(){
   const list = forMe(EVENTS).filter(e => !e.past).sort(annOrder).slice(0, 4);
   if (!list.length) return '';
-  return '<section class="board"><div class="page-head"><h2 style="margin:0">Coming up</h2><div class="acts"><button class="btn btn-ghost btn-sm" onclick="nav(\'events\')">All announcements ' + ICO.chevR + '</button></div></div><div class="annlist grid">' + list.map(annMini).join('') + '</div></section>';
+  return '<section class="board"><div class="page-head"><h2 style="margin:0">Announcements</h2><div class="acts"><button class="btn btn-ghost btn-sm" onclick="nav(\'events\')">All announcements ' + ICO.chevR + '</button></div></div><div class="annlist grid">' + list.map(annMini).join('') + '</div></section>';
 }
 /* ---------- stage cards ---------- */
 function journeyChip(){
@@ -1676,7 +1659,7 @@ function journeyChip(){
 const ordinal = n => n === 1 ? 'st' : n === 2 ? 'nd' : n === 3 ? 'rd' : 'th';
 function impactCard(){
   const live = mine().filter(l => l.status === 'live').length, applied = mine().reduce((a, l) => a + l.applied, 0);
-  if (!mine().length) return '<section class="card impact first"><div class="l"><span class="t">Post your first opportunity</span><span class="n">A listing you post reaches ' + STU_COUNT + ' scholars the same day, and you can see who applied from here.</span></div><div class="r"><button class="btn btn-primary" onclick="S.edit=null;nav(\'submit\')">' + ICO.plus + 'Post an opportunity</button></div></section>';
+  if (!mine().length) return '<section class="card impact first"><div class="l"><span class="t">Post your first listing</span><span class="n">A listing you post reaches ' + STU_COUNT + ' scholars the same day, and you can see who applied from here.</span></div><div class="r"><button class="btn btn-primary" onclick="S.edit=null;nav(\'submit\')">' + ICO.plus + 'Post a listing</button></div></section>';
   return '<section class="card impact"><div class="l"><span class="t">' + (S.role === 'recruiter' ? 'Hiring with the Moshal Program as Karoo Analytics' : 'Giving back as an Alumni career champion') + '</span><span class="n">Every listing you post reaches ' + STU_COUNT + ' scholars the same day.</span></div><div class="r"><div><b>' + live + '</b><span>live listing' + (live === 1 ? '' : 's') + '</span></div><div><b>' + applied + '</b><span>scholars applied</span></div></div></section>';
 }
 const STU_COUNT = 880;
@@ -1736,26 +1719,25 @@ function publishListing(){
     const o = byId(S.edit), was = o.title;
     Object.assign(o, {title:val('f0').trim(), org:val('f1').trim(), url:val('f2').trim(), type:val('f6'), field:fields[0], fields, loc:val('f3'), closes:c.closes, days:c.days, desc:val('f7').trim(), years:pickedYears(o.years, 'opp')});
     const m = mine().find(l => l.title === was); if (m) Object.assign(m, {title:o.title, org:o.org, url:o.url, closes:c.closes || 'No closing date'});
-    if (staff()) logIt('edited <b>' + o.title + '</b>', 'content');
+    if (staff()) logIt('edited <b>' + o.title + '</b>', 'listing');
     S.edit = null; openJob(o.id); toast('Saved. Scholars see the update now.'); return;
   }
   const item = {id:Date.now() + 1, title:val('f0').trim(), org:val('f1').trim(), type:val('f6') || OPP_TYPES[0], field:fields[0], fields, loc:val('f3') || LOCS[0], url:val('f2').trim(), closes:c.closes || 'No closing date', days:c.days, by:ROLES[S.role].name, desc:val('f7').trim(), years:pickedYears(undefined, 'opp')};
   if (lister()) mine().unshift({id:Date.now(), title:item.title, org:item.org, url:item.url, status:'live', applied:0, posted:'Today', closes:item.closes});
   OPPS.unshift({...item, views:0, clicks:0, age:0, saved:false, applied:false});
-  logIt('posted <b>' + item.title + '</b>', 'content');
+  logIt('posted <b>' + item.title + '</b>', 'listing');
   nav(lister() ? 'subs' : 'opps'); toast('Live. Scholars can see it now.');
 }
 function editListing(id){ S.edit = id; nav('submit'); }
-function unpublishListing(id){ const o = byId(id); OPPS = OPPS.filter(x => x.id !== id); const m = allMine().find(l => l.title === o.title); if (m) m.status = 'unpublished'; FLAGS = FLAGS.filter(f => f.title !== o.title); nav('opps'); toast('Unpublished. Scholars can no longer see it.'); }
 function fixLink(id){ const l = mine().find(x => x.id === id); l.status = 'live'; delete l.check; FLAGS = FLAGS.filter(f => f.title !== l.title); syncNav(); render(); toast('Link updated. The listing is live again.'); }
-function setListing(id, st){ const l = mine().find(x => x.id === id); l.status = st; syncNav(); render(); toast(st === 'live' ? 'Published again.' : 'Unpublished. Scholars can no longer see it.'); }
-function resolveFlag(id, unpub){ const f = FLAGS.find(x => x.id === id); logIt((unpub ? 'unpublished' : 'dismissed a report on') + ' <b>' + f.title + '</b>', unpub ? 'reject' : 'approve'); FLAGS = FLAGS.filter(x => x.id !== id); if (unpub) { const l = allMine().find(x => x.title === f.title); if (l) l.status = 'unpublished'; OPPS = OPPS.filter(o => o.title !== f.title); } syncNav(); render(); toast(unpub ? 'Unpublished and the champion was told why.' : 'Flag dismissed. The listing stays live.'); }
+function setListing(id, st){ const l = mine().find(x => x.id === id); l.status = st; syncNav(); render(); toast(st === 'live' ? 'Published again.' : 'Removed. Scholars can no longer see it.'); }
+function resolveFlag(id, unpub){ const f = FLAGS.find(x => x.id === id); logIt((unpub ? 'removed' : 'dismissed a report on') + ' <b>' + f.title + '</b>', 'listing'); FLAGS = FLAGS.filter(x => x.id !== id); if (unpub) { const l = allMine().find(x => x.title === f.title); if (l) l.status = 'unpublished'; OPPS = OPPS.filter(o => o.title !== f.title); } syncNav(); render(); toast(unpub ? 'Removed, and the champion was told why.' : 'Flag dismissed. The listing stays live.'); }
 
 /* ---------- chrome ---------- */
-const TABS = {scholar:[['overview', 'Home', 'home'], ['opps', 'Jobs', 'search'], ['saved', 'Saved', 'bookmark'], ['resources', 'Resources', 'book']],
-  champion:[['overview', 'Home', 'home'], ['opps', 'Jobs', 'search'], ['subs', 'Listings', 'brief'], ['resources', 'Resources', 'book']],
-  recruiter:[['overview', 'Home', 'home'], ['opps', 'Jobs', 'search'], ['subs', 'Listings', 'brief'], ['resources', 'Resources', 'book']],
-  exco:[['console', 'Overview', 'home'], ['listings', 'Listings', 'brief'], ['queue', 'Flagged', 'flag'], ['events', 'Notices', 'cal']],
+const TABS = {scholar:[['overview', 'Home', 'home'], ['opps', 'Listings', 'search'], ['saved', 'Saved', 'bookmark'], ['resources', 'Content', 'book']],
+  champion:[['overview', 'Home', 'home'], ['opps', 'Listings', 'search'], ['subs', 'My listings', 'brief'], ['resources', 'Content', 'book']],
+  recruiter:[['overview', 'Home', 'home'], ['opps', 'Listings', 'search'], ['subs', 'My listings', 'brief'], ['resources', 'Content', 'book']],
+  exco:[['console', 'Overview', 'home'], ['listings', 'Listings', 'brief'], ['queue', 'Flagged', 'flag'], ['events', 'Announcements', 'cal']],
   admin:[['console', 'Overview', 'home'], ['queue', 'Flagged', 'flag'], ['users', 'Users', 'user'], ['insights', 'Reports', 'brief']]};
 function tabbar(){
   const ic = n => n === 'bookmark' ? BOOK : (ICO[n] || ICO.brief);
@@ -1782,14 +1764,6 @@ function dialog(){
       '<div class="notice warn" style="margin:0">' + ICO.clock + '<span>This step is required. It stays open until you have updated Salesforce.</span></div>' +
       '<a class="btn btn-primary sfopen" href="' + attr(SALESFORCE_URL) + '" target="_blank" rel="noopener" onclick="sfOpened()">Open Salesforce' + ICO.ext + '</a></div>' +
       '<div class="pf"><button class="btn btn-ghost btn-sm" onclick="sfUndo()">I chose Offer by mistake</button><button class="btn btn-primary" onclick="sfDone()"' + (S.dlg.opened ? '' : ' disabled title="Open Salesforce first"') + '>' + ICO.check + 'I have updated Salesforce</button></div></div></div>'; }
-  if (S.dlg.kind === 'monthly') { const m = MONTHS_BACK()[S.dlg.m], rows = monthRows(m), sum = monthSummary(rows);
-    const seg = (v, l) => '<button aria-pressed="' + (S.dlg.shape === v) + '" onclick="S.dlg.shape=\'' + v + '\';render()">' + l + '</button>';
-    return '<div class="xmask" onclick="if(event.target===this)closeDlg()"><div class="xdlg" role="dialog" aria-modal="true" aria-label="Monthly activity report"><div class="xh"><span>Monthly activity report</span><button class="xclose" aria-label="Close" onclick="closeDlg()">×</button></div>' +
-      '<div class="pb"><div class="field"><label for="mr-m">Month</label><select id="mr-m" onchange="S.dlg.m=+this.value;render()">' + MONTHS_BACK().map((x, i) => '<option value="' + i + '"' + (i === S.dlg.m ? ' selected' : '') + '>' + x.label + '</option>').join('') + '</select></div>' +
-      '<div class="msum">' + [['Signed in', sum.signed], ['Applied', sum.applied], ['Applications', sum.apps], ['Interviews', sum.interviews], ['Offers', sum.offers]].map(([l, n]) => '<div><b>' + n + '</b><span>' + l + '</span></div>').join('') + '</div>' +
-      '<div class="field"><label>Rows</label><div class="seg">' + seg('scholar', 'One per scholar') + seg('uni', 'One per university') + '</div></div>' +
-      '<p style="margin:0;font-size:13px;color:var(--muted)">All ' + rows.length + ' scholars, whatever the filters on the page. Saves as ' + monthFile(m) + ', which opens in Excel.</p></div>' +
-      '<div class="pf"><button class="btn btn-ghost" onclick="closeDlg()">Cancel</button><button class="btn btn-primary" onclick="exportMonth()">' + ICO.download + 'Export ' + (S.dlg.shape === 'uni' ? INST.length + ' rows' : rows.length + ' scholars') + '</button></div></div></div>'; }
   if (S.dlg.kind === 'role') { const x = USERS[S.dlg.i], to = S.dlg.r;
     const chip = r => '<span class="rolechip"><span class="rdot" style="background:' + STAGES[ROLES[r].stage].bg + '"></span>' + ROLE_LABEL[r] + '</span>';
     return '<div class="xmask" onclick="if(event.target===this)closeDlg()"><div class="xdlg roledlg" role="dialog" aria-modal="true" aria-labelledby="ro-h"><div class="xh"><span id="ro-h">Change ' + x.name + '’s role?</span><button class="xclose" aria-label="Close" onclick="closeDlg()">×</button></div>' +
@@ -1810,12 +1784,12 @@ function dialog(){
       '<div class="pf"><button class="btn btn-ghost" onclick="closeDlg()">Cancel</button><button class="btn btn-primary" onclick="sendInvite()">' + ICO.send + 'Send invite</button></div></div></div>';
   if (S.dlg.kind === 'apply') { const o = byId(S.dlg.id);
     return '<div class="xmask" onclick="if(event.target===this)closeDlg()"><div class="xdlg" role="dialog" aria-modal="true" aria-label="Apply"><div class="xh"><span>Apply to ' + o.org + '</span><button class="xclose" aria-label="Close" onclick="closeDlg()">×</button></div>' +
-      '<div class="pb"><p style="margin:0">We will add this to <b>My applications</b> as <b>In progress</b> and open the employer’s page in a new tab. Finish your application there, then update the stage as it moves.</p>' +
+      '<div class="pb"><p style="margin:0">We will add this to <b>My applications</b> as <b>Applied</b> and open the employer’s page in a new tab. Finish your application there, and come back to update it if you get an offer.</p>' +
       '<div class="notice info" style="margin:0">' + ICO.link + '<span>careers.' + o.org.toLowerCase().replace(/\s/g, '') + '.example</span></div></div>' +
       '<div class="pf"><button class="btn btn-ghost" onclick="closeDlg()">Cancel</button><button class="btn btn-primary" onclick="confirmApply()">Continue' + ICO.ext + '</button></div></div></div>'; }
   const o = byId(S.dlg.id);
   return '<div class="xmask" onclick="if(event.target===this)closeDlg()"><div class="xdlg" role="dialog" aria-modal="true" aria-label="Report listing"><div class="xh"><span>Report this listing</span><button class="xclose" aria-label="Close" onclick="closeDlg()">×</button></div>' +
-    '<div class="pb"><p style="margin:0;font-size:14px;color:var(--muted)">' + o.title + ' · ' + o.org + '</p><div class="field"><label for="rwhy">What is wrong with it?</label><select id="rwhy"><option>The link does not work</option><option>Applications have closed</option><option>The closing date is wrong</option><option>It is not a real opportunity</option></select></div></div>' +
+    '<div class="pb"><p style="margin:0;font-size:14px;color:var(--muted)">' + o.title + ' · ' + o.org + '</p><div class="field"><label for="rwhy">What is wrong with it?</label><select id="rwhy"><option>Link broken or closed</option><option>Looks suspicious</option></select></div></div>' +
     '<div class="pf"><button class="btn btn-ghost" onclick="closeDlg()">Cancel</button><button class="btn btn-primary" onclick="sendReport()">' + ICO.flag + 'Send report</button></div></div></div>';
 }
 /* The empty search field shows a ghost typing example searches: calm cadence, blinking caret, a phrase at a time. Focus or a keystroke stops it. */
@@ -1832,12 +1806,12 @@ function ghostStep(){
 }
 function ghostStart(delay){
   clearTimeout(G.timer); const el = ghostEl(), input = ghostInput(); if (!el || !input) return;
-  if (matchMedia('(prefers-reduced-motion:reduce)').matches) { input.placeholder = 'Search opportunities, employers or study fields'; el.textContent = ''; return; }
+  if (matchMedia('(prefers-reduced-motion:reduce)').matches) { input.placeholder = 'Search job listings, employers or fields of study'; el.textContent = ''; return; }
   if (!input.value && document.activeElement !== input) G.stopped = false;
-  if (G.stopped || input.value || document.activeElement === input) { el.textContent = ''; input.placeholder = 'Search opportunities, employers or study fields'; return; }
+  if (G.stopped || input.value || document.activeElement === input) { el.textContent = ''; input.placeholder = 'Search job listings, employers or fields of study'; return; }
   input.placeholder = ''; el.innerHTML = '<i></i>'; G.pos = 0; G.deleting = false; G.timer = setTimeout(ghostStep, delay || 900);
 }
-function ghostStop(byUser){ clearTimeout(G.timer); const el = ghostEl(), input = ghostInput(); if (el) el.textContent = ''; if (input) input.placeholder = 'Search opportunities, employers or study fields'; if (byUser) G.stopped = true; }
+function ghostStop(byUser){ clearTimeout(G.timer); const el = ghostEl(), input = ghostInput(); if (el) el.textContent = ''; if (input) input.placeholder = 'Search job listings, employers or fields of study'; if (byUser) G.stopped = true; }
 function ghostResume(){ const input = ghostInput(); if (!input || input.value) return; G.stopped = false; clearTimeout(G.timer); G.timer = setTimeout(() => ghostStart(0), 2500); }
 function render(){
   const app = document.querySelector('.app'); app.classList.toggle('auth', !S.auth);
@@ -1866,11 +1840,9 @@ const INST = [
   ['UJ','University of Johannesburg',['Engineering & Built Environment','Business & Economics','Science']],
   ['UKZN','University of KwaZulu-Natal',['Engineering','Law & Management','Health Sciences']]
 ];
-const FIELD_OF = f => /Engineering|EBIT/.test(f) ? 'Engineering' : /Commerce|Economic|Business|Management/.test(f) ? 'Commerce' : /Health|Medicine/.test(f) ? 'Health Sciences' : /Science/.test(f) ? 'Science' : /Law/.test(f) ? 'Law' : 'Humanities';
+const FIELD_OF = f => /Engineering|EBIT/.test(f) ? 'Engineering & Technology' : /Commerce|Economic|Business|Management/.test(f) ? 'Commerce & Finance' : /Health|Medicine/.test(f) ? 'Health Sciences' : /Science/.test(f) ? 'Science' : /Law/.test(f) ? 'Law' : 'Humanities';
 const YEARS = ['1st year','2nd year','3rd year','4th year','Honours'];
 const YEAR_SHORT = {'1st year':'1st','2nd year':'2nd','3rd year':'3rd','4th year':'4th','Honours':'Hons'};
-const TYPES = ['Internship','Vacation work','Graduate programme','Bursary'];
-const FIELDS = ['Engineering','Commerce','Science','Health Sciences','Law','Humanities'];
 const THIS_YEAR = 2026;
 const FIRST = ['Cassidy','Mickey','Lisa','Kagiso','Naomi','Bongani','Zanele','Liam','Precious','Ruan','Amahle','Tumelo','Karabo','Nomvula','Lindiwe','Mpho','Tshepo','Aisha','Sibusiso','Nandi','Keegan','Palesa','Yusuf','Refilwe','Jabu','Chloe','Lerato','Thabo','Anele','Kyle'];
 const LAST = ['Mokoena','Dlamini','Mtshali','Molefe','Petersen','Ndlovu','Mthembu','Jacobs','Mahlangu','van Wyk','Cele','Sithole','Mabena','Khoza','Ngcobo','Radebe','Maseko','Moosa','Gumede','Shabalala','Naidoo','Mofokeng','Ebrahim','Tau','Mkhize','Adams'];
@@ -1898,29 +1870,26 @@ INST.forEach(([short, instName, facs], ui) => { const n = 130 + Math.floor(rnd()
  * Reporting state. Scope (place, year, graduating, field, final years) decides WHO is counted; the selected group
  * (R.seg) decides which bucket is printed, which names are listed and what the export presets to. The group never
  * shrinks the pool the charts are computed on, so a share is always a share of the scope.
- * Vocabulary is fixed in README.md: Applied / Did not apply (lapsed, never started); Has an offer / No offer.
+ * Vocabulary is fixed in README.md: two states each, Applied / Not applying and Has an offer / No offer.
  */
-const R = {tab:'bd', lens:'activity', period:30, inst:[], fac:[], grad:[], year:[], types:[], field:[], final:false, seg:'notapplied', open:null, page:1, all:false, draft:null, xd:null, view:{}, sort:{col:'status', dir:1}};
+const R = {tab:'bd', lens:'activity', period:30, inst:[], fac:[], year:[], field:[], final:false, app:'notapplied', off:'any', seg:'notapplied', open:null, page:1, all:false, draft:null, xd:null, view:{}, sort:{col:'status', dir:1}};
 const SMALL_N = 5, SORT_N = 10;
 const fmtD = iso => new Date(iso + 'T12:00:00').toLocaleDateString('en-ZA', {day:'numeric', month:'short'});
-const periodLabel = () => R.period === 'custom' && R.range ? fmtD(R.range.from) + ' – ' + fmtD(R.range.to) : ({30:'last 30 days', 90:'last 90 days', 365:'this year'})[R.period];
+const periodLabel = () => R.period === 'custom' && R.range ? fmtD(R.range.from) + ' – ' + fmtD(R.range.to) : ({30:'last 30 days', 90:'last 90 days', 365:'last 12 months'})[R.period];
 const daysAgo = iso => Math.max(0, Math.round((new Date(TODAY_ISO + 'T12:00:00') - new Date(iso + 'T12:00:00')) / 864e5));
 const isoAgo = n => { const d = new Date(new Date(TODAY_ISO + 'T12:00:00') - n * 864e5); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); };
 const win = () => R.period === 'custom' && R.range ? {lo:daysAgo(R.range.to), hi:daysAgo(R.range.from)} : {lo:0, hi:+R.period};
 const inWin = d => { const w = win(); return d >= w.lo && d <= w.hi; };
 const setPeriod = v => { R.period = v; R.page = 1; R.open = null; render(); };
 const setRange = () => { const f = document.getElementById('pf').value, t = document.getElementById('pt').value; if (!f || !t) { toast('Pick both dates.'); return; } R.range = f <= t ? {from:f, to:t} : {from:t, to:f}; setPeriod('custom'); };
-const typeOk = a => !R.types.length || R.types.includes(a.type);
-const appsIn = st => st.apps.filter(a => inWin(a.d) && typeOk(a));
+const appsIn = st => st.apps.filter(a => inWin(a.d));
 const applied = st => appsIn(st).length > 0;
-const appliedPrev = st => st.apps.some(a => a.d > R.period && a.d <= R.period * 2 && typeOk(a));
-const hasPrev = () => typeof R.period === 'number' && R.period !== 365 && R.lens === 'activity';
-const lastApp = st => { const l = st.apps.filter(typeOk); return l.length ? l[0].d : null; };
+const appliedPrev = st => st.apps.some(a => a.d > R.period && a.d <= R.period * 2);
+const hasPrev = () => typeof R.period === 'number' && R.period !== 365 && R.off === 'any' && (R.app === 'applied' || R.app === 'notapplied');
+const lastApp = st => st.apps.length ? st.apps[0].d : null;
 const stateOf = st => applied(st) ? 'applied' : lastApp(st) === null ? 'never' : 'lapsed';
 const isFinal = st => st.grad === THIS_YEAR;
 const signedIn = st => st.login !== null && inWin(st.login);
-const stInterview = st => signedIn(st) && applied(st) && appsIn(st).some(a => a.status === 'interview' || a.status === 'offer');
-const stOffer = st => stInterview(st) && appsIn(st).some(a => a.status === 'offer');
 const pct = (a, b) => b ? Math.round(a / b * 100) : 0;
 const resc = v => String(v).replace(/'/g, "\\'");
 const CHEV = '<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>';
@@ -1934,42 +1903,45 @@ const RICO = {
   up: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 6l6 8H6z"/></svg>',
   down: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 18l-6-8h12z"/></svg>'
 };
-const scopedBase = (ignoreYear, ignoreFac) => STU.filter(st => (!R.inst.length || R.inst.includes(st.inst)) && (ignoreFac || !R.fac.length || R.fac.includes(st.fac)) && (!R.grad.length || R.grad.includes(String(st.grad))) && (!R.field.length || R.field.includes(st.field)) && (!R.final || isFinal(st)) && (ignoreYear || !R.year.length || R.year.includes(st.year)));
+const scopedBase = (ignoreYear, ignoreFac) => STU.filter(st => (!R.inst.length || R.inst.includes(st.inst)) && (ignoreFac || !R.fac.length || R.fac.includes(st.fac)) && (!R.field.length || R.field.includes(st.field)) && (!R.final || isFinal(st)) && (ignoreYear || !R.year.length || R.year.includes(st.year)));
 const scoped = () => scopedBase(false);
 
 /* Groups: what a tile, a word link, a funnel bar or a final-years figure selects. Each is a predicate over the scope. */
 const GROUPS = {
   all:{l:'All scholars', f:null},
   applied:{l:'Applied', f:applied, c:'pos'},
-  notapplied:{l:'Did not apply', f:st => !applied(st), c:'rem'},
-  lapsed:{l:'Stopped applying', f:st => stateOf(st) === 'lapsed', c:'rem'},
-  never:{l:'Never applied', f:st => stateOf(st) === 'never', c:'rem'},
+  notapplied:{l:'Not applying', f:st => !applied(st), c:'rem'},
   offer:{l:'Has an offer', f:st => st.offers > 0, c:'pos'},
-  multi:{l:'More than one offer', f:st => st.offers > 1, c:'pos'},
   none:{l:'No offer', f:st => st.offers === 0, c:'rem'},
-  'none-quiet':{l:'No offer, did not apply', f:st => st.offers === 0 && !applied(st), c:'rem'},
-  'fy-offer':{l:'Final years: has an offer', f:st => isFinal(st) && st.offers > 0, fy:true},
-  'fy-applying':{l:'Final years: applied, no offer', f:st => isFinal(st) && st.offers === 0 && applied(st), fy:true},
-  'fy-neither':{l:'Final years: no offer, did not apply', f:st => isFinal(st) && st.offers === 0 && !applied(st), fy:true, danger:true},
-  gap:{l:'Signed in, did not apply', f:st => signedIn(st) && !applied(st)},
-  'st-signed':{l:'Signed in', f:signedIn},
-  'st-applied':{l:'Signed in and applied', f:st => signedIn(st) && applied(st)},
-  'st-interview':{l:'Reached interview', f:stInterview},
-  'st-offer':{l:'Offer this period', f:stOffer}
+  'none-quiet':{l:'No offer, not applying', f:st => st.offers === 0 && !applied(st), c:'rem'},
+  'fy-neither':{l:'Final years: no offer, not applying', f:st => isFinal(st) && st.offers === 0 && !applied(st), fy:true, danger:true}
 };
 const TILES = {activity:['all','applied','notapplied'], offers:['all','offer','none']};
 const EXPORT_GROUPS = {
   activity:['all','applied','notapplied','fy-neither'],
   offers:['all','offer','none','fy-neither']
 };
-const grp = () => GROUPS[R.seg] || GROUPS.all;
-const groupList = pool => grp().f ? pool.filter(grp().f) : pool.slice();
+/* Applied and Offer pick who the page is about: the bars show their share, the names table lists them, Export presets to them. */
+const APP_OPTS = [['any', 'Any'], ['applied', 'Applied'], ['notapplied', 'Not applying']];
+const OFF_OPTS = [['any', 'Any'], ['offer', 'Has an offer'], ['none', 'No offer']];
+const COMBO = {applied:['applied', 'any'], notapplied:['notapplied', 'any'], offer:['any', 'offer'], none:['any', 'none'],
+  'none-quiet':['notapplied', 'none'], 'fy-neither':['notapplied', 'none', true]};
+const selF = st => (R.app === 'any' || GROUPS[R.app].f(st)) && (R.off === 'any' || GROUPS[R.off].f(st));
+const selLabel = () => { const a = R.app === 'any' ? '' : GROUPS[R.app === 'notapplied' ? 'notapplied' : R.app].l, o = R.off === 'any' ? '' : GROUPS[R.off].l;
+  return (R.final ? 'Final years: ' : '') + (a && o ? a + ', ' + o.toLowerCase() : a || o); };
+const segOf = () => R.off === 'any' ? R.app : R.app === 'any' ? R.off : R.app === 'notapplied' && R.off === 'none' ? (R.final ? 'fy-neither' : 'none-quiet') : 'combo';
+function setSel(app, off, final){
+  if (app === 'any' && off === 'any') return;
+  R.app = app; R.off = off; if (final !== undefined) R.final = final;
+  R.seg = segOf(); R.lens = R.app === 'any' ? 'offers' : 'activity'; R.page = 1; R.all = false; R.open = null; render();
+}
+const grp = () => ({l:selLabel(), f:selF, fy:R.final, danger:R.final && R.app === 'notapplied' && R.off === 'none'});
+const groupList = pool => pool.filter(selF);
 /* The bucket the breakdown prints: the remainder by default, the measured bucket when its tile is selected. */
-const bucketKey = () => R.lens === 'activity' ? (R.seg === 'applied' ? 'applied' : 'notapplied') : (R.seg === 'offer' || R.seg === 'multi' ? 'offer' : 'none');
-const inBucket = st => GROUPS[bucketKey()].f(st);
-const prevBucket = st => bucketKey() === 'applied' ? appliedPrev(st) : !appliedPrev(st);
-const bucketLabel = () => GROUPS[bucketKey()].l;
-const bucketIsPos = () => GROUPS[bucketKey()].c === 'pos';
+const inBucket = selF;
+const prevBucket = st => R.app === 'applied' ? appliedPrev(st) : !appliedPrev(st);
+/* Blue when the pick is good news, slate when it is the gap. */
+const bucketIsPos = () => (R.app === 'any' || R.app === 'applied') && (R.off === 'any' || R.off === 'offer');
 
 /* Level is derived from the place chips, never stored. */
 const level = () => R.inst.length === 1 ? (R.fac.length === 1 ? 'year' : 'fac') : 'inst';
@@ -1984,18 +1956,17 @@ const instShort = name => (INST.find(x => x[1] === name) || [name])[0];
 /* State changes */
 const togg = (key, v) => { const i = R[key].indexOf(v); if (i < 0) R[key].push(v); else R[key].splice(i, 1); if (key === 'inst') R.fac = R.fac.filter(f => !R.inst.length || INST.some(x => R.inst.includes(x[0]) && x[2].includes(f))); R.page = 1; R.all = false; render(); };
 const rSetOpen = k => { R.open = R.open === k ? null : k; render(); };
-const setSeg = k => { R.seg = k; R.page = 1; R.all = false; render(); };
 const setFinal = v => { R.final = v; R.page = 1; render(); };
-const resetAll = () => { Object.assign(R, {inst:[], fac:[], grad:[], year:[], types:[], field:[], final:false, seg:'all', page:1, all:false, open:null}); render(); };
+const resetAll = () => { Object.assign(R, {inst:[], fac:[], year:[], field:[], final:false, page:1, all:false, open:null}); setSel('notapplied', 'any'); };
 function drillTo(k, fyFirst){
   const lv = level(); R.page = 1; R.all = false;
   if (lv === 'inst') { const inst = INST.find(x => x[1] === k); if (!inst) return; R.inst = [inst[0]]; R.fac = []; }
   else if (lv === 'fac') { R.fac = [k]; }
   else { togg('year', k); return; }
-  if (R.seg === 'all') R.seg = fyFirst ? 'fy-neither' : bucketKey();
+  if (fyFirst) { setSel('notapplied', 'none', true); return; }
   render();
 }
-function drillFold(names){ R.fac = names.slice(); R.page = 1; if (R.seg === 'all') R.seg = bucketKey(); render(); }
+function drillFold(names){ R.fac = names.slice(); R.page = 1; render(); }
 function scrollNames(){ const el = document.querySelector('.names'); if (el) el.scrollIntoView({behavior:'smooth', block:'start'}); }
 if (!window.__rpBound) {
   window.__rpBound = true;
@@ -2046,8 +2017,17 @@ function periodDD(){
   const r = R.range || {from:isoAgo(30), to:isoAgo(0)};
   return '<span class="ctl' + (R.period === 'custom' ? ' on' : '') + '" role="button" tabindex="0" aria-haspopup="listbox" aria-expanded="' + open + '" onclick="event.stopPropagation();rSetOpen(\'period\')">' + ICO.cal + label + CHEV +
     (open ? '<div class="pop period" onclick="event.stopPropagation()"><div class="ph"><span>Period</span></div>' +
-      [[30, 'Last 30 days'], [90, 'Last 90 days'], [365, 'This year']].map(([v, l]) => '<button class="o" role="option" aria-selected="' + (R.period === v) + '" onclick="setPeriod(' + v + ')">' + ICO.check.replace('<svg', '<svg class="tick"') + '<span>' + l + '</span></button>').join('') +
+      [[30, 'Last 30 days'], [90, 'Last 90 days'], [365, 'Last 12 months']].map(([v, l]) => '<button class="o" role="option" aria-selected="' + (R.period === v) + '" onclick="setPeriod(' + v + ')">' + ICO.check.replace('<svg', '<svg class="tick"') + '<span>' + l + '</span></button>').join('') +
       '<div class="grp">Custom range</div><div class="range"><input id="pf" type="date" value="' + r.from + '" aria-label="From"><span>to</span><input id="pt" type="date" value="' + r.to + '" aria-label="To"><button class="btn btn-primary btn-sm" onclick="setRange()">Apply</button></div></div>' : '') + '</span>';
+}
+function selDD(key, label, options, value){
+  const open = R.open === key, other = key === 'app' ? R.off : R.app, pool = scoped(), cur = options.find(o => o[0] === value);
+  const count = v => pool.filter(st => (v === 'any' || GROUPS[v].f(st)) && (other === 'any' || GROUPS[other].f(st))).length;
+  const pick = v => key === 'app' ? "setSel('" + v + "',R.off)" : "setSel(R.app,'" + v + "')";
+  return '<span class="ctl sel' + (value !== 'any' ? ' on' : '') + '" role="button" tabindex="0" aria-haspopup="listbox" aria-expanded="' + open + '" aria-label="' + label + ': ' + cur[1] + '" onclick="event.stopPropagation();rSetOpen(\'' + key + '\')" onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();rSetOpen(\'' + key + '\')}"><span class="sk">' + label + '</span>' + cur[1] + CHEV +
+    (open ? '<div class="pop" role="listbox" aria-label="' + label + '" onclick="event.stopPropagation()"><div class="ph"><span>' + label + '</span></div>' +
+      options.map(([v, l]) => { const blocked = v === 'any' && other === 'any';
+        return '<button class="o" role="option" aria-selected="' + (v === value) + '"' + (blocked ? ' aria-disabled="true" disabled title="Pick Applied or Offer first"' : ' onclick="' + pick(v) + '"') + '>' + ICO.check.replace('<svg', '<svg class="tick"') + '<span>' + l + '</span><span class="n">' + count(v) + '</span></button>'; }).join('') + '</div>' : '') + '</span>';
 }
 function filterRow(){
   const facOpts = (R.inst.length ? INST.filter(x => R.inst.includes(x[0])) : INST).flatMap(x => x[2]).filter((f, i, a) => a.indexOf(f) === i).sort().map(f => [f, f]);
@@ -2057,7 +2037,7 @@ function filterRow(){
     mdd('fac', 'Faculty', facOpts, v => STU.filter(st => st.fac === v && (!R.inst.length || R.inst.includes(st.inst))).length) +
     mdd('year', 'Year of study', YEARS.map(y => [y, y]), v => STU.filter(st => st.year === v).length) +
     '<button class="ctl' + (R.final ? ' on' : '') + '" aria-pressed="' + R.final + '" title="Graduating ' + THIS_YEAR + '" onclick="setFinal(!R.final)">Final years</button>' +
-    (n ? '<button class="reset" onclick="resetAll()">Clear all</button>' : '') + '<span class="mlab">Charts show</span>' + measureSeg() + '</div>';
+    (n ? '<button class="reset" onclick="resetAll()">Clear all</button>' : '') + '<i class="vsep"></i>' + selDD('app', 'Applied', APP_OPTS, R.app) + selDD('off', 'Offer', OFF_OPTS, R.off) + '</div>';
 }
 function toolbar(){
   return filterRow();
@@ -2065,28 +2045,15 @@ function toolbar(){
 function storyLine(pool){
   const chip = (label, undo, cls) => '<span class="chip' + (cls ? ' ' + cls : '') + '">' + label + '<button aria-label="Remove ' + label + '" onclick="' + undo + '">×</button></span>';
   const parts = [];
-  if (R.seg !== 'all' && !QUESTIONS.some(x => x.k === R.seg)) parts.push(chip(grp().l, "setQ('" + questionOf().k + "','" + questionOf().lens + "')", grp().danger ? 'fy' : ''));
   if (R.final) parts.push(chip('Final years', 'setFinal(false)', 'fy'));
   R.inst.forEach(i => parts.push(chip(INST.find(x => x[0] === i)[1], "togg('inst','" + i + "')")));
   R.fac.forEach(f => parts.push(chip(f, "togg('fac','" + resc(f) + "')")));
   R.year.forEach(y => parts.push(chip(y, "togg('year','" + y + "')")));
-  R.grad.forEach(g => parts.push(chip('Graduating ' + g, "togg('grad','" + g + "')")));
-  R.types.forEach(t => parts.push(chip(t, "togg('types','" + t + "')")));
   R.field.forEach(f => parts.push(chip(f, "togg('field','" + f + "')")));
   return parts.length ? '<div class="story"><span>Showing</span>' + parts.join('') + '</div>' : '';
 }
 
-/* ---- tiles ---- */
-const QUESTIONS = [
-  {k:'notapplied', lens:'activity', q:'Not applying', c:'amber', hint:'did not apply'},
-  {k:'applied', lens:'activity', q:'Applied', c:'green', hint:'applied'},
-  {k:'offer', lens:'offers', q:'Has an offer', c:'blue', hint:'hold an offer'},
-  {k:'none', lens:'offers', q:'No offer', c:'red', hint:'hold no offer'}
-];
-const questionOf = () => QUESTIONS.find(x => x.k === R.seg || (x.k === 'offer' && R.seg === 'multi') || (x.k === 'none' && R.seg === 'none-quiet') || (x.k === 'notapplied' && /^(lapsed|never|gap)$/.test(R.seg)) || (x.k === 'none' && /^fy-/.test(R.seg))) || QUESTIONS[0];
-const setQ = (k, lens) => { R.lens = lens; R.seg = k; R.page = 1; R.all = false; render(); };
 /* ---- panel chrome ---- */
-function acts(key, extra){ return '<span class="acts">' + (extra || '') + '<button class="iconbtn-sm" aria-pressed="' + R.view[key] + '" title="Table view" aria-label="Table view" onclick="R.view.' + key + '=!R.view.' + key + ';render()">' + RICO.table + '</button><button class="iconbtn-sm" title="Export" aria-label="Export this panel" onclick="openExport(null,\'' + key + '\')">' + RICO.download + '</button></span>'; }
 function tview(cols, rows){ return '<div class="tview"><table><thead><tr>' + cols.map(c => '<th>' + c + '</th>').join('') + '</tr></thead><tbody>' + rows.map(r => '<tr>' + r.map(v => '<td>' + v + '</td>').join('') + '</tr>').join('') + '</tbody></table></div>'; }
 function crumbs(){ const inst = R.inst.length === 1 ? INST.find(x => x[0] === R.inst[0]) : null;
   return '<nav class="crumbs" aria-label="Drill path">' + (inst ? '<button onclick="R.inst=[];R.fac=[];R.page=1;render()">All institutions</button><span>›</span>' + (R.fac.length === 1 ? '<button onclick="R.fac=[];R.page=1;render()">' + inst[0] + '</button><span>›</span><b>' + R.fac[0] + '</b>' : '<b>' + inst[1] + '</b>') : '<b>All institutions</b>' + (R.inst.length > 1 ? '<span>· ' + R.inst.length + ' selected</span>' : '') + (R.fac.length && !inst ? '<span>· ' + R.fac.join(', ') + '</span>' : '')) + '</nav>'; }
@@ -2099,22 +2066,18 @@ const SORTS = {
   apps:(a, b) => appsIn(a).length - appsIn(b).length, login:(a, b) => (b.login ?? 9999) - (a.login ?? 9999)
 };
 function statusChip(st){
-  if (isFinal(st) && st.offers === 0 && !applied(st)) return '<span class="chip-st is-danger">' + RICO.alert + 'No offer, did not apply<span class="d">· final year</span></span>';
+  if (isFinal(st) && st.offers === 0 && !applied(st)) return '<span class="chip-st is-danger">' + RICO.alert + 'No offer, not applying<span class="d">· final year</span></span>';
   if (R.lens === 'offers') return st.offers ? '<span class="chip-st is-on">' + RICO.check + st.offers + (st.offers > 1 ? ' offers' : ' offer') + '</span>' : '<span class="chip-st is-off">' + RICO.minus + 'No offer</span>';
   const s = stateOf(st);
   if (s === 'applied') return '<span class="chip-st is-on">' + RICO.check + 'Applied<span class="d">· ' + lastApp(st) + 'd ago</span></span>';
-  return '<span class="chip-st is-off">' + RICO.slash + 'Did not apply</span>';
+  return '<span class="chip-st is-off">' + RICO.slash + 'Not applying</span>';
 }
 /* ---- dashboard ---- */
 const take = html => '<p class="take">' + html + '</p>';
 const prevOk = () => typeof R.period === 'number' && R.period !== 365;
-const MEASURES = [['notapplied', 'activity', 'Applying'], ['none', 'offers', 'Offers']];
-const measureSeg = () => '<div class="seg msr" role="group" aria-label="Charts show">' + MEASURES.map(([k, lens, l]) => '<button aria-pressed="' + (R.lens === lens) + '" onclick="setQ(\'' + k + '\',\'' + lens + '\')">' + l + '</button>').join('') + '</div>';
-const LENS_OF = {applied:'activity', notapplied:'activity', lapsed:'activity', never:'activity', gap:'activity', offer:'offers', multi:'offers', none:'offers', 'fy-neither':'offers'};
-function pickGroup(k){ R.showNames = true; if (LENS_OF[k]) R.lens = LENS_OF[k]; R.seg = k; R.page = 1; R.all = false; render(); setTimeout(scrollNames, 0); }
-const MOST = {notapplied:'Most not applying', applied:'Most applying', offer:'Most offers', none:'Most without an offer'};
+function pickGroup(k){ R.showNames = true; const c = COMBO[k]; if (c) setSel(c[0], c[1], c[2] || (c[2] === undefined ? undefined : false)); else render(); setTimeout(scrollNames, 0); }
 /* Charts animate only when what they show changes, not when the names selection does. */
-const chartKey = () => JSON.stringify([R.period, R.range, R.inst, R.fac, R.year, R.field, R.final, R.lens, R.view]);
+const chartKey = () => JSON.stringify([R.period, R.range, R.inst, R.fac, R.year, R.field, R.final, R.app, R.off, R.view]);
 function countUp(){
   if (matchMedia('(prefers-reduced-motion:reduce)').matches) return;
   document.querySelectorAll('.rp [data-n]').forEach(el => { const to = +el.dataset.n, suf = el.dataset.suf || '', t0 = performance.now();
@@ -2126,37 +2089,35 @@ const chead = (title, key) => '<div class="card-head"><h2>' + title + '</h2>' + 
 function srow(o, i){
   return '<button class="srow' + (o.on ? ' on' : '') + '" style="--i:' + i + '"' + (o.c ? card(o.c) : '') + ' aria-label="' + o.k + ': ' + o.v + '" onclick="' + o.act + '"><span class="nm">' + o.k + '</span><span class="bar"><em class="' + (o.cls || '') + '" style="width:' + o.w + '%"></em></span><span class="val">' + o.v + '</span></button>';
 }
-const rowCard = r => ({t:r.k + ' · ' + r.n + ' scholars', rows:[{sw:'#2362B4', l:'Applied', v:r.a}, {sw:'#7D8B9A', l:'Did not apply', v:r.n - r.a}, {sw:'none', l:'Has an offer', v:r.o}]});
-const shareTable = (label, rows) => tview([label, 'Scholars', 'Applied', 'Did not apply', 'Has an offer'], rows.map(r => [r.k, r.n, r.a, r.n - r.a, r.o]));
+const rowCard = r => ({t:r.k + ' · ' + r.n + ' scholars', rows:[{sw:'#2362B4', l:'Applied', v:r.a}, {sw:'#7D8B9A', l:'Not applying', v:r.n - r.a}, {sw:'none', l:'Has an offer', v:r.o}]});
+const shareTable = (label, rows) => tview([label, 'Scholars', 'Applied', 'Not applying', 'Has an offer'], rows.map(r => [r.k, r.n, r.a, r.n - r.a, r.o]));
 function shareRows(rows, act, on){
   return '<div class="srows">' + (rows.length ? rows.map((r, i) => srow({k:r.k, w:pct(r.b, r.n), v:pct(r.b, r.n) + '%', cls:bucketIsPos() ? 'pos' : '', on:on(r), act:act(r), c:rowCard(r)}, i)).join('') : '<div class="empty-line">Nobody here</div>') + '</div>';
 }
-function mostTake(rows){ const top = rows.find(r => r.n >= SORT_N); return top ? take(MOST[bucketKey()] + ': <b>' + top.k + '</b> (' + pct(top.b, top.n) + '%)') : ''; }
+function mostTake(rows){ const top = rows.find(r => r.n >= SORT_N); return top ? take('Highest share ' + selLabel().replace(/^Final years: /, '').toLowerCase() + ': <b>' + top.k + '</b> (' + pct(top.b, top.n) + '%)') : ''; }
 
 function kpis(pool){
-  const n = pool.length, a = pool.filter(applied).length, lp = pool.filter(GROUPS.lapsed.f).length, nv = pool.filter(GROUPS.never.f).length;
-  const o = pool.filter(GROUPS.offer.f).length, m = pool.filter(GROUPS.multi.f).length;
-  const fy = pool.filter(isFinal), fyQ = fy.filter(GROUPS['fy-neither'].f).length, gap = pool.filter(GROUPS.gap.f).length;
+  const n = pool.length, a = pool.filter(applied).length;
+  const o = pool.filter(GROUPS.offer.f).length;
+  const fy = pool.filter(isFinal), fyQ = fy.filter(GROUPS['fy-neither'].f).length;
   const d = prevOk() ? pct(a, n) - pct(pool.filter(appliedPrev).length, n) : null;
   const trend = d === null ? '' : ' <span class="chg">' + (d > 0 ? '▲ ' + d + ' pts' : d < 0 ? '▼ ' + -d + ' pts' : 'no change') + '</span>';
   const lk = (k, label, v) => '<button class="kl' + (R.seg === k ? ' on' : '') + '" onclick="pickGroup(\'' + k + '\')">' + label + (v === undefined ? '' : '<b>' + v + '</b>') + '</button>';
   const big = (v, suf) => '<span class="kv" data-n="' + v + '" data-suf="' + (suf || '') + '">' + v + (suf || '') + '</span>';
   const meter = (p, cls) => '<span class="meter' + (cls ? ' ' + cls : '') + '" aria-hidden="true"><em style="width:' + p + '%"></em></span>';
   const tile = (cls, ks, label, value, sub, body) => '<div class="kt' + cls + (ks.includes(R.seg) ? ' on' : '') + '"><span class="kh">' + label + '</span>' + value + '<span class="ks">' + sub + '</span>' + body + '</div>';
-  return '<div class="kts">' +
-    tile('', ['applied', 'notapplied', 'lapsed', 'never'], 'Applying', big(pct(a, n), '%'), a + ' of ' + n + ' applied' + trend,
-      meter(pct(a, n)) + '<span class="kls">' + lk('applied', 'Applied', a) + lk('notapplied', 'Not applying', n - a) + lk('lapsed', 'Stopped', lp) + lk('never', 'Never applied', nv) + '</span>') +
-    tile('', ['offer', 'multi', 'none'], 'Offers', big(pct(o, n), '%'), o + ' of ' + n + ' have an offer',
-      meter(pct(o, n)) + '<span class="kls">' + lk('offer', 'Has an offer', o) + lk('multi', 'More than one', m) + lk('none', 'No offer', n - o) + '</span>') +
+  return '<div class="kts k3">' +
+    tile('', ['applied', 'notapplied'], 'Applying', big(pct(a, n), '%'), a + ' of ' + n + ' applied' + trend,
+      meter(pct(a, n)) + '<span class="kls">' + lk('applied', 'Applied', a) + lk('notapplied', 'Not applying', n - a) + '</span>') +
+    tile('', ['offer', 'none'], 'Offers', big(pct(o, n), '%'), o + ' of ' + n + ' have an offer',
+      meter(pct(o, n)) + '<span class="kls">' + lk('offer', 'Has an offer', o) + lk('none', 'No offer', n - o) + '</span>') +
     tile(' warn', ['fy-neither'], RICO.alert + 'Final years to call', big(fyQ), 'no offer and not applying',
       meter(pct(fyQ, fy.length), 'amb') + '<span class="kls">' + lk('fy-neither', 'See who') + '</span>') +
-    tile('', ['gap'], 'Looking, not applying', big(gap), 'signed in but did not apply',
-      meter(pct(gap, pool.filter(signedIn).length), 'rem') + '<span class="kls">' + lk('gap', 'See who') + '</span>') +
     '</div>';
 }
 function trendPanel(pool){
   const yr = R.period === 365, size = yr ? 30 : 7, nb = 12, unit = yr ? 'month' : 'week';
-  const cols = Array.from({length:nb}, (_, i) => { const lo = (nb - 1 - i) * size, hi = lo + size - 1, ins = a => a.d >= lo && a.d <= hi && typeOk(a);
+  const cols = Array.from({length:nb}, (_, i) => { const lo = (nb - 1 - i) * size, hi = lo + size - 1, ins = a => a.d >= lo && a.d <= hi;
     const who = pool.filter(st => st.apps.some(ins)); return {hi, n:who.length, apps:who.reduce((t, st) => t + st.apps.filter(ins).length, 0)}; });
   const max = Math.max(1, ...cols.map(c => c.n)), avg = Math.round(cols.reduce((t, c) => t + c.n, 0) / nb), last = cols[nb - 1], h = v => Math.round(v / max * 85);
   const from = c => (yr ? '' : 'Week of ') + fmtD(isoAgo(c.hi));
@@ -2165,14 +2126,6 @@ function trendPanel(pool){
       cols.map((c, i) => '<button class="tc' + (i === nb - 1 ? ' now' : '') + '" style="--i:' + i + '"' + card({t:from(c), rows:[{sw:'#2362B4', l:'Scholars who applied', v:c.n}, {sw:'none', l:'Applications', v:c.apps}]}) + ' aria-label="' + from(c) + ': ' + c.n + ' scholars applied"><span class="tv">' + c.n + '</span><em style="height:' + h(c.n) + '%"></em></button>').join('') + '</div>' +
       '<div class="tx">' + cols.map((c, i) => '<span>' + (i % 3 === 2 ? fmtD(isoAgo(c.hi)) : '') + '</span>').join('') + '</div></div>';
   return '<section class="card">' + chead('Scholars applying each ' + unit, 'tr') + take('<b>' + last.n + '</b> this ' + unit + ' · average ' + avg) + body + '</section>';
-}
-function funnelPanel(pool){
-  const st = [['Signed in', signedIn, 'st-signed'], ['Applied', x => signedIn(x) && applied(x), 'st-applied'], ['Interview', stInterview, 'st-interview'], ['Offer', stOffer, 'st-offer']];
-  const c = st.map(x => pool.filter(x[1]).length), base = c[0] || 1;
-  let w = 1; for (let i = 2; i < c.length; i++) if (pct(c[i], c[i - 1]) < pct(c[w], c[w - 1])) w = i;
-  const body = R.view.fn ? tview(['Step', 'Scholars'], st.map((x, i) => [x[0], c[i]])) :
-    '<div class="srows fun">' + st.map((x, i) => srow({k:x[0], w:pct(c[i], base), v:c[i], cls:'pos', act:"pickGroup('" + x[2] + "')"}, i)).join('') + '</div>';
-  return '<section class="card">' + chead('From signing in to an offer', 'fn') + (c[0] ? take('Biggest drop: <b>' + st[w - 1][0].toLowerCase() + ' → ' + st[w][0].toLowerCase() + '</b> (' + pct(c[w], c[w - 1]) + '% get through)') : '') + body + '</section>';
 }
 function placePanel(pool){
   const rows = foldFaculties(sortWorst(rowsFor(pool, keyFn()), r => pct(r.b, r.n), r => r.b)), lv = level();
@@ -2184,20 +2137,12 @@ function fieldPanel(pool){
   const rows = rowsFor(pool, st => st.field).sort((x, y) => pct(y.b, y.n) - pct(x.b, x.n) || y.n - x.n);
   return '<section class="card">' + chead('By field of study', 'fd') + mostTake(rows) + (R.view.fd ? shareTable('Field', rows) : shareRows(rows, r => "togg('field','" + resc(r.k) + "')", r => R.field.includes(r.k))) + '</section>';
 }
-function yearPanel(){
-  const pool = scopedBase(true), rows = YEARS.map(y => stat(y, pool.filter(st => st.year === y))).filter(r => r.n);
-  return '<section class="card">' + chead('By year of study', 'yr') + mostTake(rows.slice().sort((x, y) => pct(y.b, y.n) - pct(x.b, x.n))) + (R.view.yr ? shareTable('Year', rows) : shareRows(rows, r => "togg('year','" + r.k + "')", r => R.year.includes(r.k))) + '</section>';
-}
 function finalPanel(){
   const pool = STU.filter(st => (!R.inst.length || R.inst.includes(st.inst)) && (!R.fac.length || R.fac.includes(st.fac)) && (!R.field.length || R.field.includes(st.field)) && isFinal(st)), n = pool.length;
-  const parts = [['fy-offer', 'Has an offer', 's-o'], ['fy-applying', 'Applied, waiting', 's-a'], ['fy-neither', 'Needs a call', 's-q']].map(([k, l, cls]) => ({k, l, cls, v:pool.filter(GROUPS[k].f).length}));
-  const press = k => "R.final=true;pickGroup('" + k + "')";
-  const rows = rowsFor(pool, keyFn()).sort((x, y) => y.fyQ - x.fyQ), most = Math.max(1, ...rows.map(r => r.fyQ));
-  const body = R.view.fy ? tview([LEVEL_WORD[level()], 'Final years', 'Has an offer', 'Applied, waiting', 'Needs a call'], rows.map(r => [r.k, r.fyN, r.fyO, r.fyA, r.fyQ])) :
-    '<div class="fys"><div class="fystack">' + parts.map(x => '<button class="' + x.cls + '" style="width:' + pct(x.v, n) + '%" title="' + x.l + ': ' + x.v + '" aria-label="' + x.l + ': ' + x.v + '" onclick="' + press(x.k) + '"></button>').join('') + '</div>' +
-      '<div class="fyleg">' + parts.map(x => '<button onclick="' + press(x.k) + '"><i class="' + x.cls + '"></i>' + x.l + '<b>' + x.v + '</b></button>').join('') + '</div></div>' +
-      '<div class="srows">' + rows.map((r, i) => srow({k:r.k, w:pct(r.fyQ, most), v:r.fyQ + ' to call', cls:'amb', act:"drillTo('" + resc(r.k) + "',true)"}, i)).join('') + '</div>';
-  return '<section class="card">' + chead('Final years, graduating ' + THIS_YEAR, 'fy') + take('<b>' + parts[2].v + ' of ' + n + '</b> need a call') + body + '</section>';
+  const rows = rowsFor(pool, keyFn()).sort((x, y) => y.fyQ - x.fyQ), most = Math.max(1, ...rows.map(r => r.fyQ)), toCall = rows.reduce((t, r) => t + r.fyQ, 0);
+  const body = R.view.fy ? tview([LEVEL_WORD[level()], 'Final years', 'To call'], rows.map(r => [r.k, r.fyN, r.fyQ])) :
+    '<div class="srows">' + rows.map((r, i) => srow({k:r.k, w:pct(r.fyQ, most), v:r.fyQ + ' to call', cls:'amb', act:"drillTo('" + resc(r.k) + "',true)"}, i)).join('') + '</div>';
+  return '<section class="card">' + chead('Final years to call, graduating ' + THIS_YEAR, 'fy') + take('<b>' + toCall + ' of ' + n + '</b> have no offer and are not applying · <button class="lnk" onclick="pickGroup(\'fy-neither\')">See who</button>') + body + '</section>';
 }
 
 function namesPanel(pool){
@@ -2205,8 +2150,8 @@ function namesPanel(pool){
   const pages = Math.max(1, Math.ceil(list.length / 25)); R.page = Math.max(1, Math.min(R.page, pages));
   const shown = R.all ? list.slice((R.page - 1) * 25, R.page * 25) : list.slice(0, 10);
   const th = (col, label, num) => '<th class="' + (num ? 'num ' : '') + (R.sort.col === col ? 'sorted' : '') + '"' + (R.sort.col === col ? ' aria-sort="' + (R.sort.dir === 1 ? 'ascending' : 'descending') + '"' : '') + '><button onclick="R.sort=R.sort.col===\'' + col + '\'?{col:\'' + col + '\',dir:-R.sort.dir}:{col:\'' + col + '\',dir:1};render()">' + label + (R.sort.col === col ? (R.sort.dir === 1 ? RICO.up : RICO.down) : '') + '</button></th>';
-  const title = (R.seg === 'all' ? 'All scholars' : grp().l) + ' · ' + scopeWords() + (R.final && !grp().fy ? ' · final years' : '') + (R.year.length ? ' · ' + R.year.join(', ') : '');
-  return '<section class="card names"><div class="card-head"><h2>' + title + '</h2><span class="n">' + list.length + (R.sort.col === 'status' && R.sort.dir === 1 ? ' · quietest first' : '') + '</span><span class="acts"><button class="iconbtn-sm" title="Export these scholars" aria-label="Export these scholars" onclick="openExport(R.seg,\'names\')">' + RICO.download + '</button></span></div>' +
+  const title = grp().l + ' · ' + scopeWords() + (R.year.length ? ' · ' + R.year.join(', ') : '');
+  return '<section class="card names"><div class="card-head"><h2>' + title + '</h2><span class="n">' + list.length + (R.sort.col === 'status' && R.sort.dir === 1 ? ' · quietest first' : '') + '</span></div>' +
     '<table class="rt"><thead><tr>' + th('name', 'Scholar') + th('year', 'Year') + th('status', R.lens === 'activity' ? 'Status' : 'Offers') + th('apps', 'Applications', true) + th('login', 'Last login') + '</tr></thead><tbody>' +
     (shown.length ? shown.map(st => '<tr><td class="nm">' + st.name + '<div class="sm">' + st.inst + ' · ' + st.fac + '</div></td><td>' + st.year + (isFinal(st) ? '<span class="sm"> · final</span>' : '') + '</td><td>' + statusChip(st) + '</td><td class="num">' + appsIn(st).length + '</td><td class="' + (st.login === null || st.login > R.period ? 'muted' : '') + '">' + (st.login === null ? 'Never' : st.login === 0 ? 'Today' : st.login + 'd ago') + '</td></tr>').join('') : '<tr><td colspan="5" class="sm" style="text-align:center;padding:28px">Nobody matches. Remove a filter above.</td></tr>') + '</tbody></table>' +
     '<div class="card-foot"><span>' + (R.all ? 'Page ' + R.page + ' of ' + pages + ' · ' + list.length + ' scholars' : shown.length + ' of ' + list.length) + '</span>' +
@@ -2215,13 +2160,9 @@ function namesPanel(pool){
 }
 
 /* ---- export chooser ---- */
-const PANEL_ROWS = {tr:() => 12, fd:() => rowsFor(scoped(), st => st.field).length, ty:() => TYPES.length, bd:() => foldFaculties(rowsFor(scoped(), keyFn())).length, fy:() => rowsFor(STU.filter(st => (!R.inst.length || R.inst.includes(st.inst)) && (!R.fac.length || R.fac.includes(st.fac)) && isFinal(st)), keyFn()).length, hm:() => rowsFor(scopedBase(true), keyFn()).length * YEARS.length, fn:() => 5};
-const openExport = (preset, source) => {
-  const src = source || 'header', q = questionOf(), fy = preset === 'fy-neither' || src === 'fy';
-  R.xd = {what:['bd', 'fy', 'hm', 'fn', 'tr', 'fd', 'ty'].includes(src) ? 'rows' : 'scholars', source:src, open:null,
-    applied:fy ? 'no' : q.k === 'applied' ? 'yes' : q.k === 'notapplied' ? 'no' : 'any',
-    offer:fy ? 'no' : q.k === 'offer' ? 'yes' : q.k === 'none' ? 'no' : 'any',
-    final:fy || R.final, inst:[...R.inst], fac:[...R.fac], years:[...R.year], contact:true, detail:true};
+const openExport = () => {
+  R.xd = {open:null, month:-1, applied:R.app === 'applied' ? 'yes' : R.app === 'any' ? 'any' : 'no', offer:R.off === 'offer' ? 'yes' : R.off === 'none' ? 'no' : 'any',
+    final:R.final, inst:[...R.inst], fac:[...R.fac], years:[...R.year], contact:true};
   R.open = null; renderExport();
 };
 const closeExport = () => { const m = document.getElementById('xmodal'); if (m) m.remove(); R.xd = null; };
@@ -2235,22 +2176,32 @@ function xdd(key, label, options){
       options.map(([v, l]) => '<label><input type="checkbox"' + (sel.includes(v) ? ' checked' : '') + ' onchange="__xtg(\'' + key + '\',\'' + resc(v) + '\')"> <span>' + l + '</span></label>').join('') + '</div>' : '') + '</span>';
 }
 const xseg = (key, opts) => '<div class="seg xseg" role="group">' + opts.map(([v, l]) => '<button aria-pressed="' + (R.xd[key] === v) + '" onclick="R.xd.' + key + '=\'' + v + '\';renderExport()">' + l + '</button>').join('') + '</div>';
-const exportList = () => { const d = R.xd; return STU.filter(st => (!d.inst.length || d.inst.includes(st.inst)) && (!d.fac.length || d.fac.includes(st.fac)) && (!d.years.length || d.years.includes(st.year)) && (!d.final || isFinal(st)) && (d.applied === 'any' || (d.applied === 'yes') === applied(st)) && (d.offer === 'any' || (d.offer === 'yes') === (st.offers > 0))); };
+const xWin = () => R.xd.month < 0 ? win() : MONTHS_BACK()[R.xd.month];
+const xApps = st => { const w = xWin(); return st.apps.filter(a => a.d >= w.lo && a.d <= w.hi); };
+const exportList = () => { const d = R.xd; return STU.filter(st => (!d.inst.length || d.inst.includes(st.inst)) && (!d.fac.length || d.fac.includes(st.fac)) && (!d.years.length || d.years.includes(st.year)) && (!d.final || isFinal(st)) && (d.applied === 'any' || (d.applied === 'yes') === (xApps(st).length > 0)) && (d.offer === 'any' || (d.offer === 'yes') === (st.offers > 0))); };
+const EMAIL_DOMAIN = {UCT:'myuct.ac.za', Wits:'students.wits.ac.za', SU:'sun.ac.za', UP:'tuks.co.za', UJ:'student.uj.ac.za', UKZN:'stu.ukzn.ac.za'};
+const xPeriodWord = () => R.xd.month < 0 ? periodLabel() : MONTHS_BACK()[R.xd.month].label.replace(' (so far)', '');
+const xFile = () => { const d = R.xd, bits = [d.applied === 'yes' ? 'applied' : d.applied === 'no' ? 'not-applying' : '', d.offer === 'yes' ? 'has-offer' : d.offer === 'no' ? 'no-offer' : '', d.final ? 'final-years' : ''].filter(Boolean);
+  return ['moshal', bits.join('_') || 'all-scholars'].concat(d.inst, d.fac.map(f => f.replace(/[^\w]+/g, '-')), d.years.map(y => y.replace(/\s+/g, '')), [xPeriodWord().replace(/[^\w]+/g, '-')]).join('_').toLowerCase() + '.csv'; };
+function doExport(){
+  const d = R.xd, q = v => '"' + String(v).replace(/"/g, '""') + '"', name = xFile();
+  const rows = [['Scholar', 'University', 'Faculty', 'Field of study', 'Year of study', 'Graduating'].concat(d.contact ? ['Email'] : [], ['Status (' + xPeriodWord() + ')', 'Applications', 'Has an offer'])]
+    .concat(exportList().map(st => [st.name, st.instName, st.fac, st.field, st.year, st.grad].concat(d.contact ? [st.name.toLowerCase().replace(/[^a-z]+/g, '.') + '@' + EMAIL_DOMAIN[st.inst]] : [], [xApps(st).length ? 'Applied' : 'Not applying', xApps(st).length, st.offers > 0 ? 'Yes' : 'No'])));
+  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([rows.map(r => r.map(q).join(',')).join('\n')], {type:'text/csv'})); a.download = name; a.click();
+  closeExport(); toast('Downloaded ' + name);
+}
 function exportPop(){
-  const d = R.xd, list = exportList();
-  const rowsN = PANEL_ROWS[d.source] ? PANEL_ROWS[d.source]() : 0;
-  const n = d.what === 'rows' ? rowsN : list.length;
-  const bits = [d.applied === 'yes' ? 'applied' : d.applied === 'no' ? 'did-not-apply' : '', d.offer === 'yes' ? 'has-offer' : d.offer === 'no' ? 'no-offer' : '', d.final ? 'final-years' : ''].filter(Boolean);
-  const fname = ['moshal', d.what === 'rows' ? d.source + '-rows' : (bits.join('_') || 'all-scholars')].concat(d.inst, d.fac.map(f => f.replace(/[^\w]+/g, '-')), d.years.map(y => y.replace(/\s+/g, '')), [periodLabel().replace(/[^\w]+/g, '-')]).join('_') + '.csv';
+  const d = R.xd, n = exportList().length, fname = xFile();
   const facOpts = (d.inst.length ? INST.filter(x => d.inst.includes(x[0])) : INST).flatMap(x => x[2]).filter((f, i, a) => a.indexOf(f) === i).sort().map(f => [f, f]);
-  return '<div class="xdlg xexport" role="dialog" aria-modal="true" aria-label="Export CSV" onclick="if(!event.target.closest(\'.xdd\')&&R.xd.open){R.xd.open=null;renderExport()}"><div class="xh"><span>Export CSV</span><button class="xclose" aria-label="Close" onclick="closeExport()">×</button></div><div class="pb">' +
-    (PANEL_ROWS[d.source] ? '<div><span class="eyebrow">What</span><label><input type="radio" name="xw"' + (d.what === 'rows' ? ' checked' : '') + ' onchange="R.xd.what=\'rows\';renderExport()"> <span>Summary rows at this level</span><span class="n">' + rowsN + '</span></label><label><input type="radio" name="xw"' + (d.what === 'scholars' ? ' checked' : '') + ' onchange="R.xd.what=\'scholars\';renderExport()"> <span>The scholars behind them</span><span class="n">' + list.length + '</span></label></div>' : '') +
-    (d.what === 'scholars' ? '<div><span class="eyebrow">Who</span><div class="xrow"><span class="xlab">Applied</span>' + xseg('applied', [['any', 'Any'], ['yes', 'Applied'], ['no', 'Did not apply']]) + '</div>' +
+  return '<div class="xdlg xexport" role="dialog" aria-modal="true" aria-label="Export CSV" onclick="if(!event.target.closest(\'.xdd\')&&R.xd&&R.xd.open){R.xd.open=null;renderExport()}"><div class="xh"><span>Export CSV</span><button class="xclose" aria-label="Close" onclick="closeExport()">×</button></div><div class="pb">' +
+    '<div><span class="eyebrow">Period</span><div class="xrow"><select class="xsel" aria-label="Period" onchange="R.xd.month=+this.value;renderExport()"><option value="-1"' + (d.month < 0 ? ' selected' : '') + '>Same as the page: ' + periodLabel() + '</option>' +
+      MONTHS_BACK().map((m, i) => '<option value="' + i + '"' + (d.month === i ? ' selected' : '') + '>' + m.label + '</option>').join('') + '</select></div></div>' +
+    '<div><span class="eyebrow">Who</span><div class="xrow"><span class="xlab">Applied</span>' + xseg('applied', [['any', 'Any'], ['yes', 'Applied'], ['no', 'Not applying']]) + '</div>' +
       '<div class="xrow"><span class="xlab">Offer</span>' + xseg('offer', [['any', 'Any'], ['yes', 'Has an offer'], ['no', 'No offer']]) + '</div>' +
       '<div class="xrow"><span class="xlab"></span><button class="ctl' + (d.final ? ' on' : '') + '" aria-pressed="' + d.final + '" onclick="R.xd.final=!R.xd.final;renderExport()">Final years</button><span class="cap">graduating ' + THIS_YEAR + '</span></div></div>' +
-      '<div><span class="eyebrow">Where</span><div class="xrow">' + xdd('inst', 'Institution', INST.map(([sh, nm]) => [sh, nm])) + xdd('fac', 'Faculty', facOpts) + xdd('years', 'Year of study', YEARS.map(y => [y, y])) + '</div></div>' +
-      '<div><span class="eyebrow">Columns</span><label><input type="checkbox" checked disabled> <span>Name, institution, faculty, field, year, graduating</span></label><label><input type="checkbox"' + (d.contact ? ' checked' : '') + ' onchange="R.xd.contact=this.checked"> <span>Email</span></label><label><input type="checkbox"' + (d.detail ? ' checked' : '') + ' onchange="R.xd.detail=this.checked"> <span>Application and offer status</span></label></div>' : '') +
-    '</div><div class="pf"><span class="fn">' + fname + '</span><span style="display:flex;gap:8px"><button class="btn btn-ghost btn-sm" onclick="closeExport()">Cancel</button><button class="btn btn-primary btn-sm"' + (n ? '' : ' disabled') + ' onclick="toast(\'CSV ' + fname + ' · ' + n + (d.what === 'rows' ? ' rows' : ' scholars') + ' would download here\');closeExport()">Export ' + n + (d.what === 'rows' ? ' rows' : ' scholars') + '</button></span></div></div>';
+    '<div><span class="eyebrow">Where</span><div class="xrow">' + xdd('inst', 'Institution', INST.map(([sh, nm]) => [sh, nm])) + xdd('fac', 'Faculty', facOpts) + xdd('years', 'Year of study', YEARS.map(y => [y, y])) + '</div></div>' +
+    '<div><label><input type="checkbox"' + (d.contact ? ' checked' : '') + ' onchange="R.xd.contact=this.checked;renderExport()"> <span>Include email addresses</span></label></div>' +
+    '</div><div class="pf"><span class="fn">' + fname + '</span><span style="display:flex;gap:8px"><button class="btn btn-ghost btn-sm" onclick="closeExport()">Cancel</button><button class="btn btn-primary btn-sm"' + (n ? '' : ' disabled') + ' onclick="doExport()">Export ' + n + ' scholars</button></span></div></div>';
 }
 
 /* ---- the page ---- */
@@ -2292,9 +2243,9 @@ const RES_EVENTS = [], ANN_EVENTS = [];
 (() => {
   const pop = [1.4, 1.1, 0.9, 0.6, 0.3, 1.0, 0.12, 0.8];
   RESOURCES.forEach((r, i) => { const n = Math.round(420 * pop[i % pop.length]);
-    for (let j = 0; j < n; j++) { const e = {id:r.id, d:Math.floor(Math.pow(rA(), 1.2) * 365), uni:uniPick(), field:pickA(FIELDS)}; RES_EVENTS.push({...e, kind:'view'}); if ((r.format === 'document' || r.format === 'video') && rA() < 0.45) RES_EVENTS.push({...e, kind:'download'}); } });
+    for (let j = 0; j < n; j++) { const e = {id:r.id, d:Math.floor(Math.pow(rA(), 1.2) * 365), uni:uniPick(), field:pickA(FIELDS_OPT)}; RES_EVENTS.push({...e, kind:'view'}); if ((r.format === 'document' || r.format === 'video') && rA() < 0.45) RES_EVENTS.push({...e, kind:'download'}); } });
   EVENTS.forEach(e => { const n = 120 + Math.floor(rA() * 380);
-    for (let j = 0; j < n; j++) { const x = {id:e.id, d:Math.floor(rA() * 45), uni:uniPick(), field:pickA(FIELDS)}; ANN_EVENTS.push({...x, kind:'view'}); if (e.link && rA() < 0.3) ANN_EVENTS.push({...x, kind:'click'}); if (rA() < 0.14) ANN_EVENTS.push({...x, kind:'cal'}); } });
+    for (let j = 0; j < n; j++) { const x = {id:e.id, d:Math.floor(rA() * 45), uni:uniPick(), field:pickA(FIELDS_OPT)}; ANN_EVENTS.push({...x, kind:'view'}); if (e.link && rA() < 0.3) ANN_EVENTS.push({...x, kind:'click'}); if (rA() < 0.14) ANN_EVENTS.push({...x, kind:'cal'}); } });
 })();
 const roleOfName = n => /Lisa Mtshali/.test(n || '') ? 'recruiter' : CHAMP_NAMES.includes(n) ? 'champion' : 'team';
 const roleGroup = r => r === 'admin' || r === 'exco' ? 'team' : r;
@@ -2307,21 +2258,30 @@ const sumArr = a => a.reduce((t, x) => t + x, 0);
 const uniIdx = () => A.uni ? INST.findIndex(i => i[0] === A.uni) : -1;
 const eng = (p, k) => uniIdx() < 0 ? sumArr(p[k]) : p[k][uniIdx()];
 const postsIn = (lo, hi) => LISTING_LOG.filter(p => p.d >= lo && p.d < hi && (!A.field || p.field === A.field) && (!A.role || roleGroup(p.role) === A.role));
-const aPosts = () => postsIn(0, A.period);
+const aWin = () => A.period === 'custom' && A.range ? {lo:daysAgo(A.range.to), hi:daysAgo(A.range.from) + 1} : {lo:0, hi:A.period};
+const inA = d => { const w = aWin(); return d >= w.lo && d < w.hi; };
+const aPosts = () => { const w = aWin(); return postsIn(w.lo, w.hi); };
 const fmtN = n => n.toLocaleString('en-ZA');
-const aPeriodWord = () => ({30:'last 30 days', 90:'last 90 days', 365:'last 12 months'})[A.period];
+const aPeriodWord = () => A.period === 'custom' && A.range ? fmtD(A.range.from) + ' – ' + fmtD(A.range.to) : ({30:'last 30 days', 90:'last 90 days', 365:'last 12 months'})[A.period];
 function aFilters(opts){
   const pick = (key, label, list, value, prop, numeric) => dropdown(key, label, list, value, 'A.' + prop + '=' + (numeric ? '+' : '') + '%v;S.open=null;render()', true);
   return '<div class="tb filters" aria-label="Filters">' +
-    (opts.month ? dropdown('a-mon', 'Month', MONTHS_BACK().map((m, i) => [i, m.label]), A.month, 'A.month=+%v;S.open=null;render()') : dropdown('a-per', 'Period', A_PERIODS, A.period, 'A.period=+%v;S.open=null;render()')) + '<i class="vsep"></i>' +
-    pick('a-fld', 'Field of study', (opts.scholarFields ? FIELDS : FIELDS_OPT).map(f => [f, f]), A.field, 'field') +
+    (opts.month ? dropdown('a-mon', 'Month', MONTHS_BACK().map((m, i) => [i, m.label]), A.month, 'A.month=+%v;S.open=null;render()') : aPeriodDD()) + '<i class="vsep"></i>' +
+    pick('a-fld', 'Field of study', FIELDS_OPT.map(f => [f, f]), A.field, 'field') +
     (opts.region ? pick('a-reg', 'Region', REGIONS.map(r => [r, r]), A.region, 'region') : '') +
     pick('a-uni', 'University', INST.map(([k, n]) => [k, n]), A.uni, 'uni') +
     (opts.role ? pick('a-role', 'Posted by', A_ROLES, A.role, 'role') : '') +
     (opts.note ? '<span class="mlab">' + opts.note + '</span>' : '') + '</div>';
 }
+function aPeriodDD(){
+  const open = S.open === 'a-per', r = A.range || {from:isoAgo(30), to:isoAgo(0)}, label = aPeriodWord().charAt(0).toUpperCase() + aPeriodWord().slice(1);
+  return '<span class="menuwrap"><button class="ctl' + (A.period === 'custom' ? ' on' : '') + '" aria-haspopup="listbox" aria-expanded="' + open + '" onclick="event.stopPropagation();setOpen(\'a-per\')">' + ICO.cal + label + ICO.chev + '</button>' +
+    (open ? '<div class="pop period" role="listbox" onclick="event.stopPropagation()"><div class="h"><span>Period</span></div>' + A_PERIODS.map(([v, l]) => '<button class="o" role="option" aria-selected="' + (A.period === v) + '" onclick="A.period=' + v + ';S.open=null;render()">' + ICO.check.replace('<svg', '<svg class="tick"') + '<span>' + l + '</span></button>').join('') +
+      '<div class="grp">Custom range</div><div class="range"><input id="apf" type="date" value="' + r.from + '" aria-label="From"><span>to</span><input id="apt" type="date" value="' + r.to + '" aria-label="To"><button class="btn btn-primary btn-sm" onclick="setARange()">Apply</button></div></div>' : '') + '</span>';
+}
+function setARange(){ const f = document.getElementById('apf').value, t = document.getElementById('apt').value; if (!f || !t) { toast('Pick both dates.'); return; } A.range = f <= t ? {from:f, to:t} : {from:t, to:f}; A.period = 'custom'; S.open = null; render(); }
 function aWrap(view, html){
-  const key = JSON.stringify([view, A.period, A.field, A.uni, A.role, A.split, A.eng, A.quiet, A.month, A.region, A.grain, R.view, TARGETS]), still = key === A.chartKey && S.lastView === view;
+  const key = JSON.stringify([view, A.period, A.range, A.field, A.uni, A.role, A.split, A.eng, A.quiet, A.month, A.region, A.grain, R.view, TARGETS]), still = key === A.chartKey && S.lastView === view;
   A.chartKey = key; if (!still) setTimeout(countUp, 0);
   return '<div class="rp' + (still ? ' still' : '') + '">' + html + '</div>';
 }
@@ -2350,13 +2310,13 @@ const monthCols = count => MONTHS_BACK().slice(0, 12).reverse().map((m, i) => ({
 function listingsCsv(){
   const rows = [['Posted', 'Title', 'Employer', 'Field of study', 'Type', 'Location', 'Posted by', 'Role', 'Outcome', 'Views', 'Saves', 'Clicks']]
     .concat(aPosts().sort((a, b) => a.d - b.d).map(p => [isoAgo(p.d), p.title, p.org, p.field, p.type, p.loc, p.by, A_ROLES.find(r => r[0] === roleGroup(p.role))[1], p.outcome, eng(p, 'v'), eng(p, 's'), eng(p, 'c')]));
-  const q = v => '"' + String(v).replace(/"/g, '""') + '"', name = 'listings-' + aPeriodWord().replace(/ /g, '-') + (A.field ? '-' + A.field.toLowerCase().replace(/[^a-z]+/g, '-') : '') + (A.uni ? '-' + A.uni.toLowerCase() : '') + '.csv';
+  const q = v => '"' + String(v).replace(/"/g, '""') + '"', name = 'listings-' + aPeriodWord().replace(/[^\w]+/g, '-').toLowerCase() + (A.field ? '-' + A.field.toLowerCase().replace(/[^a-z]+/g, '-') : '') + (A.uni ? '-' + A.uni.toLowerCase() : '') + '.csv';
   const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([rows.map(r => r.map(q).join(',')).join('\n')], {type:'text/csv'})); a.download = name; a.click();
   toast('Downloaded ' + name);
 }
 function champStats(){
   return CHAMP_NAMES.map(n => {
-    const mine = LISTING_LOG.filter(p => p.by === n && (!A.field || p.field === A.field)), inP = mine.filter(p => p.d < A.period);
+    const mine = LISTING_LOG.filter(p => p.by === n && (!A.field || p.field === A.field)), inP = mine.filter(p => inA(p.d));
     const weeks = [3, 2, 1, 0].map(w => mine.filter(p => p.d >= w * 7 && p.d < w * 7 + 7).length);
     const last = mine.length ? Math.min(...mine.map(p => p.d)) : null, rate = k => pct(inP.filter(p => p.outcome === k).length, inP.length);
     return {n, weeks, posts:inP.length, last, removed:rate('removed'), dup:rate('duplicate')};
@@ -2375,7 +2335,7 @@ function champPanel(){
     '</tbody></table></div></section>';
 }
 V.insights = () => {
-  const posts = aPosts(), prev = A.period < 365 ? postsIn(A.period, A.period * 2) : null, live = posts.filter(p => p.outcome === 'live');
+  const posts = aPosts(), prev = typeof A.period === 'number' && A.period < 365 ? postsIn(A.period, A.period * 2) : null, live = posts.filter(p => p.outcome === 'live');
   const sum = k => live.reduce((t, p) => t + eng(p, k), 0), views = sum('v'), saves = sum('s'), clicks = sum('c');
   const chg = prev ? (posts.length - prev.length >= 0 ? '▲ ' : '▼ ') + Math.abs(posts.length - prev.length) + ' on the period before' : 'posted';
   /* posting trend: twelve weeks, or twelve months for the year view */
@@ -2406,7 +2366,7 @@ V.insights = () => {
       '<section class="card">' + chead('Fields with few listings', 'lf') + take(thin.length ? '<b>' + thin.map(x => x.f).join(', ') + '</b> ' + (thin.length === 1 ? 'has' : 'have') + ' one listing or none. Ask champions to look.' : 'Every field has at least two live listings') +
         (R.view.lf ? tview(['Field', 'Live listings'], byFieldNow.map(x => [x.f, x.n])) : brows(byFieldNow.map((x, i) => ({k:x.f, w:pct(x.n, fewMax), v:x.n ? x.n + ' live' : 'None', act:"A.field='" + resc(x.f) + "';render()"})))) + '</section>' +
       '<section class="card">' + chead('Live listings right now', 'ln') + take('From Job listings, today') +
-        '<div class="nowtiles">' + [['live', 'Live', liveNow.length, ''], ['soon', 'Closing in 7 days', soonNow.length, 'amb'], ['expired', 'Expired, still stored', expNow.length, 'rem']].map(([tab, l, n, cls]) => '<button class="nowt ' + cls + '" onclick="S.lsTab=\'' + tab + '\';nav(\'listings\')"><b>' + n + '</b><span>' + l + '</span></button>').join('') + '</div></section>' +
+        '<div class="nowtiles">' + [['live', 'Live', liveNow.length, ''], ['live', 'Closing in 7 days', soonNow.length, 'amb'], ['expired', 'Expired, still stored', expNow.length, 'rem']].map(([tab, l, n, cls]) => '<button class="nowt ' + cls + '" onclick="S.lsTab=\'' + tab + '\';nav(\'listings\')"><b>' + n + '</b><span>' + l + '</span></button>').join('') + '</div></section>' +
     '</div>' +
     '<div class="dg">' +
       '<section class="card">' + chead(EK[ek] + ' by field of study', 'le') + '<div class="segrow">' + aSeg('eng', [['v', 'Views'], ['s', 'Saves'], ['c', 'Clicks']]) + '</div>' +
@@ -2421,7 +2381,7 @@ V.insights = () => {
 };
 
 /* ---------- Content report: the library and the announcement board ---------- */
-const resIn = e => e.d < A.period && (!A.field || e.field === A.field) && (!A.uni || e.uni === A.uni);
+const resIn = e => inA(e.d) && (!A.field || e.field === A.field) && (!A.uni || e.uni === A.uni);
 V.content = () => {
   const res = RESOURCES.filter(r => !A.role || roleOfName(r.by) === A.role), anns = EVENTS.filter(e => !e.scheduled && (!A.role || roleOfName(e.by || e.who) === A.role));
   const rv = RES_EVENTS.filter(resIn), av = ANN_EVENTS.filter(resIn);
@@ -2432,7 +2392,7 @@ V.content = () => {
   const aRows = anns.map(e => ({e, v:count(av, e.id, 'view'), cl:count(av, e.id, 'click'), cal:count(av, e.id, 'cal')})).sort((a, b) => b.v - a.v);
   const acRows = ANN_CATS.map(([k, l]) => ({k:l, v:aRows.filter(x => x.e.cat === k).reduce((t, x) => t + x.v, 0), cl:aRows.filter(x => x.e.cat === k).reduce((t, x) => t + x.cl, 0), cal:aRows.filter(x => x.e.cat === k).reduce((t, x) => t + x.cal, 0)})), acMax = Math.max(1, ...acRows.map(x => x.v));
   const tot = (rows, k) => rows.reduce((t, x) => t + x[k], 0);
-  return aWrap('content', '<div class="page-head"><h1>Content report</h1></div>' + aFilters({role:true, scholarFields:true}) +
+  return aWrap('content', '<div class="page-head"><h1>Content report</h1></div>' + aFilters({role:true}) +
     '<div class="kts">' + aTile('Resource views', tot(rRows, 'v'), aPeriodWord()) + aTile('Downloads', tot(rRows, 'dl'), 'documents and videos') + aTile('Announcement views', tot(aRows, 'v'), aPeriodWord()) + aTile('Sign-ups and calendar adds', tot(aRows, 'cl') + tot(aRows, 'cal'), tot(aRows, 'cl') + ' link clicks · ' + tot(aRows, 'cal') + ' calendar adds') + '</div>' +
     '<div class="dg">' +
       '<section class="card">' + chead('Resources', 'cr') + take(rRows.length ? 'Most used: <b>' + rRows[0].r.title + '</b>' + (least.length ? ' · least used: <b>' + least.map(x => x.r.title).join(', ') + '</b>, worth refreshing or retiring' : '') : 'Nothing posted') +
@@ -2489,7 +2449,7 @@ V.programme = () => {
   const chgCell = (a, b) => '<td class="num"><span class="chg ' + (a > b ? 'up' : a < b ? 'down' : '') + '">' + (a > b ? '▲ ' : a < b ? '▼ ' : '') + Math.abs(a - b) + '</span></td>';
   const row = (cls, name, x) => '<tr class="' + cls + '"><td>' + name + '</td><td class="num">' + x.a + ' <span class="sm">of ' + x.n + '</span></td>' + (pm ? chgCell(x.a, x.ap) : '<td></td>') + '<td class="num">' + x.apps + '</td><td class="num">' + x.off + '</td></tr>';
   return aWrap('programme', '<div class="page-head"><h1>Programme dashboard</h1><button class="btn btn-ghost btn-sm" onclick="S.dlg={kind:\'targets\'};render()">Targets</button><button class="iconbtn" title="Download this month" aria-label="Download CSV" onclick="progCsv()">' + RICO.download + '</button></div>' +
-    aFilters({month:true, region:true, scholarFields:true}) +
+    aFilters({month:true, region:true}) +
     '<div class="kts">' +
       aTile('Listings posted', listed, 'target ' + TARGETS.listings + diff(listed, listedPrev), pct(listed, TARGETS.listings)) +
       aTile('Active scholars', act, 'target ' + TARGETS.active + diff(act, actPrev), pct(act, TARGETS.active)) +
@@ -2510,30 +2470,14 @@ const MONTHS_BACK = () => { const t = new Date(TODAY_ISO + 'T12:00:00'), out = [
   for (let i = 0; i < 12; i++) { const a = new Date(t.getFullYear(), t.getMonth() - i, 1, 12), b = i ? new Date(t.getFullYear(), t.getMonth() - i + 1, 0, 12) : t;
     out.push({lo:Math.round((t - b) / 864e5), hi:Math.round((t - a) / 864e5), key:a.getFullYear() + '-' + String(a.getMonth() + 1).padStart(2, '0'), label:a.toLocaleDateString('en-ZA', {month:'long', year:'numeric'}) + (i ? '' : ' (so far)')}); }
   return out; };
-const monthRows = m => STU.map(st => { const inM = st.apps.filter(a => a.d >= m.lo && a.d <= m.hi), before = st.apps.some(a => a.d > m.hi);
-  return {st, apps:inM.length, interviews:inM.filter(a => a.status === 'interview').length, offers:inM.filter(a => a.status === 'offer').length, signed:inM.length > 0 || (st.login !== null && st.login >= m.lo && st.login <= m.hi),
-    status:inM.length ? 'Applied' : before ? 'Stopped applying' : 'Never applied'}; });
-const monthSummary = rows => ({signed:rows.filter(r => r.signed).length, applied:rows.filter(r => r.apps).length, apps:rows.reduce((t, r) => t + r.apps, 0), interviews:rows.reduce((t, r) => t + r.interviews, 0), offers:rows.reduce((t, r) => t + r.offers, 0)});
-function openMonthly(){ S.dlg = {kind:'monthly', m:1, shape:'scholar'}; render(); }
-const monthFile = m => 'moshal-scholar-activity-' + m.key + (S.dlg && S.dlg.shape === 'uni' ? '-by-university' : '') + '.csv';
-function exportMonth(){
-  const m = MONTHS_BACK()[S.dlg.m], rows = monthRows(m), q = v => '"' + String(v).replace(/"/g, '""') + '"';
-  const out = S.dlg.shape === 'uni'
-    ? [['University', 'Scholars', 'Signed in', 'Applied', 'Applications', 'Interviews', 'Offers', 'Stopped applying', 'Never applied']].concat(INST.map(([k, name]) => { const r = rows.filter(x => x.st.inst === k), s = monthSummary(r);
-      return [name, r.length, s.signed, s.applied, s.apps, s.interviews, s.offers, r.filter(x => x.status === 'Stopped applying').length, r.filter(x => x.status === 'Never applied').length]; }))
-    : [['Scholar', 'University', 'Faculty', 'Year of study', 'Graduating', 'Signed in this month', 'Status this month', 'Applications', 'Interviews', 'Offers']].concat(rows.map(r => [r.st.name, r.st.instName, r.st.fac, r.st.year, r.st.grad, r.signed ? 'Yes' : 'No', r.status, r.apps, r.interviews, r.offers]));
-  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([out.map(r => r.map(q).join(',')).join('\n')], {type:'text/csv'})); a.download = monthFile(m); a.click();
-  closeDlg(); toast('Exported ' + m.label.replace(' (so far)', '') + '.');
-}
 V.admin = () => {
   const pool = scoped(), key = chartKey(), still = key === R.chartKey && S.lastView === 'admin';
   R.chartKey = key;
   if (!still) setTimeout(countUp, 0);
-  return '<div class="rp' + (still ? ' still' : '') + '"><div class="page-head"><h1>Scholar report</h1><button class="btn btn-ghost btn-sm monthbtn" onclick="openMonthly()">' + ICO.cal + 'Monthly report</button><button class="iconbtn" title="Export · ' + groupList(pool).length + ' scholars" aria-label="Export" onclick="openExport(R.seg)"' + (pool.length ? '' : ' disabled') + '>' + RICO.download + '</button></div>' +
+  return '<div class="rp' + (still ? ' still' : '') + '"><div class="page-head"><h1>Scholar report</h1><button class="iconbtn" title="Export · ' + groupList(pool).length + ' scholars" aria-label="Export" onclick="openExport(R.seg)"' + (pool.length ? '' : ' disabled') + '>' + RICO.download + '</button></div>' +
     toolbar() + storyLine(pool) + kpis(pool) +
-    '<div class="dg">' + trendPanel(pool) + funnelPanel(pool) + '</div>' +
+    '<div class="dg">' + trendPanel(pool) + finalPanel() + '</div>' +
     '<div class="dg">' + placePanel(pool) + fieldPanel(pool) + '</div>' +
-    '<div class="dg">' + finalPanel() + yearPanel() + '</div>' +
     (R.showNames ? namesPanel(pool) : namesGate(pool)) + '</div>';
 };
 const namesGate = pool => '<section class="card names gate"><div class="card-head"><h2>Names</h2></div>' + take('<b>' + groupList(pool).length + ' scholars</b> in this selection. The report shows totals; open the names only when you need to contact someone.') +
