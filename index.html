@@ -638,7 +638,7 @@ h1{font-size:22px}
 @media (max-width:900px){.only-d{display:none}.only-m{display:revert}.page-head.only-m{display:flex}.hero-go.only-m{display:inline-flex}}
 /* Sign in */
 .app.auth moshal-sidebar,.app.auth #chrome{display:none}
-.app.auth main{max-width:none;padding:0;width:100%}
+.app.auth #main{max-width:none;padding:0;width:100%}
 .login-layout{min-height:100vh;display:grid;grid-template-columns:1.15fr 1fr;align-items:center;gap:48px;max-width:1160px;margin:auto;padding:32px}
 .login-hero{min-height:540px;margin:0;display:flex;align-items:center;padding:40px 44px;border-radius:18px}
 .login-hero::after{content:"";position:absolute;right:-77px;top:-140px;border:53px solid rgba(255,255,255,.07);width:315px;height:315px;border-radius:50%;background:none;left:auto;bottom:auto;height:315px}
@@ -805,7 +805,7 @@ table.rt .lnk:hover{color:var(--brand)}
 .loglist .k-approve .ic{background:var(--ok-soft);color:var(--ok)}
 .loglist .k-reject .ic{background:var(--bad-soft);color:var(--bad)}
 .loglist .k-system .ic{background:var(--surface-2);color:var(--muted)}
-.loglist .tx b{color:var(--navy)}
+.loglist .logtx b{color:var(--navy)}
 .loglist time{font-size:12px;color:var(--muted);white-space:nowrap}
 .event.ann{grid-template-columns:84px minmax(0,1fr);align-items:start}
 .ann .tagline{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px}
@@ -1149,7 +1149,8 @@ const canPost = () => S.role !== 'scholar' && S.role !== 'exco';
 const myYear = () => YEARS[(ROLES.scholar.year || 1) - 1];
 const visibleTo = x => !x.years || !x.years.length || x.years.includes(myYear());
 /* Staff see everything; everyone else never sees an expired listing or an announcement that is not yet published. */
-const forMe = list => staff() ? list : list.filter(x => (S.role !== 'scholar' || visibleTo(x)) && !(x.days < 0) && !x.scheduled);
+const hiddenListing = o => !!o.title && allMine().some(l => l.title === o.title && l.status !== 'live');
+const forMe = list => staff() ? list : list.filter(x => (S.role !== 'scholar' || visibleTo(x)) && !(x.days < 0) && !x.scheduled && !hiddenListing(x));
 const fieldsOf = o => o.fields || [o.field];
 const audienceNote = x => x.years && x.years.length ? 'For ' + x.years.join(', ') : '';
 function audienceField(key, current){
@@ -1230,7 +1231,11 @@ function saveProfile(){
   if (was !== u.name) logIt('<b>' + was + '</b> changed their name to <b>' + u.name + '</b>', 'user');
   syncNav(); render(); toast('Profile saved.');
 }
-function setRole(r){ S.role = r; S.open = null; if (!S.auth) return; const allowed = sections().flatMap(s => s.items).map(i => i.key).concat('profile'); if (!allowed.includes(S.view)) S.view = allowed[0]; syncNav(); render(); toast('Signed in as ' + ROLES[r].name + ' · ' + ROLES[r].sub.split(' · ')[0]); }
+/* Saved and applied state belongs to a person, so switching profile swaps it rather than sharing one set. */
+const PERSONAL_KEYS = ['saved', 'applied', 'stage', 'sfPending', 'sfDone', 'prevStage'], PERSONAL = {};
+function stashPersonal(r){ PERSONAL[r] = Object.fromEntries(OPPS.map(o => [o.id, Object.fromEntries(PERSONAL_KEYS.map(k => [k, o[k]]))])); }
+function loadPersonal(r){ const mineOf = PERSONAL[r] || {}; OPPS.forEach(o => { const v = mineOf[o.id] || {}; PERSONAL_KEYS.forEach(k => { o[k] = k === 'saved' || k === 'applied' ? !!v[k] : v[k]; }); }); }
+function setRole(r){ if (r !== S.role) { stashPersonal(S.role); loadPersonal(r); } S.role = r; S.open = null; if (!S.auth) return; const allowed = sections().flatMap(s => s.items).map(i => i.key).concat('profile'); if (!allowed.includes(S.view)) S.view = allowed[0]; syncNav(); render(); toast('Signed in as ' + ROLES[r].name + ' · ' + ROLES[r].sub.split(' · ')[0]); }
 
 /* ---------- shared bits ---------- */
 function toast(msg){ let t = document.getElementById('toast'); if (!t) { t = document.createElement('div'); t.id = 'toast'; document.body.appendChild(t); } t.innerHTML = ICO.checkC + '<span></span>'; t.querySelector('span').textContent = msg; t.hidden = false; clearTimeout(window.__tt); window.__tt = setTimeout(() => { t.hidden = true; }, 3200); }
@@ -1256,7 +1261,7 @@ function toggleSave(id){ const o = byId(id); o.saved = !o.saved; syncNav(); rend
 function openJob(id){ S.job = id; S.view = 'job'; S.open = null; syncNav(); render(); window.scrollTo(0, 0); }
 function openResource(id){ S.res = id; S.view = 'res'; S.open = null; syncNav(); render(); window.scrollTo(0, 0); }
 function applyTo(id){ const o = byId(id); if (o.applied) { nav('applications'); return; } S.dlg = {kind:'apply', id}; render(); }
-function confirmApply(){ const o = byId(S.dlg.id); o.applied = true; o.stage = 'progress'; S.dlg = null; syncNav(); render(); toast('In My applications as In progress. Update the stage as it moves.'); }
+function confirmApply(){ const o = byId(S.dlg.id); window.open(linkOf(o), '_blank', 'noopener'); o.applied = true; o.stage = 'progress'; S.dlg = null; syncNav(); render(); toast('In My applications as In progress. Update the stage as it moves.'); }
 function setStage(id, v){
   const o = byId(id);
   if (v === 'offer' && o.stage !== 'offer') { o.prevStage = o.stage || 'progress'; o.stage = 'offer'; o.sfPending = true; S.dlg = {kind:'sf', id}; render(); return; }
@@ -1493,7 +1498,7 @@ function fieldPicker(o){
   return '<div class="field wide" id="w-f5"><label>Study fields<i class="req" aria-hidden="true">*</i></label><div class="chipset">' + FIELDS_OPT.map(f => '<button type="button" aria-pressed="' + S.sf.includes(f) + '" onclick="toggleSf(\'' + esc(f) + '\',this)">' + f + '</button>').join('') + '</div><div class="err">Pick at least one study field</div><div class="hint">Pick every field the role is open to.</div></div>';
 }
 function toggleSf(f, btn){ const i = S.sf.indexOf(f); if (i < 0) S.sf.push(f); else S.sf.splice(i, 1); btn.setAttribute('aria-pressed', i < 0); document.getElementById('w-f5').classList.remove('bad'); }
-const closeInfo = iso => { if (!iso) return {closes:'', days:999}; const d = new Date(iso); return {closes:d.toLocaleDateString('en-ZA', {day:'numeric', month:'short', year:'numeric'}), days:Math.max(0, Math.round((d - Date.now()) / 864e5))}; };
+const closeInfo = iso => { if (!iso) return {closes:'', days:999}; const d = new Date(iso.slice(0, 10) + 'T12:00:00'); return {closes:d.toLocaleDateString('en-ZA', {day:'numeric', month:'short', year:'numeric'}), days:Math.max(0, daysTo(iso.slice(0, 10)))}; };
 function previewListing(){
   const el = document.getElementById('prev'); if (!el) return;
   const val = id => (document.getElementById(id) || {}).value || '';
@@ -1654,7 +1659,7 @@ V.log = () => {
   const ic = k => k === 'approve' ? ICO.check : k === 'reject' ? ICO.x : k === 'user' ? ICO.user : k === 'system' ? ICO.clock : ICO.send;
   return '<div class="page-head" data-role><h1>Activity log</h1><span class="n">' + LOG.length + ' entries</span></div><p class="sub">Every approval, rejection, removal and role change, with who made it. Nothing here can be edited.</p>' +
     '<div class="chipset catf">' + LOG_KINDS.map(([k, l]) => '<button aria-pressed="' + ((S.logKind || '') === k) + '" onclick="S.logKind=\'' + k + '\';render()">' + l + '</button>').join('') + '</div>' +
-    '<div class="card loglist">' + (list.length ? list.map(x => '<div class="li k-' + x.kind + '"><span class="ic">' + ic(x.kind) + '</span><span class="tx"><b>' + x.who + '</b> ' + x.what + '</span><time>' + x.when + '</time></div>').join('') : '<div class="empty sm"><b>Nothing of this kind yet</b></div>') + '</div>';
+    '<div class="card loglist">' + (list.length ? list.map(x => '<div class="li k-' + x.kind + '"><span class="ic">' + ic(x.kind) + '</span><span class="logtx"><b>' + x.who + '</b> ' + x.what + '</span><time>' + x.when + '</time></div>').join('') : '<div class="empty sm"><b>Nothing of this kind yet</b></div>') + '</div>';
 };
 
 /* ---------- approvals and staff listings ---------- */
@@ -1668,10 +1673,10 @@ V.approvals = () => {
 };
 V.listings = () => {
   const tab = S.lsTab || 'live', q = (S.lq || '').toLowerCase();
-  const inTab = o => tab === 'all' || (tab === 'live' ? o.days >= 0 : tab === 'soon' ? o.days >= 0 && o.days <= 7 : o.days < 0);
+  const inTab = o => tab === 'all' || (tab === 'live' ? o.days >= 0 && !hiddenListing(o) : tab === 'soon' ? o.days >= 0 && o.days <= 7 && !hiddenListing(o) : o.days < 0);
   const list = OPPS.filter(o => inTab(o) && (!q || (o.title + ' ' + o.org + ' ' + o.by).toLowerCase().includes(q))).sort((a, b) => a.days - b.days);
   const expired = OPPS.filter(o => o.days < 0).length;
-  return '<div class="page-head" data-role><h1>Job listings</h1><span class="n">' + OPPS.filter(o => o.days >= 0).length + ' live</span><div class="acts">' + (expired ? '<button class="btn btn-ghost btn-sm danger" onclick="removeExpired()">Remove ' + expired + ' expired</button>' : '') + (S.role === 'admin' ? '<button class="btn btn-primary btn-sm" onclick="S.edit=null;nav(\'submit\')">' + ICO.plus + 'Post an opportunity</button>' : '') + '</div></div>' +
+  return '<div class="page-head" data-role><h1>Job listings</h1><span class="n">' + OPPS.filter(o => o.days >= 0 && !hiddenListing(o)).length + ' live</span><div class="acts">' + (expired ? '<button class="btn btn-ghost btn-sm danger" onclick="removeExpired()">Remove ' + expired + ' expired</button>' : '') + (S.role === 'admin' ? '<button class="btn btn-primary btn-sm" onclick="S.edit=null;nav(\'submit\')">' + ICO.plus + 'Post an opportunity</button>' : '') + '</div></div>' +
     '<p class="sub">Listings hide from scholars the day after they close. They stay here until someone removes them.</p>' +
     '<div class="toolbar"><div class="tabs" role="tablist" style="margin:0">' + [['live', 'Live'], ['soon', 'Closing in 7 days'], ['expired', 'Expired'], ['all', 'All']].map(([k, l]) => '<button role="tab" aria-selected="' + (tab === k) + '" onclick="S.lsTab=\'' + k + '\';render()">' + l + ' · ' + OPPS.filter(o => k === 'all' || (k === 'live' ? o.days >= 0 : k === 'soon' ? o.days >= 0 && o.days <= 7 : o.days < 0)).length + '</button>').join('') + '</div>' +
     '<label class="search-wide">' + ICO.search + '<input id="lq" placeholder="Search title, employer or champion" value="' + attr(S.lq || '') + '" oninput="S.lq=this.value;render();const i=document.getElementById(\'lq\');i.focus();i.setSelectionRange(i.value.length,i.value.length)"></label></div>' +
@@ -1796,7 +1801,7 @@ function editListing(id){ S.edit = id; nav('submit'); }
 function unpublishListing(id){ const o = byId(id); OPPS = OPPS.filter(x => x.id !== id); const m = allMine().find(l => l.title === o.title); if (m) m.status = 'unpublished'; FLAGS = FLAGS.filter(f => f.title !== o.title); nav('opps'); toast('Unpublished. Scholars can no longer see it.'); }
 function fixLink(id){ const l = mine().find(x => x.id === id); l.status = 'live'; delete l.check; FLAGS = FLAGS.filter(f => f.title !== l.title); syncNav(); render(); toast('Link updated. The listing is live again.'); }
 function setListing(id, st){ const l = mine().find(x => x.id === id); l.status = st; syncNav(); render(); toast(st === 'live' ? 'Published again.' : 'Unpublished. Scholars can no longer see it.'); }
-function resolveFlag(id, unpub){ const f = FLAGS.find(x => x.id === id); logIt((unpub ? 'unpublished' : 'dismissed a report on') + ' <b>' + f.title + '</b>', unpub ? 'reject' : 'approve'); FLAGS = FLAGS.filter(x => x.id !== id); if (unpub) { const l = allMine().find(x => x.title === f.title); if (l) l.status = 'unpublished'; } syncNav(); render(); toast(unpub ? 'Unpublished and the champion was told why.' : 'Flag dismissed. The listing stays live.'); }
+function resolveFlag(id, unpub){ const f = FLAGS.find(x => x.id === id); logIt((unpub ? 'unpublished' : 'dismissed a report on') + ' <b>' + f.title + '</b>', unpub ? 'reject' : 'approve'); FLAGS = FLAGS.filter(x => x.id !== id); if (unpub) { const l = allMine().find(x => x.title === f.title); if (l) l.status = 'unpublished'; OPPS = OPPS.filter(o => o.title !== f.title); } syncNav(); render(); toast(unpub ? 'Unpublished and the champion was told why.' : 'Flag dismissed. The listing stays live.'); }
 
 /* ---------- chrome ---------- */
 const TABS = {scholar:[['overview', 'Home', 'home'], ['opps', 'Jobs', 'search'], ['saved', 'Saved', 'bookmark'], ['resources', 'Resources', 'book']],
@@ -1952,8 +1957,8 @@ const R = {tab:'bd', lens:'activity', period:30, inst:[], fac:[], grad:[], year:
 const SMALL_N = 5, SORT_N = 10;
 const fmtD = iso => new Date(iso + 'T12:00:00').toLocaleDateString('en-ZA', {day:'numeric', month:'short'});
 const periodLabel = () => R.period === 'custom' && R.range ? fmtD(R.range.from) + ' – ' + fmtD(R.range.to) : ({30:'last 30 days', 90:'last 90 days', 365:'this year'})[R.period];
-const daysAgo = iso => Math.max(0, Math.round((Date.now() - new Date(iso + 'T12:00:00')) / 864e5));
-const isoAgo = n => { const d = new Date(Date.now() - n * 864e5); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); };
+const daysAgo = iso => Math.max(0, Math.round((new Date(TODAY_ISO + 'T12:00:00') - new Date(iso + 'T12:00:00')) / 864e5));
+const isoAgo = n => { const d = new Date(new Date(TODAY_ISO + 'T12:00:00') - n * 864e5); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); };
 const win = () => R.period === 'custom' && R.range ? {lo:daysAgo(R.range.to), hi:daysAgo(R.range.from)} : {lo:0, hi:+R.period};
 const inWin = d => { const w = win(); return d >= w.lo && d <= w.hi; };
 const setPeriod = v => { R.period = v; R.page = 1; R.open = null; render(); };
@@ -2297,7 +2302,7 @@ function exportPop(){
       '<div class="xrow"><span class="xlab">Offer</span>' + xseg('offer', [['any', 'Any'], ['yes', 'Has an offer'], ['no', 'No offer']]) + '</div>' +
       '<div class="xrow"><span class="xlab"></span><button class="ctl' + (d.final ? ' on' : '') + '" aria-pressed="' + d.final + '" onclick="R.xd.final=!R.xd.final;renderExport()">Final years</button><span class="cap">graduating ' + THIS_YEAR + '</span></div></div>' +
       '<div><span class="eyebrow">Where</span><div class="xrow">' + xdd('inst', 'Institution', INST.map(([sh, nm]) => [sh, nm])) + xdd('fac', 'Faculty', facOpts) + xdd('years', 'Year of study', YEARS.map(y => [y, y])) + '</div></div>' +
-      '<div><span class="eyebrow">Columns</span><label><input type="checkbox" checked disabled> <span>Name, institution, faculty, field, year, graduating</span></label><label><input type="checkbox"' + (d.contact ? ' checked' : '') + ' onchange="R.xd.contact=this.checked"> <span>Email and phone</span></label><label><input type="checkbox"' + (d.detail ? ' checked' : '') + ' onchange="R.xd.detail=this.checked"> <span>Application and offer status</span></label></div>' : '') +
+      '<div><span class="eyebrow">Columns</span><label><input type="checkbox" checked disabled> <span>Name, institution, faculty, field, year, graduating</span></label><label><input type="checkbox"' + (d.contact ? ' checked' : '') + ' onchange="R.xd.contact=this.checked"> <span>Email</span></label><label><input type="checkbox"' + (d.detail ? ' checked' : '') + ' onchange="R.xd.detail=this.checked"> <span>Application and offer status</span></label></div>' : '') +
     '</div><div class="pf"><span class="fn">' + fname + '</span><span style="display:flex;gap:8px"><button class="btn btn-ghost btn-sm" onclick="closeExport()">Cancel</button><button class="btn btn-primary btn-sm"' + (n ? '' : ' disabled') + ' onclick="toast(\'CSV ' + fname + ' · ' + n + (d.what === 'rows' ? ' rows' : ' scholars') + ' would download here\');closeExport()">Export ' + n + (d.what === 'rows' ? ' rows' : ' scholars') + '</button></span></div></div>';
 }
 
