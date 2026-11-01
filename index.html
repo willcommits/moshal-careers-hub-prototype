@@ -933,6 +933,7 @@ table.rt.prog tr.reg td{background:var(--surface-2)} table.rt.prog .ind{padding-
 @media (max-width:520px){.nowtiles{grid-template-columns:1fr}}
 .xsel{height:36px;border:1px solid var(--line);border-radius:8px;padding:0 10px;font:inherit;font-size:14px;background:var(--surface);color:var(--ink);max-width:100%}
 .take .lnk{border:0;background:none;padding:0;font:inherit;font-weight:600;color:var(--brand);cursor:pointer;text-decoration:underline;text-underline-offset:2px}
+.story .cnt{margin-left:auto;font-size:13px;color:var(--muted);white-space:nowrap} .story .cnt b{color:var(--navy);font-weight:600}
 /* My applications stages, Salesforce step, monthly report, video upload */
 .apphint{margin:-8px 0 14px;font-size:14px;color:var(--muted)}
 .stagepick select{font:inherit;font-size:13px;padding:6px 28px 6px 10px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink)}
@@ -1869,7 +1870,7 @@ INST.forEach(([short, instName, facs], ui) => { const n = 130 + Math.floor(rnd()
  * shrinks the pool the charts are computed on, so a share is always a share of the scope.
  * Vocabulary is fixed in README.md: two states each, Applied / Not applying and Has an offer / No offer.
  */
-const R = {tab:'bd', lens:'activity', period:30, inst:[], fac:[], year:[], field:[], final:false, app:'notapplied', off:'any', seg:'notapplied', open:null, page:1, all:false, draft:null, xd:null, view:{}, sort:{col:'status', dir:1}};
+const R = {tab:'bd', lens:'activity', period:30, inst:[], fac:[], year:[], field:[], final:false, app:'any', off:'any', seg:'any', open:null, page:1, all:false, draft:null, xd:null, view:{}, sort:{col:'status', dir:1}};
 const SMALL_N = 5, SORT_N = 10;
 const fmtD = iso => new Date(iso + 'T12:00:00').toLocaleDateString('en-ZA', {day:'numeric', month:'short'});
 const periodLabel = () => R.period === 'custom' && R.range ? fmtD(R.range.from) + ' – ' + fmtD(R.range.to) : ({30:'last 30 days', 90:'last 90 days', 365:'last 12 months'})[R.period];
@@ -2040,7 +2041,7 @@ function filterRow(){
 function toolbar(){
   return filterRow();
 }
-function storyLine(pool){
+function storyLine(scope, view){
   const chip = (label, undo, cls) => '<span class="chip' + (cls ? ' ' + cls : '') + '">' + label + '<button aria-label="Remove ' + label + '" onclick="' + undo + '">×</button></span>';
   const parts = [];
   if (R.app !== 'any') parts.push(chip(GROUPS[R.app].l, "setSel('any',R.off)"));
@@ -2050,7 +2051,7 @@ function storyLine(pool){
   R.fac.forEach(f => parts.push(chip(f, "togg('fac','" + resc(f) + "')")));
   R.year.forEach(y => parts.push(chip(y, "togg('year','" + y + "')")));
   R.field.forEach(f => parts.push(chip(f, "togg('field','" + f + "')")));
-  return parts.length ? '<div class="story"><span>Showing</span>' + parts.join('') + '</div>' : '';
+  return '<div class="story"><span>Showing</span>' + parts.join('') + '<span class="cnt"><b>' + view.length + '</b>' + (parts.length ? ' of ' + STU.length : ' (all)') + ' scholars</span></div>';
 }
 
 /* ---- panel chrome ---- */
@@ -2091,31 +2092,36 @@ function srow(o, i){
 }
 const rowCard = r => ({t:r.k + ' · ' + r.n + ' scholars', rows:[{sw:'#2362B4', l:'Applied', v:r.a}, {sw:'#7D8B9A', l:'Not applying', v:r.n - r.a}, {sw:'none', l:'Has an offer', v:r.o}]});
 const shareTable = (label, rows) => tview([label, 'Scholars', 'Applied', 'Not applying', 'Has an offer'], rows.map(r => [r.k, r.n, r.a, r.n - r.a, r.o]));
+/* Bars count the scholars in the current story per row; with Applied or Offer picked, the label adds that row's share. */
 function shareRows(rows, act, on){
-  const most = Math.max(1, ...rows.map(r => r.n));
-  return '<div class="srows">' + (rows.length ? rows.map((r, i) => srow(pickedNone() ? {k:r.k, w:pct(r.n, most), v:r.n, cls:'pos', on:on(r), act:act(r), c:rowCard(r)}
-    : {k:r.k, w:pct(r.b, r.n), v:pct(r.b, r.n) + '%', cls:bucketIsPos() ? 'pos' : '', on:on(r), act:act(r), c:rowCard(r)}, i)).join('') : '<div class="empty-line">Nobody here</div>') + '</div>';
+  const most = Math.max(1, ...rows.map(r => r.b));
+  return '<div class="srows">' + (rows.some(r => r.b) ? rows.filter(r => r.b).map((r, i) => srow({k:r.k, w:pct(r.b, most), v:pickedNone() ? r.b : r.b + ' · ' + pct(r.b, r.n) + '%', cls:bucketIsPos() ? 'pos' : '', on:on(r), act:act(r), c:rowCard(r)}, i)).join('') : '<div class="empty-line">Nobody matches these filters</div>') + '</div>';
 }
+const byCount = rows => rows.sort((x, y) => y.b - x.b || pct(y.b, y.n) - pct(x.b, x.n));
 function mostTake(rows){
-  if (pickedNone()) { const top = rows.slice().sort((x, y) => y.n - x.n)[0]; return top ? take('Most scholars: <b>' + top.k + '</b> (' + top.n + ')') : ''; }
-  const top = rows.find(r => r.n >= SORT_N); return top ? take('Highest share ' + selLabel().replace(/^Final years: /, '').toLowerCase() + ': <b>' + top.k + '</b> (' + pct(top.b, top.n) + '%)') : '';
+  const top = rows.slice().sort((x, y) => y.b - x.b)[0];
+  return top && top.b ? take('Most ' + (selLabel() || 'scholars').replace(/^Final years: /, '').toLowerCase() + ': <b>' + top.k + '</b> (' + top.b + (pickedNone() ? '' : ' · ' + pct(top.b, top.n) + '%') + ')') : '';
 }
 
-function kpis(pool){
+function kpis(pool, scope){
   const n = pool.length, a = pool.filter(applied).length;
   const o = pool.filter(GROUPS.offer.f).length;
   const fy = pool.filter(isFinal), fyQ = fy.filter(GROUPS['fy-neither'].f).length;
-  const d = prevOk() ? pct(a, n) - pct(pool.filter(appliedPrev).length, n) : null;
+  const d = prevOk() && R.app === 'any' ? pct(a, n) - pct(pool.filter(appliedPrev).length, n) : null;
   const trend = d === null ? '' : ' <span class="chg">' + (d > 0 ? '▲ ' + d + ' pts' : d < 0 ? '▼ ' + -d + ' pts' : 'no change') + '</span>';
   const lk = (k, label, v) => '<button class="kl' + (R.seg === k ? ' on' : '') + '" onclick="pickGroup(\'' + k + '\')">' + label + (v === undefined ? '' : '<b>' + v + '</b>') + '</button>';
   const big = (v, suf) => '<span class="kv" data-n="' + v + '" data-suf="' + (suf || '') + '">' + v + (suf || '') + '</span>';
   const meter = (p, cls) => '<span class="meter' + (cls ? ' ' + cls : '') + '" aria-hidden="true"><em style="width:' + p + '%"></em></span>';
   const tile = (cls, ks, label, value, sub, body) => '<div class="kt' + cls + (ks.includes(R.seg) ? ' on' : '') + '"><span class="kh">' + label + '</span>' + value + '<span class="ks">' + sub + '</span>' + body + '</div>';
+  /* A tile whose own filter is set would read 0% or 100%; it shows the count and its share of the scope instead. */
+  const WHO = {applied:'who applied', notapplied:'not applying', offer:'with an offer', none:'with no offer'};
+  const pinned = (key, cls) => { const other = R[key === 'app' ? 'off' : 'app'], base = scope.filter(st => other === 'any' || GROUPS[other].f(st)), sn = base.length;
+    return tile(' on', [], cls, big(n), GROUPS[R[key]].l.toLowerCase() + ' · ' + pct(n, sn) + '% of the ' + sn + (other === 'any' ? ' in scope' : ' ' + WHO[other]), meter(pct(n, sn)) + '<span class="kls"><button class="kl" onclick="setSel(' + (key === 'app' ? "'any',R.off" : "R.app,'any'") + ')">Clear</button></span>'); };
   return '<div class="kts k3">' +
-    tile('', ['applied', 'notapplied'], 'Applying', big(pct(a, n), '%'), a + ' of ' + n + ' applied' + trend,
-      meter(pct(a, n)) + '<span class="kls">' + lk('applied', 'Applied', a) + lk('notapplied', 'Not applying', n - a) + '</span>') +
-    tile('', ['offer', 'none'], 'Offers', big(pct(o, n), '%'), o + ' of ' + n + ' have an offer',
-      meter(pct(o, n)) + '<span class="kls">' + lk('offer', 'Has an offer', o) + lk('none', 'No offer', n - o) + '</span>') +
+    (R.app !== 'any' ? pinned('app', 'Applying') : tile('', ['applied', 'notapplied'], 'Applying', big(pct(a, n), '%'), a + ' of ' + n + ' applied' + trend,
+      meter(pct(a, n)) + '<span class="kls">' + lk('applied', 'Applied', a) + lk('notapplied', 'Not applying', n - a) + '</span>')) +
+    (R.off !== 'any' ? pinned('off', 'Offers') : tile('', ['offer', 'none'], 'Offers', big(pct(o, n), '%'), o + ' of ' + n + ' have an offer',
+      meter(pct(o, n)) + '<span class="kls">' + lk('offer', 'Has an offer', o) + lk('none', 'No offer', n - o) + '</span>')) +
     tile(' warn', ['fy-neither'], RICO.alert + 'Final years to call', big(fyQ), 'no offer and not applying',
       meter(pct(fyQ, fy.length), 'amb') + '<span class="kls">' + lk('fy-neither', 'See who') + '</span>') +
     '</div>';
@@ -2133,19 +2139,19 @@ function trendPanel(pool){
   return '<section class="card">' + chead('Scholars applying each ' + unit, 'tr') + take('<b>' + last.n + '</b> this ' + unit + ' · average ' + avg) + body + '</section>';
 }
 function placePanel(pool){
-  const rows = foldFaculties(sortWorst(rowsFor(pool, keyFn()), r => pct(r.b, r.n), r => r.b)), lv = level();
+  const rows = foldFaculties(byCount(rowsFor(pool, keyFn()))), lv = level();
   const act = r => r.fold ? "drillFold(" + JSON.stringify(r.fold).replace(/"/g, '&quot;') + ")" : lv === 'year' ? "togg('year','" + r.k + "')" : "drillTo('" + resc(r.k) + "')";
   const title = {inst:'By university', fac:'By faculty', year:'By year of study'}[lv];
   return '<section class="card">' + chead(title, 'inst') + mostTake(rows) + (lv !== 'inst' ? crumbs() : '') + (R.view.inst ? shareTable(LEVEL_WORD[lv], rows) : shareRows(rows, act, r => R.year.includes(r.k))) + '</section>';
 }
 function fieldPanel(pool){
-  const rows = rowsFor(pool, st => st.field).sort((x, y) => pct(y.b, y.n) - pct(x.b, x.n) || y.n - x.n);
+  const rows = byCount(rowsFor(pool, st => st.field));
   return '<section class="card">' + chead('By field of study', 'fd') + mostTake(rows) + (R.view.fd ? shareTable('Field', rows) : shareRows(rows, r => "togg('field','" + resc(r.k) + "')", r => R.field.includes(r.k))) + '</section>';
 }
-function finalPanel(){
-  const pool = STU.filter(st => (!R.inst.length || R.inst.includes(st.inst)) && (!R.fac.length || R.fac.includes(st.fac)) && (!R.field.length || R.field.includes(st.field)) && isFinal(st)), n = pool.length;
-  const rows = rowsFor(pool, keyFn()).sort((x, y) => y.fyQ - x.fyQ), most = Math.max(1, ...rows.map(r => r.fyQ)), toCall = rows.reduce((t, r) => t + r.fyQ, 0);
-  const body = R.view.fy ? tview([LEVEL_WORD[level()], 'Final years', 'To call'], rows.map(r => [r.k, r.fyN, r.fyQ])) :
+function finalPanel(view){
+  const pool = view.filter(isFinal), n = pool.length;
+  const rows = rowsFor(pool, keyFn()).filter(r => r.fyQ).sort((x, y) => y.fyQ - x.fyQ), most = Math.max(1, ...rows.map(r => r.fyQ)), toCall = rows.reduce((t, r) => t + r.fyQ, 0);
+  const body = R.view.fy ? tview([LEVEL_WORD[level()], 'Final years', 'To call'], rows.map(r => [r.k, r.fyN, r.fyQ])) : !rows.length ? '<div class="empty-line">No final years to call in this view</div>' :
     '<div class="srows">' + rows.map((r, i) => srow({k:r.k, w:pct(r.fyQ, most), v:r.fyQ + ' to call', cls:'amb', act:"drillTo('" + resc(r.k) + "',true)"}, i)).join('') + '</div>';
   return '<section class="card">' + chead('Final years to call, graduating ' + THIS_YEAR, 'fy') + take('<b>' + toCall + ' of ' + n + '</b> have no offer and are not applying · <button class="lnk" onclick="pickGroup(\'fy-neither\')">See who</button>') + body + '</section>';
 }
@@ -2167,7 +2173,7 @@ function namesPanel(pool){
 /* ---- export chooser ---- */
 const openExport = () => {
   R.xd = {open:null, month:-1, applied:R.app === 'applied' ? 'yes' : R.app === 'any' ? 'any' : 'no', offer:R.off === 'offer' ? 'yes' : R.off === 'none' ? 'no' : 'any',
-    final:R.final, inst:[...R.inst], fac:[...R.fac], years:[...R.year], contact:true};
+    final:R.final, inst:[...R.inst], fac:[...R.fac], years:[...R.year], field:[...R.field], contact:true};
   R.open = null; renderExport();
 };
 const closeExport = () => { const m = document.getElementById('xmodal'); if (m) m.remove(); R.xd = null; };
@@ -2183,11 +2189,11 @@ function xdd(key, label, options){
 const xseg = (key, opts) => '<div class="seg xseg" role="group">' + opts.map(([v, l]) => '<button aria-pressed="' + (R.xd[key] === v) + '" onclick="R.xd.' + key + '=\'' + v + '\';renderExport()">' + l + '</button>').join('') + '</div>';
 const xWin = () => R.xd.month < 0 ? win() : MONTHS_BACK()[R.xd.month];
 const xApps = st => { const w = xWin(); return st.apps.filter(a => a.d >= w.lo && a.d <= w.hi); };
-const exportList = () => { const d = R.xd; return STU.filter(st => (!d.inst.length || d.inst.includes(st.inst)) && (!d.fac.length || d.fac.includes(st.fac)) && (!d.years.length || d.years.includes(st.year)) && (!d.final || isFinal(st)) && (d.applied === 'any' || (d.applied === 'yes') === (xApps(st).length > 0)) && (d.offer === 'any' || (d.offer === 'yes') === (st.offers > 0))); };
+const exportList = () => { const d = R.xd; return STU.filter(st => (!d.inst.length || d.inst.includes(st.inst)) && (!d.fac.length || d.fac.includes(st.fac)) && (!d.years.length || d.years.includes(st.year)) && (!d.field.length || d.field.includes(st.field)) && (!d.final || isFinal(st)) && (d.applied === 'any' || (d.applied === 'yes') === (xApps(st).length > 0)) && (d.offer === 'any' || (d.offer === 'yes') === (st.offers > 0))); };
 const EMAIL_DOMAIN = {UCT:'myuct.ac.za', Wits:'students.wits.ac.za', SU:'sun.ac.za', UP:'tuks.co.za', UJ:'student.uj.ac.za', UKZN:'stu.ukzn.ac.za'};
 const xPeriodWord = () => R.xd.month < 0 ? periodLabel() : MONTHS_BACK()[R.xd.month].label.replace(' (so far)', '');
 const xFile = () => { const d = R.xd, bits = [d.applied === 'yes' ? 'applied' : d.applied === 'no' ? 'not-applying' : '', d.offer === 'yes' ? 'has-offer' : d.offer === 'no' ? 'no-offer' : '', d.final ? 'final-years' : ''].filter(Boolean);
-  return ['moshal', bits.join('_') || 'all-scholars'].concat(d.inst, d.fac.map(f => f.replace(/[^\w]+/g, '-')), d.years.map(y => y.replace(/\s+/g, '')), [xPeriodWord().replace(/[^\w]+/g, '-')]).join('_').toLowerCase() + '.csv'; };
+  return ['moshal', bits.join('_') || 'all-scholars'].concat(d.inst, d.fac.map(f => f.replace(/[^\w]+/g, '-')), d.years.map(y => y.replace(/\s+/g, '')), d.field.map(f => f.replace(/[^\w]+/g, '-')), [xPeriodWord().replace(/[^\w]+/g, '-')]).join('_').toLowerCase() + '.csv'; };
 function doExport(){
   const d = R.xd, q = v => '"' + String(v).replace(/"/g, '""') + '"', name = xFile();
   const rows = [['Scholar', 'University', 'Faculty', 'Field of study', 'Year of study', 'Graduating'].concat(d.contact ? ['Email'] : [], ['Status (' + xPeriodWord() + ')', 'Applications', 'Has an offer'])]
@@ -2204,7 +2210,7 @@ function exportPop(){
     '<div><span class="eyebrow">Who</span><div class="xrow"><span class="xlab">Applied</span>' + xseg('applied', [['any', 'Any'], ['yes', 'Applied'], ['no', 'Not applying']]) + '</div>' +
       '<div class="xrow"><span class="xlab">Offer</span>' + xseg('offer', [['any', 'Any'], ['yes', 'Has an offer'], ['no', 'No offer']]) + '</div>' +
       '<div class="xrow"><span class="xlab"></span><button class="ctl' + (d.final ? ' on' : '') + '" aria-pressed="' + d.final + '" onclick="R.xd.final=!R.xd.final;renderExport()">Final years</button><span class="cap">graduating ' + THIS_YEAR + '</span></div></div>' +
-    '<div><span class="eyebrow">Where</span><div class="xrow">' + xdd('inst', 'Institution', INST.map(([sh, nm]) => [sh, nm])) + xdd('fac', 'Faculty', facOpts) + xdd('years', 'Year of study', YEARS.map(y => [y, y])) + '</div></div>' +
+    '<div><span class="eyebrow">Where</span><div class="xrow">' + xdd('inst', 'Institution', INST.map(([sh, nm]) => [sh, nm])) + xdd('fac', 'Faculty', facOpts) + xdd('years', 'Year of study', YEARS.map(y => [y, y])) + xdd('field', 'Field of study', FIELDS_OPT.map(f => [f, f])) + '</div></div>' +
     '<div><label><input type="checkbox"' + (d.contact ? ' checked' : '') + ' onchange="R.xd.contact=this.checked;renderExport()"> <span>Include email addresses</span></label></div>' +
     '</div><div class="pf"><span class="fn">' + fname + '</span><span style="display:flex;gap:8px"><button class="btn btn-ghost btn-sm" onclick="closeExport()">Cancel</button><button class="btn btn-primary btn-sm"' + (n ? '' : ' disabled') + ' onclick="doExport()">Export ' + n + ' scholars</button></span></div></div>';
 }
@@ -2476,12 +2482,13 @@ const MONTHS_BACK = () => { const t = new Date(TODAY_ISO + 'T12:00:00'), out = [
     out.push({lo:Math.round((t - b) / 864e5), hi:Math.round((t - a) / 864e5), key:a.getFullYear() + '-' + String(a.getMonth() + 1).padStart(2, '0'), label:a.toLocaleDateString('en-ZA', {month:'long', year:'numeric'}) + (i ? '' : ' (so far)')}); }
   return out; };
 V.admin = () => {
-  const pool = scoped(), key = chartKey(), still = key === R.chartKey && S.lastView === 'admin';
+  /* scope is where to look; view is the story: every filter applied, Applied and Offer included. */
+  const pool = scoped(), view = groupList(pool), key = chartKey(), still = key === R.chartKey && S.lastView === 'admin';
   R.chartKey = key;
   if (!still) setTimeout(countUp, 0);
-  return '<div class="rp' + (still ? ' still' : '') + '"><div class="page-head"><h1>Scholar report</h1><button class="iconbtn" title="Export · ' + groupList(pool).length + ' scholars" aria-label="Export" onclick="openExport(R.seg)"' + (pool.length ? '' : ' disabled') + '>' + RICO.download + '</button></div>' +
-    toolbar() + storyLine(pool) + kpis(pool) +
-    '<div class="dg">' + trendPanel(pool) + finalPanel() + '</div>' +
+  return '<div class="rp' + (still ? ' still' : '') + '"><div class="page-head"><h1>Scholar report</h1><button class="iconbtn" title="Export · ' + view.length + ' scholars" aria-label="Export" onclick="openExport()"' + (view.length ? '' : ' disabled') + '>' + RICO.download + '</button></div>' +
+    toolbar() + storyLine(pool, view) + kpis(view, pool) +
+    '<div class="dg">' + trendPanel(view) + finalPanel(view) + '</div>' +
     '<div class="dg">' + placePanel(pool) + fieldPanel(pool) + '</div>' +
     (R.showNames ? namesPanel(pool) : namesGate(pool)) + '</div>';
 };

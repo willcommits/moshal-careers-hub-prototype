@@ -104,12 +104,17 @@ Two states each, nothing in between, so the tiles always add up and nobody is co
 | Has an offer | Holds at least one offer now |
 | No offer | No offer yet |
 
-The page picks who it is about with two filters, Applied and Offer, that work like Institution and
-Faculty: each has its two states, reads its own name when nothing is picked, and has Clear. They
-combine: Not applying + No offer is the call list, Applied + No offer is "trying, not landing".
-With nothing picked the page is about all scholars, and the bars show how many scholars each
-university and field has rather than a share. The page opens on Not applying. An offer is a held
-state, so offers draw no previous-period comparison.
+Applied and Offer are filters like Institution and Faculty: each has its two states, reads its own
+name when nothing is picked, and has Clear. Every set filter shows as a pill beside "Showing", with
+the count of scholars in the view.
+
+**The filters are the story.** Whatever combination is set (Not applying + No offer + UCT, say), every
+part of the page counts only those scholars: the tiles, the weekly chart, Final years to call, the
+university and field bars, the names table, and Export, which opens on the same picks but keeps
+every option editable. The bars show how many of them each university or field has, with that
+row's share once Applied or Offer is set. A tile whose own filter is set shows the count and its
+share of the other filter's group (65% of the 106 with no offer) instead of a flat 0% or 100%. The
+page opens on all scholars. An offer is a held state, so offers draw no previous-period comparison.
 
 ### Final years
 
