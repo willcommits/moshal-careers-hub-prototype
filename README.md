@@ -1,23 +1,13 @@
 # Moshal Careers Hub prototype
 
-The clickable prototype of the Moshal Careers Hub: a careers portal for the Moshal Scholarship
-Program in South Africa, with screens for scholars, career champions and the programme team. It is
-design material, not shipped code: plain HTML, CSS and JavaScript with example data, no build step.
+`index.html` is the clickable prototype of the Moshal Careers Hub: every screen for scholars,
+career champions and the programme team, live, in the Moshal brand. `sidebar.js` is the navigation
+panel as a standalone web component. `serve.js` serves the folder on <http://localhost:4321> for
+previews. Open `index.html` directly if you prefer; there is no build step.
 
-Open `index.html` in a browser, or run `node serve.js` and visit <http://localhost:4321>. It opens on a
-prefilled sign-in; the account menu top right switches between all five people, for demos.
-
-| File | What it is |
-|------|------------|
-| `index.html` | The whole prototype: every screen, the Reporting view and the example data |
-| `sidebar.js` | The navigation panel as a standalone web component |
-| `brand/` | The Moshal Program logos, and the two open-licence fonts the resource editor offers |
-| `REPORTING.md` | The Reporting vocabulary, how that screen reads, and the export |
-| `SPEC.md` | The MVP specification the prototype was built against |
-
-Narkiss Block, the brand typeface, is a commercial font and is not redistributed here. The page
-declares it first in its font stack and falls back to the system sans-serif, so layouts hold but
-type will differ from the branded original.
+Brand assets come from `Branding/` in this repository: the Moshal Program logo, the Narkiss Block
+typeface and the sub-brand palette. The colour system is set out in `../README.md` and at the top of
+the stylesheet in `index.html`: one blue family for structure, three colours only for state.
 
 ## Personas
 
@@ -70,14 +60,40 @@ placeholder until the programme supplies the real one.
 
 ## Video in resources
 
-A resource can carry an uploaded video (MP4, WebM or MOV, up to 500 MB) or a video link. That is
-the one way to add a video; the article editor handles text and images. The resource page plays the
-video in place. The prototype keeps uploads in the browser for the session only; the real hub
-stores them with its other files.
+A video is a YouTube or Vimeo link, played in place on the resource page or inside an article.
+Video files are not uploaded (decided 14 Nov 2026). The prototype keeps uploaded pictures and files
+in the browser for the session only; the hub stores them in PostgreSQL.
 
 ## Who sees an item
 
 Listings, resources and announcements are for **Everyone** or for **Final years** only. Nothing finer.
+
+## Content library: rich articles and files
+
+The design is in `docs/rich-content.md`.
+
+- **Articles have pages.** When reading:
+  - on a computer, a Contents list on the left, "Page 2 of 4" with a progress line, and Previous
+    and Next with the next page's title at the bottom;
+  - on a phone, a "Page 2 of 4: …" picker instead.
+- **Two example articles show the range:** "Interview question bank" (4 pages) and "CV writing
+  toolkit" (3 pages). Between them they use:
+  - headings;
+  - a diagram with a caption;
+  - tables;
+  - Tip, Important and Example boxes;
+  - coloured and highlighted text;
+  - download cards.
+- **The editor:**
+  - **Pages:** tabs (add, title, move earlier or later, delete).
+  - **Toolbar** (stays in view while you scroll): Style (Paragraph, Heading 1 to 3, Quote), bold,
+    italic, underline, strikethrough, text colour and highlight (a fixed, readable palette), lists,
+    link, Image (upload, with a description and caption), Video (YouTube or Vimeo), File (a download
+    card), Table, Box, divider, undo, redo, clear.
+- **Files.** "Files" replaces "Document": upload any number of files of any type scholars can use,
+  up to 25 MB each. Programs and scripts are refused with a plain message. "One-page graduate CV
+  template" shows three.
+- **Video** is a YouTube or Vimeo link only; the old video upload is gone.
 
 ## Admin and Exco console
 
@@ -89,6 +105,49 @@ tracking parameters are stripped). Job listings has two tabs, Live and Expired; 
 within 7 days carries a chip. Removing anything says Remove, everywhere. Numbers come second. Colour follows the rest of the prototype:
 structure is blue, and red, amber and green mark state only, so a red figure always means
 something is wrong and amber always means time is short.
+
+### The console's look
+
+Exco and Admin pages use the `.console` styles: a quieter, denser working surface than the scholar
+pages, so they read as a system rather than a showcase.
+
+- On the Overview, "Needs attention" is a short to-do list: one line per thing to deal with, the
+  count in its colour, what it is in words and Review. With nothing to do it reads "Nothing needs
+  attention." The figures under it are separate cards, with no stripe down the side.
+- On the reports, the figures sit in one ruled strip.
+- Lists inside a panel are plain ruled rows, not cards inside a card.
+- Bars are thin and square, and only the current one is labelled.
+- Initials are neutral.
+- Status is a dot and a word, with no badge background, everywhere in the console.
+- Nothing animates in.
+- Reports are one sheet ruled into sections, not a grid of floating cards; bars have no grey
+  track behind them, and figures carry no progress bar (the target is in the words).
+- Lists of items (Flagged listings and the like) are ruled rows on one surface.
+- Users and roles filters by role with one row of tabs; what each role can do is in the tab's
+  tooltip and the invite dialog, not five cards.
+- Remove and Suspend are red words on a neutral button; the confirm step carries the weight.
+- The activity log marks each kind with a small grey icon, not a coloured disc.
+
+### Import scholars (proposed)
+
+Admin → Users and roles → **Import scholars**. It is proposed, not yet in the spec: the design is in
+`docs/scholar-import.md`, and the decisions it needs are listed there and in build-spec §13. There
+are three steps:
+
+1. **Choose a CSV.** It has the columns First name, Surname, Email, University, Year of study and
+   Expected graduation year. "Download the template" gives them; "Try the example file" loads a
+   sample with one of every case.
+2. **Preview.** Every row is checked and nothing is sent yet:
+   - **Ready**;
+   - **Already a member** or **Already invited**, both skipped;
+   - **Needs fixing**, with one plain reason, for example "Use their UWC email".
+
+   Columns the hub does not use, such as an ID number, are named as ignored. "Download the N to
+   fix" gives those rows to correct.
+3. **Invite N scholars.** Each scholar gets their own one-time link, sent a few a second with a
+   progress bar. Nobody gets a shared or default password.
+
+The page also lists earlier imports, with how many joined and a reminder for those who haven't.
 
 ## Reporting vocabulary
 
@@ -135,9 +194,24 @@ The history behind them is generated example data with its own seed.
 | Report | What it answers |
 |--------|-----------------|
 | Programme dashboard | One month against the targets (listings posted, active scholars, champions posting every week). Month-on-month bars, active scholars weekly or monthly, and a table by region and university. The Targets button sets the numbers the brief left blank. A switch emails the summary to the Careers team on the 1st |
-| Listings report | Listings posted each week or month, split by field, type, location or employer. Fields with few listings, and what is live, closing or expired today. Views, saves and clicks by field and university. Most viewed and most saved. Each champion's week against the target, the share of their listings removed and removed as duplicates, and who has not posted in 7, 14 or 30 days |
+| Listings report | Listings posted each week or month, split by field, type, location or employer. Fields with few listings, and what is live, closing or expired today. Views, saves and clicks by field and university. Most viewed and most saved. Champion tracking, below |
 | Content report | Views and downloads per resource and category, with the least used named. Views, link clicks and calendar adds for each announcement and category |
 | Scholar report | Who applied, who has offers, and which final years need a call. Its Export takes the page's picks for the page's period or any one month |
+
+### Tracking champions
+
+Champions are tracked on the Listings report, not on a page of their own. Two filters sit beside
+Posted by: **Champion** (one person) and **Champion status** (Active or Not active). A champion is
+active when they posted at least once in the chosen period, so the period control, including a
+custom range, decides who counts as active. As on the Scholar report, the filters are the story:
+the numbers, the weekly chart, what was posted, views, saves and clicks, most viewed and saved, and
+the export all follow them, and every set filter shows as a pill with the number of listings.
+
+The **Career champions** summary sits right under the numbers. It shows how many are active and not
+active (chips that set the status filter), how many are on target this week, and one row per
+champion: status, the last four weeks against the weekly target, listings posted, the views and
+clicks those listings drew, the share removed and removed as duplicates, and when they last posted.
+Clicking a champion's name narrows the whole report to them.
 
 Named scholars appear only in the Scholar report, and only after "Show names" or picking a group.
 Everything else shows totals.

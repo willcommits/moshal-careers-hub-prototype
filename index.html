@@ -57,6 +57,10 @@ moshal-sidebar{--surface:#16385C;--line:rgba(255,255,255,.12);--ink:#FFFFFF;--mu
 .topbar{height:0;background:none;border:0;box-shadow:none;display:flex;align-items:center;gap:16px;padding:0;max-width:1160px;width:100%;overflow:visible;position:relative;z-index:20}
 .topbar .actions{position:absolute;top:26px;right:32px;display:flex;align-items:center;gap:8px;padding:3px;border-radius:999px;background:var(--page)}
 .page-head{padding-right:104px}
+#chrome::before{content:"";position:absolute;left:0;right:0;top:0;height:64px;background:var(--surface);border-bottom:1px solid var(--line);opacity:0;pointer-events:none;transition:opacity .15s ease}
+#chrome.scrolled::before{opacity:1}
+.topbar .actions{transition:top .15s ease}
+#chrome.scrolled .topbar .actions{top:12px;background:none}
 .topbar .burger,.topbar .tlogo,.tabbar{display:none}
 .tlogo{height:22px}
 .scrim{position:fixed;inset:0;background:rgba(15,42,71,.45);z-index:65}
@@ -100,13 +104,13 @@ h3{font-family:var(--display);font-size:16px;font-weight:500;color:var(--navy);m
 .page-head .acts{display:flex;gap:8px;align-items:center;margin-left:auto}
 .sub{color:var(--muted);font-size:14px;margin:-12px 0 22px;max-width:70ch}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r)}
-.hero{position:relative;overflow:hidden;background:linear-gradient(135deg,#1B4B89,#2362B4 60%,#2F74C8);color:#fff;border-radius:16px;padding:28px 30px 30px;margin-bottom:24px}
-.hero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:4px;background:var(--scholars)}
+.hero{position:relative;z-index:5;background:linear-gradient(135deg,#1B4B89,#2362B4 60%,#2F74C8);color:#fff;border-radius:16px;padding:28px 30px 30px;margin-bottom:24px}
+.hero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:4px;background:var(--scholars);border-radius:0 0 16px 16px}
 /* The five sub-brand colours as one quiet rule: the brand's own device, nothing encoded. */
 .hero h2{color:#fff;font-size:23px;margin:0 0 4px}
 .hero p{margin:0 0 18px;color:#CFE2F7;font-size:14px}
 .hero-search{display:flex;gap:12px;flex-wrap:wrap}
-.hero-search .search{flex:1;min-width:240px;display:flex;align-items:center;gap:10px;height:48px;border-radius:var(--r-sm);padding:0 16px;background:#fff;position:relative}
+.hero-search .search{flex:1;min-width:240px;display:flex;align-items:center;gap:10px;height:48px;border-radius:var(--r-sm);padding:0 16px;background:#fff;position:relative;z-index:1}
 .hero-search .ghost{position:absolute;left:43px;right:16px;top:0;height:100%;display:flex;align-items:center;font-size:15px;color:var(--muted);pointer-events:none;white-space:nowrap;overflow:hidden}
 .hero-search .ghost:empty{display:none}
 .hero-search .ghost i{display:inline-block;width:1.5px;height:18px;margin-left:2px;background:var(--brand);border-radius:1px;vertical-align:-3px}
@@ -128,7 +132,8 @@ h3{font-family:var(--display);font-size:16px;font-weight:500;color:var(--navy);m
 .jc .t b{display:block;font-size:15px;font-weight:500;color:var(--navy);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .jc .t span{display:block;font-size:13px;color:var(--muted);margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .jc .w{font-size:13px;color:var(--muted);text-align:right;white-space:nowrap}
-.jc .w.soon{color:var(--warn)}
+.jc .w.soon{color:var(--navy);font-weight:500;display:inline-flex;align-items:center;gap:5px}
+.jc .w.soon svg{width:14px;height:14px;color:var(--alumni)}
 .jc .w.done{color:var(--ok);display:inline-flex;align-items:center;gap:5px}
 .jc .w.done svg{width:14px;height:14px}
 .sv{width:32px;height:32px;border:0;border-radius:6px;background:none;color:var(--faint);display:grid;place-items:center;padding:0;justify-self:end}
@@ -224,6 +229,20 @@ h3{font-family:var(--display);font-size:16px;font-weight:500;color:var(--navy);m
 .notice.warn{background:var(--warn-soft);color:var(--warn)}
 .notice.bad{background:var(--bad-soft);color:var(--bad)}
 .notice.info{background:var(--brand-soft);color:var(--navy)}
+.imp-card{padding:22px 24px;margin-bottom:18px}
+.imp-card h2{font-size:16px;margin:0 0 6px}
+.imp-card p{margin:0 0 14px;color:var(--muted);font-size:14px}
+.imp-acts{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
+.imp-sum{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:16px}
+.imp-sum .s{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.imp-sum .s b{display:block;font-size:24px;font-weight:500;color:var(--navy)}
+.imp-sum .s span{font-size:13px;color:var(--muted)}
+.imp-sum .s.ok{border-left:3px solid var(--ok);border-radius:0 10px 10px 0}
+.imp-sum .s.bad{border-left:3px solid var(--bad);border-radius:0 10px 10px 0}
+.imp-bar{height:8px;border-radius:999px;background:var(--surface-2);overflow:hidden;margin:4px 0 8px}
+.imp-bar span{display:block;height:100%;background:var(--ok);transition:width .2s ease}
+.imp-foot{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;margin-top:16px}
+.imp-err{color:var(--bad);font-size:12px}
 .jobwrap{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:20px;align-items:start}
 @container (max-width:860px){.jobwrap{grid-template-columns:1fr}.jside{position:static}}
 .detail{padding:28px}
@@ -275,6 +294,59 @@ h3{font-family:var(--display);font-size:16px;font-weight:500;color:var(--navy);m
 .rich iframe,.rich video{display:block;width:100%;aspect-ratio:16/9;border:0;border-radius:10px;margin:6px 0 14px;background:#000}
 .rich a{color:var(--brand)}
 .rich font[size="2"]{font-size:13px} .rich font[size="3"]{font-size:15px} .rich font[size="5"]{font-size:19px}
+/* Rich articles (PROPOSED, docs/rich-content.md): three heading levels, colour from the brand palette only, boxes,
+   figures with captions, tables, dividers and file cards. Colours are tokens with AA contrast on white. */
+.rich h2{font-size:24px;line-height:1.25;color:var(--navy);margin:26px 0 10px} .rich h3{font-size:19px;color:var(--navy);margin:20px 0 8px} .rich h4{font-size:16px;color:var(--navy);margin:16px 0 6px}
+.rich > :first-child{margin-top:0}
+.rich hr{border:0;border-top:1px solid var(--line);margin:24px 0}
+.rich figure{margin:8px 0 18px}.rich figure img{margin:0;border:1px solid var(--line)}.rich figcaption{font-size:13px;color:var(--muted);margin-top:6px}
+.rich .callout{padding:12px 16px;border-radius:8px;margin:0 0 16px;background:var(--brand-soft);color:var(--navy)}
+.rich .callout > :last-child{margin-bottom:0}
+.rich .callout .ct{display:block;font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;margin-bottom:4px}
+.rich .callout.tip{background:var(--ok-soft);color:#2E5A0E}.rich .callout.important{background:var(--warn-soft);color:var(--warn)}.rich .callout.example{background:var(--surface-2);color:var(--ink);border:1px solid var(--line)}
+.rich table{border-collapse:collapse;width:100%;margin:0 0 16px;font-size:14px}
+.rich th,.rich td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}.rich th{background:var(--surface-2);font-weight:600;color:var(--navy)}
+.file{display:flex;align-items:center;gap:12px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;margin:0 0 14px;background:var(--surface)}
+.resfiles .file{margin:0}
+.file .ft{width:40px;height:40px;flex:none;border-radius:6px;display:grid;place-items:center;font-size:10px;font-weight:700;letter-spacing:.03em;background:var(--brand-soft);color:var(--brand)}
+.file .fx{min-width:0;flex:1}.file .fx b{display:block;color:var(--navy);font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.file .fx span{font-size:12px;color:var(--muted)}
+.tx-navy{color:#16385C}.tx-blue{color:#2362B4}.tx-green{color:#3F7A14}.tx-amber{color:#6E4E00}.tx-red{color:#A8372A}.tx-grey{color:#5A6878}
+/* The editor: pages above, a toolbar that stays in view, colour popover. */
+.pgtabs{display:flex;flex-wrap:wrap;gap:4px;align-items:center;margin-bottom:8px}
+.pgtabs button{height:32px;padding:0 12px;border:1px solid var(--line);border-radius:6px;background:var(--surface);font:inherit;font-size:13px;color:var(--ink);cursor:pointer;max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pgtabs button[aria-selected="true"]{border-color:var(--navy);background:var(--navy);color:#fff}
+.pgtabs .add{border-style:dashed;color:var(--brand)}
+.pgrow{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:8px}
+.pgrow input{flex:1;min-width:200px;height:38px;border:1px solid var(--line);border-radius:6px;padding:0 12px;font:inherit;font-size:14px}
+.rtbar.sticky{position:sticky;top:72px;z-index:5}
+.rtpop{position:relative;display:inline-flex}
+.rtpop .pal{position:absolute;top:34px;left:0;z-index:20;display:grid;grid-template-columns:repeat(4,28px);gap:6px;padding:10px;background:var(--surface);border:1px solid var(--line);border-radius:8px;box-shadow:var(--shadow)}
+.rtpop .pal button{width:28px;height:28px;border-radius:6px;border:1px solid var(--line);cursor:pointer}
+.rtpop .pal .lab{grid-column:1/-1;font-size:11px;color:var(--muted)}
+.edhint{font-size:12px;color:var(--muted);margin-top:6px}
+.fchips{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+.fchips .file{margin:0}
+/* Reading a multi-page article. */
+.reader{display:grid;grid-template-columns:230px minmax(0,1fr);gap:28px;align-items:start}
+.toc{position:sticky;top:84px}
+.toc h2{font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin:0 0 8px}
+.toc ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
+.toc button{display:flex;gap:10px;width:100%;text-align:left;padding:8px 10px;border:0;border-radius:6px;background:none;font:inherit;font-size:14px;color:var(--ink);cursor:pointer;line-height:1.35}
+.toc button span{color:var(--faint);font-variant-numeric:tabular-nums}
+.toc button:hover{background:var(--surface-2)}
+.toc button[aria-current="page"]{background:var(--brand-soft);color:var(--navy);font-weight:500}
+.toc-m{display:none;width:100%;height:42px;margin-bottom:14px;border:1px solid var(--line);border-radius:6px;padding:0 10px;font:inherit}
+.pgmeta{display:flex;justify-content:space-between;gap:10px;font-size:13px;color:var(--muted);margin-bottom:6px}
+.pgbar{height:3px;background:var(--line);border-radius:2px;margin-bottom:22px;overflow:hidden}.pgbar i{display:block;height:100%;background:var(--brand)}
+.pnav{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:28px;padding-top:18px;border-top:1px solid var(--line)}
+.pnav button{display:flex;flex-direction:column;gap:2px;text-align:left;padding:12px 14px;border:1px solid var(--line);border-radius:8px;background:var(--surface);font:inherit;cursor:pointer;color:var(--ink)}
+.pnav button:hover{border-color:var(--brand)}
+.pnav button span{font-size:12px;color:var(--muted)}.pnav button b{color:var(--navy);font-size:14px}
+.pnav .nx{text-align:right;align-items:flex-end;grid-column:2}
+.resfiles{display:flex;flex-direction:column;gap:8px;margin:0 0 20px}
+.article .pgt{font-size:22px;color:var(--navy);margin:0 0 14px}
+.reader .article{max-width:none}
+@media (max-width:900px){.reader{grid-template-columns:1fr}.toc{display:none}.toc-m{display:block}.pgmeta{display:none}.rtbar.sticky{top:56px}.pnav{grid-template-columns:1fr}.pnav .nx{grid-column:1}}
 .rtbar{display:flex;flex-wrap:wrap;gap:4px;align-items:center;padding:6px;border:1px solid var(--line);border-bottom:0;border-radius:var(--r-sm) var(--r-sm) 0 0;background:var(--surface-2)}
 .field .rtbar select{height:30px;width:auto;padding:0 26px 0 8px;font-size:13px;border-radius:7px;background-position:right 7px center}
 .rtbar .rtb{height:30px;padding:0 9px;border:1px solid transparent;border-radius:7px;background:none;font:inherit;font-size:13px;color:var(--ink);cursor:pointer;display:inline-flex;align-items:center}
@@ -330,6 +402,59 @@ h3{font-family:var(--display);font-size:16px;font-weight:500;color:var(--navy);m
 .row{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:16px 18px;flex-wrap:wrap}
 .row .body{min-width:200px;flex:1}
 .row .meta{color:var(--muted);font-size:13px;margin-top:4px}
+.morebar{display:flex;justify-content:center;margin:14px 0}
+.fixcard{border-color:var(--bad);margin-bottom:16px;padding:0;overflow:hidden}
+.fixcard .fh{display:flex;gap:12px;align-items:flex-start;padding:14px 18px;color:var(--bad)}
+.fixcard .fh svg{width:18px;height:18px;flex:none;margin-top:2px}
+.fixcard .fh b{display:block}
+.fixcard .fh span{font-size:13px}
+.fixcard .fr{display:flex;gap:12px;align-items:center;justify-content:space-between;padding:12px 18px;border-top:1px solid var(--line)}
+.fixcard .why{display:block;color:var(--bad);font-size:12px;margin-top:2px}
+.mine-q{margin-bottom:12px}
+.mine-q .search-wide{position:relative}
+.mine-q .clear{border:0;background:none;color:var(--muted);font-size:18px;line-height:1;padding:0 4px;cursor:pointer}
+.mine-n{margin:6px 2px 0;min-height:18px;font-size:13px;color:var(--muted)}
+@media (prefers-reduced-motion:no-preference){.fresh{animation:res-in .22s ease-out both}}
+.hero-search .search,.toolbar .search-wide.jobq{view-transition-name:jobsearch}
+::view-transition-group(jobsearch){animation-duration:.7s;animation-timing-function:cubic-bezier(.4,0,.2,1)}
+::view-transition-old(jobsearch),::view-transition-new(jobsearch){height:100%;object-fit:none;object-position:left center}
+::view-transition-old(root){animation:.35s ease both vt-out}
+::view-transition-new(root){animation:.5s .15s ease both vt-in}
+@keyframes vt-out{to{opacity:0}}
+@keyframes vt-in{from{opacity:0}}
+.sugg{position:absolute;left:0;right:0;top:calc(100% + 8px);z-index:30;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:0 16px 40px rgba(22,56,92,.18);padding:6px;color:var(--ink);text-align:left}
+@media (prefers-reduced-motion:no-preference){.sugg:not([hidden]){animation:sg-in .18s ease-out}@keyframes sg-in{from{opacity:0;transform:translateY(-4px)}}}
+.sugg .sh{font-size:12px;color:var(--muted);padding:8px 10px 4px}
+.sugg .so{display:flex;align-items:center;gap:12px;width:100%;padding:8px 10px;border:0;border-radius:var(--r-sm);background:none;text-align:left;color:var(--ink)}
+.sugg .so:hover,.sugg .so.on{background:var(--surface-2)}
+.sugg .av{width:34px;height:34px;border-radius:var(--r-sm);display:grid;place-items:center;background:var(--brand-soft,#E8F0FA);color:var(--navy);font-size:12px;font-weight:500;flex:none}
+.sugg .st{flex:1;min-width:0;display:flex;flex-direction:column}
+.sugg .st b{font-weight:500;color:var(--navy);font-size:14px}
+.sugg .st span{font-size:12px;color:var(--muted)}
+.sugg .sc{font-size:12px;color:var(--muted);white-space:nowrap}
+.sugg .sall{display:flex;align-items:center;justify-content:center;gap:4px;width:100%;margin-top:4px;padding:10px;border:0;border-top:1px solid var(--line);background:none;color:var(--brand);font-weight:500;font-size:13px}
+.sugg .sall svg{width:14px;height:14px}
+.sugg .snone{display:flex;flex-direction:column;gap:2px;padding:12px 10px;font-size:13px}
+.sugg .snone span{color:var(--muted)}
+mark{background:none;color:var(--brand);font-weight:500}
+@media (prefers-reduced-motion:no-preference){#olist.fresh .jc{animation:res-in .22s ease-out both}@keyframes res-in{from{opacity:.35}}}
+.pastcard{margin-top:16px;padding:0;overflow:hidden}
+.pastcard .pasth{display:flex;align-items:center;gap:10px;width:100%;padding:14px 18px;border:0;background:none;text-align:left;color:var(--navy);font-size:14px}
+.pastcard .pasth svg{width:16px;height:16px;flex:none;transform:rotate(-90deg);transition:transform .15s}
+.pastcard .pasth[aria-expanded="true"] svg{transform:none}
+.pastcard .pasth b{font-weight:500}
+.pastcard .pn{font-size:12px;color:var(--muted)}
+.pastcard .ph{margin-left:auto;font-size:12px;color:var(--muted)}
+.pastcard .tablewrap{border-top:1px solid var(--line)}
+.fixdlg .of{margin:0;font-size:14px;color:var(--muted)}
+.fixdlg .was{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:var(--r-sm);background:var(--bad-soft);color:var(--bad);font-size:13px}
+.fixdlg .was svg{width:16px;height:16px;flex:none;margin-top:2px}
+.fixdlg .was .u{display:block;text-decoration:line-through;overflow-wrap:anywhere}
+.fixdlg .was .why{display:block;font-size:12px;margin-top:2px}
+.fixdlg .field.invalid .err{display:block}
+.past td.sm.bad{color:var(--bad)}
+.fixcard .nm{font-weight:500;color:var(--navy)}
+.fixcard .sm{color:var(--muted);font-size:12px}
 .row h3 .lnk{border:0;background:none;padding:0;font:inherit;color:inherit;text-align:left;cursor:pointer}
 .row h3 .lnk:hover{color:var(--brand)}
 .row .side{display:flex;gap:10px;align-items:center}
@@ -339,6 +464,8 @@ h3{font-family:var(--display);font-size:16px;font-weight:500;color:var(--navy);m
 .pill.broken{background:var(--bad-soft);color:var(--bad)}
 .pill.off{background:var(--surface-2);color:var(--muted)}
 .pill.warn{background:var(--warn-soft);color:var(--warn)}
+.pill.soon{background:var(--brand-soft);color:var(--navy);font-weight:500}
+.pill.soon i{background:var(--alumni)}
 .xmask{position:fixed;inset:0;background:rgba(22,56,92,.4);display:grid;place-items:center;padding:16px;z-index:90}
 .xdlg{width:440px;max-width:100%;max-height:calc(100vh - 32px);overflow:auto;background:var(--surface);border-radius:14px;box-shadow:0 24px 60px rgba(22,56,92,.3);text-align:left;color:var(--ink)}
 .xh{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--line);font-family:var(--display);font-size:16px;font-weight:500;color:var(--navy)}
@@ -602,6 +729,7 @@ moshal-sidebar{position:fixed;top:0;bottom:0;left:0;z-index:70;transform:transla
 body.nav-open{overflow:hidden}
 .topbar{height:56px;padding:0 12px;gap:10px;background:var(--surface);border-bottom:1px solid var(--line);max-width:none}
 .topbar .actions{position:static;margin-left:auto;padding:0;background:none}
+#chrome::before{display:none}
 .page-head{padding-right:0}
 .topbar .burger{display:grid}
 .topbar .tlogo{display:block}
@@ -684,7 +812,7 @@ h1{font-size:22px}
 .jchip .dots{display:inline-flex;align-items:center;gap:5px}
 .jchip i{display:block;width:8px;height:8px;border-radius:50%;background:var(--line)}
 .jchip i.now{box-shadow:0 0 0 2px #fff,0 0 0 3.5px var(--brand-soft)}
-.impact{display:flex;justify-content:space-between;align-items:center;gap:18px;flex-wrap:wrap;padding:14px 18px;border-left:4px solid var(--alumni);border-radius:0 var(--r) var(--r) 0;margin-bottom:18px}
+.impact{display:flex;justify-content:space-between;align-items:center;gap:18px;flex-wrap:wrap;padding:14px 18px;margin-bottom:18px}
 .impact .t{display:block;font-size:15px;font-weight:500;color:var(--navy)}
 .impact .n{display:block;font-size:13px;color:var(--muted);margin-top:2px}
 .impact .r{display:flex;gap:22px}
@@ -719,17 +847,14 @@ h1{font-size:22px}
 }
 /* Admin and Exco console. Structure stays in the blue family; red, amber and green appear only as state. */
 .eyebrow-h{font-family:var(--body);font-size:13px;font-weight:500;color:var(--muted);margin:0 0 10px;letter-spacing:.02em}
-.att{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:16px}
-.attn{--tone:var(--line);position:relative;overflow:hidden;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px 14px 20px;font:inherit;color:var(--ink);cursor:pointer}
-.attn::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--tone)}
-.attn:hover{border-color:var(--brand)}
-.attn .l{display:block;font-size:13px;font-weight:500;color:var(--navy)}
-.attn b{display:block;font-family:var(--display);font-size:30px;line-height:1.15;color:var(--navy);margin:4px 0 2px;font-variant-numeric:tabular-nums}
-.attn .s{display:block;font-size:12px;color:var(--muted)}
-.attn.t-brand{--tone:var(--brand)}
-.attn.t-bad{--tone:var(--leaders)}.attn.t-bad b{color:var(--bad)}
-.attn.t-warn{--tone:var(--alumni)}.attn.t-warn b{color:var(--warn)}
-.attn.clear b{color:var(--faint)}
+.todo{list-style:none;margin:0 0 16px;padding:0;background:var(--surface);border:1px solid var(--line);border-radius:var(--r)}
+.todo li{display:flex;align-items:center;gap:14px;padding:10px 16px;border-top:1px solid var(--line);font-size:14px;color:var(--ink)}
+.todo li:first-child{border-top:0}
+.todo b{min-width:28px;font-family:var(--display);font-size:20px;font-weight:500;font-variant-numeric:tabular-nums}
+.todo b.t-bad{color:var(--bad)}
+.todo b.t-warn{color:var(--warn)}
+.todo .w{flex:1;min-width:0}
+.todo li.none{color:var(--muted)}
 .kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:20px}
 .kpi{background:var(--surface-2);border:1px solid var(--line);border-radius:var(--r);padding:12px 16px}
 .kpi span{display:block;font-size:12px;color:var(--muted)}
@@ -808,14 +933,14 @@ table.rt .lnk:hover{color:var(--brand)}
 .ann .tagline{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px}
 .ann .cat{font-size:12px;font-weight:500;color:var(--brand);letter-spacing:.02em}
 .pinned-t{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:500;color:var(--brand)}
-.ann.pinned{border-color:var(--brand);box-shadow:inset 3px 0 0 var(--brand)}
+
 .anacts{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;align-items:center}
 .anacts .evacts{margin-left:auto}
 .field label.check{display:flex;align-items:center;gap:8px}
 .field label.check input{width:18px;height:18px;margin:0}
 .resgo{margin:6px 0 18px}
 @media (max-width:900px){
-.att,.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
 .pgrid{grid-template-columns:1fr}
 .roles{grid-template-columns:repeat(2,minmax(0,1fr))}
 .event.ann{grid-template-columns:64px minmax(0,1fr)}
@@ -889,6 +1014,89 @@ table.rt .lnk:hover{color:var(--brand)}
 @media (prefers-reduced-motion:reduce){.rp *{animation:none!important}}
 @container (max-width:1000px){.dg{grid-template-columns:1fr}.kts{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @container (max-width:520px){.kts{grid-template-columns:1fr}.tc .tv{display:none}.srow{grid-template-columns:minmax(0,7rem) minmax(0,1fr) auto}}
+
+/* Staff console (Exco and Admin pages): a quieter, denser working surface. Figures sit in one ruled strip instead of
+   a grid of cards; no coloured side stripes, no card inside a card, no entrance animation; square, thin bars; colour
+   only for state; neutral initials. Scholar and champion screens keep their look. */
+.console h1{font-size:24px;letter-spacing:-.01em}
+.console .card,.console .tablewrap{border-radius:6px}
+.console .btn,.console .ctl,.console .iconbtn,.console .kl,.console .search-wide{border-radius:6px}
+.console .kts,.console .roles{gap:1px;border:1px solid var(--line);border-radius:6px;background:var(--line);overflow:hidden}
+.console .kt,.console .rcard{border:0;border-radius:0;background:var(--surface);box-shadow:none;padding:12px 16px}
+.console .kt.on,.console .rcard[aria-pressed="true"]{background:var(--brand-soft);box-shadow:none}
+.console .kt.warn{border-left:0}
+.console .rcard:hover{background:var(--surface-2)}
+.console .kt .kh,.console .kpi span{font-size:12px;font-weight:500;color:var(--muted)}
+.console .kt .kv{font-size:26px;font-weight:500;margin:2px 0 0}
+.console .kt .ks{font-size:12px}
+.console .fig.hero{border-left:0;border-radius:6px;padding-left:8px}
+.console .fig.hero .v{font-size:30px}
+.console .meter{height:4px;border-radius:0;margin:8px 0 2px}
+.console .meter em{border-radius:0}
+.console .kl{background:none}
+.console .tc em{border-radius:1px 1px 0 0;width:58%;align-self:center}
+.console .tplot{gap:14px}
+.console .tc .tv{visibility:hidden}
+.console .tc.now .tv,.console .tc:hover .tv,.console .tc:focus-visible .tv{visibility:visible}
+.console .tplot .avg{border-top:1px dashed var(--ghost)}
+.console .srow{border-radius:4px;padding:6px 8px}
+.console .srow .bar,.console .srow .bar em,.console .bar,.console .bar em{border-radius:0}
+.console .srow .bar{height:8px}
+.console .pnl .rows{gap:0}
+.console .pnl .row,.console .pnl .annmini{border:0;border-radius:0;border-top:1px solid var(--line);background:none;padding:12px 0}
+.console .pnl .row:first-child,.console .pnl .annmini:first-child{border-top:0}
+.console .uav{background:var(--surface-2)!important;color:var(--navy)!important;width:28px;height:28px;font-size:11px}
+.console table.rt .pill{background:none;padding:0;font-weight:500}
+.console *,.console *::before,.console *::after{animation:none!important}
+/* Reports: one sheet ruled into sections, not a grid of floating cards. */
+.console .dg{gap:0;margin:0;border:1px solid var(--line);border-top:0;background:var(--surface)}
+.console .kts+.dg,.console .card+.dg{border-top:1px solid var(--line);border-radius:6px 6px 0 0}
+.console .dg+.dg{border-radius:0}
+.console .dg+:not(.dg){margin-top:20px}
+.console .dg>.card{border:0;border-radius:0;box-shadow:none;background:none}
+.console .dg>.card+.card{border-left:1px solid var(--line)}
+.console .dg+.dg>.card{border-top:1px solid var(--line)}
+.console .card-head{border-bottom:0;padding:14px 20px 2px}
+.console .card-head h2{font-size:14px;font-weight:600}
+.console .take{font-size:12px}
+.console .iconbtn-sm{border-color:transparent;background:none}
+.console .iconbtn-sm:hover,.console .iconbtn-sm[aria-pressed="true"]{border-color:var(--line);background:var(--surface-2);color:var(--navy)}
+/* Bars without a grey track behind them; the value beside the bar is the reading. */
+.console .bar,.console .bar.small{background:none;height:8px}
+/* Figures: the target is in the words, so no progress bar under each number. */
+.console .kt .meter{display:none}
+.console .nowtiles{gap:1px;margin:8px 20px 20px;padding:0;border:1px solid var(--line);border-radius:6px;background:var(--line);overflow:hidden}
+.console .nowt{border:0;border-radius:0;background:var(--surface);padding:12px 16px}
+.console .nowt b{font-size:26px}
+.console .nowt.amb{border-left:0}
+.console .nowt.amb b{color:#7A5600}
+.console .nowt:hover{background:var(--surface-2)}
+/* Status anywhere in the console is a dot and a word. */
+.console .pill,.console .pill.live,.console .pill.broken,.console .pill.warn,.console .pill.off,.console .pill.soon{background:none;padding:0;border-radius:0}
+/* Lists of items are ruled rows on one surface. */
+.console .rows{gap:0;border:1px solid var(--line);border-radius:6px;background:var(--surface);overflow:hidden}
+.console .rows>.card{border:0;border-radius:0;box-shadow:none;border-top:1px solid var(--line);margin:0}
+.console .rows>.card:first-child{border-top:0}
+/* One quiet way to remove: red words on a neutral edge; the confirm step carries the weight. */
+.console .btn-danger.btn-sm,.console .btn-sm.danger{background:var(--surface);border-color:var(--line);color:var(--bad)}
+.console .btn-danger.btn-sm:hover,.console .btn-sm.danger:hover{border-color:var(--bad);background:var(--surface)}
+.console .tabs{border-radius:6px}
+.console .tabs button{border-radius:4px}
+/* Activity log: the kind is a small grey mark, not a coloured disc. */
+.console .loglist .ic,.console .loglist .k-listing .ic,.console .loglist .k-system .ic{background:none;color:var(--muted);width:20px}
+.console .loglist .li{grid-template-columns:20px minmax(0,1fr) auto}
+.console .loglist time{font-variant-numeric:tabular-nums}
+.console .ufilter{margin-bottom:12px}
+.console .todo,.console .kpi{border-radius:6px}
+.console .chipset button{border-radius:4px}
+.console .imp-sum{gap:1px;border:1px solid var(--line);border-radius:6px;background:var(--line);overflow:hidden}
+.console .imp-sum .s,.console .imp-sum .s.ok,.console .imp-sum .s.bad{border:0;border-radius:0;padding:12px 16px}
+.console .imp-sum .s b{font-size:26px}
+.console .imp-sum .s.ok b{color:var(--ok)}
+.console .imp-sum .s.bad b{color:var(--bad)}
+.console .imp-sum .s span{font-size:12px}
+.console .imp-bar{height:4px;border-radius:0}
+.console .imp-bar span{border-radius:0}
 .roledlg .pb{display:grid;gap:14px}
 .rolefrom{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:14px;border-radius:10px;background:var(--surface-2)}
 .rolechip{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;background:var(--surface);border:1px solid var(--line);font-weight:500;color:var(--ink)}
@@ -934,6 +1142,9 @@ table.rt.prog tr.reg td{background:var(--surface-2)} table.rt.prog .ind{padding-
 .xsel{height:36px;border:1px solid var(--line);border-radius:8px;padding:0 10px;font:inherit;font-size:14px;background:var(--surface);color:var(--ink);max-width:100%}
 .take .lnk{border:0;background:none;padding:0;font:inherit;font-weight:600;color:var(--brand);cursor:pointer;text-decoration:underline;text-underline-offset:2px}
 .story .cnt{margin-left:auto;font-size:13px;color:var(--muted);white-space:nowrap} .story .cnt b{color:var(--navy);font-weight:600}
+.champs .card-head .kls{margin-left:auto;padding:0}
+.champs .who.lnk{display:inline-flex;align-items:center;gap:10px;border:0;background:none;padding:0;font:inherit;cursor:pointer;text-align:left}
+.champs .who.lnk:hover .nm{text-decoration:underline}
 /* My applications stages, Salesforce step, monthly report, video upload */
 .apphint{margin:-8px 0 14px;font-size:14px;color:var(--muted)}
 .stagepick select{font:inherit;font-size:13px;padding:6px 28px 6px 10px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink)}
@@ -1021,11 +1232,31 @@ let OPPS = [
   {id:14, title:'Retail Management Trainee', org:'Ubuntu Retail', views:204, clicks:37, age:30, type:'Entry-level', field:'Commerce & Finance', loc:'Durban', closes:'5 Oct 2026', days:-4, by:'Mickey Mpofu', saved:false, applied:false,
    desc:'Twelve-month trainee programme across store operations, buying and logistics.'}
 ];
+/* Pictures inside the example articles: small diagrams drawn as SVG, the way an author's uploaded image would appear. */
+const svgUri = s => 'data:image/svg+xml;utf8,' + encodeURIComponent(s);
+const IMG_STAR = svgUri('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 170" font-family="Segoe UI,Arial" font-size="14">' +
+  [['S', 'Situation', 'Where and when', 10], ['T', 'Task', 'What you had to do', 180], ['A', 'Action', 'What you did', 350], ['R', 'Result', 'What changed', 520]].map(([k, t, s, x], i) =>
+    '<rect x="' + x + '" y="20" width="150" height="130" rx="10" fill="' + (i === 2 ? '#2362B4' : '#E9F1FB') + '"/><text x="' + (x + 75) + '" y="70" text-anchor="middle" font-size="34" font-weight="700" fill="' + (i === 2 ? '#fff' : '#16385C') + '">' + k + '</text><text x="' + (x + 75) + '" y="102" text-anchor="middle" font-weight="600" fill="' + (i === 2 ? '#fff' : '#16385C') + '">' + t + '</text><text x="' + (x + 75) + '" y="124" text-anchor="middle" fill="' + (i === 2 ? '#DCE8F7' : '#6B7B8C') + '">' + s + '</text>').join('') + '</svg>');
+const IMG_CV = svgUri('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 400" font-family="Segoe UI,Arial" font-size="13">' +
+  '<rect x="40" y="16" width="260" height="368" rx="6" fill="#fff" stroke="#C9D4E0"/><rect x="60" y="36" width="140" height="14" rx="3" fill="#16385C"/><rect x="60" y="56" width="200" height="7" rx="3" fill="#C9D4E0"/><rect x="60" y="78" width="220" height="40" rx="4" fill="#E9F1FB"/>' +
+  [140, 200, 290].map(y => '<rect x="60" y="' + y + '" width="90" height="9" rx="3" fill="#2362B4"/><rect x="60" y="' + (y + 16) + '" width="220" height="6" rx="3" fill="#DDE4EC"/><rect x="60" y="' + (y + 28) + '" width="190" height="6" rx="3" fill="#DDE4EC"/>').join('') +
+  [[98, 'Profile: degree, graduation year, what you want'], [146, 'Education first while you study'], [206, 'Experience: what you did and what changed'], [296, 'Skills: only ones you can prove']].map(([y, t]) => '<line x1="290" y1="' + y + '" x2="340" y2="' + y + '" stroke="#EBB22A" stroke-width="2"/><circle cx="290" cy="' + y + '" r="4" fill="#EBB22A"/><text x="350" y="' + (y + 5) + '" fill="#2B3C50">' + t + '</text>').join('') + '</svg>');
+const fcard = (name, size) => { const k = {pdf:['PDF', 'PDF'], docx:['WORD', 'Word document'], xlsx:['EXCEL', 'Excel spreadsheet'], pptx:['SLIDES', 'PowerPoint']}[name.split('.').pop()] || ['FILE', 'File'];
+  return '<div class="file" contenteditable="false"><span class="ft">' + k[0] + '</span><span class="fx"><b>' + name + '</b><span>' + k[1] + ' · ' + Math.max(1, Math.round(size / 1024)) + ' KB</span></span><button type="button" class="btn btn-ghost btn-sm" onclick="toast(\'Downloading ' + name + '\')">Download</button></div>'; };
 let RESOURCES = [
   {id:1, group:'CV tips and templates', format:'article', title:'CV writing toolkit', icon:'book', mins:12, blurb:'The one-page format South African graduate recruiters expect, with two worked examples.',
-   body:['Recruiters spend under a minute on a first read, so the top third of the page has to carry your degree, your graduation year and one line about what you are looking for.','Keep it to one page until you have three years of work behind you. Vacation work, tutoring and society roles all count as experience: name what you did and what changed because you did it.','List your referees only when you have asked them. "References available on request" is fine, and it saves a line.']},
+   body:['Recruiters spend under a minute on a first read, so the top third of the page has to carry your degree, your graduation year and one line about what you are looking for.'],
+   pages:[
+    {title:'What recruiters look for', html:'<p>Recruiters spend <b>under a minute</b> on a first read. They are not reading your CV; they are deciding whether to read it. Everything they need to make that call has to sit in the top third of the page.</p><figure><img src="' + IMG_CV + '" alt="A one-page CV with a profile at the top, then education, experience and skills"><figcaption>One page, four parts. The profile at the top carries your degree, graduation year and what you are looking for.</figcaption></figure><h3>The three things on every first read</h3><ul><li><b>Your degree and when you finish</b>, so they know which programme you fit.</li><li><b>Evidence you can do the work</b>: projects, vacation work, tutoring.</li><li><b>A reason to call you</b>: one line that is specific to you.</li></ul><div class="callout tip"><span class="ct">Tip</span><p>Keep it to <b>one page</b> until you have three years of work behind you. A second page is where good CVs go to be skimmed.</p></div>'},
+    {title:'Section by section', html:'<h3>Profile</h3><p>Two lines. Your degree, your year, and the kind of work you are after: <i>"Final-year BCom Accounting student at UCT, graduating in December 2026, looking for a SAICA training contract in audit."</i></p><h3>Education</h3><p>While you are studying, education goes first. Give your degree, university and expected graduation year. Add your average only if it helps you.</p><h3>Experience</h3><p>Vacation work, tutoring, society roles and part-time jobs all count. For each one, say <span style="color:#2362B4;font-weight:600">what you did</span> and <span style="color:#3F7A14;font-weight:600">what changed because you did it</span>.</p><table><thead><tr><th>Weak</th><th>Strong</th></tr></thead><tbody><tr><td>Tutored first-year students</td><td>Tutored 40 first-year accounting students; the group’s pass rate rose from 61% to 78%</td></tr><tr><td>Member of the debating society</td><td>Organised the society’s inter-varsity tournament: 12 teams, a R15 000 budget, run on time</td></tr></tbody></table><h3>Skills</h3><p>List only skills you can prove in an interview. <span style="color:#A8372A">Avoid</span> words like "hard-working" and "team player": every CV has them.</p>'},
+    {title:'Checklist and template', html:'<p>Before you send it, check each of these.</p><ul><li>It fits on one page.</li><li>Your degree and graduation year are in the top third.</li><li>Every role says what changed because you were there.</li><li>Your email address is a professional one.</li><li>The file name is <i>Firstname-Surname-CV.pdf</i>.</li></ul><div class="callout important"><span class="ct">Important</span><p>List referees only after you have asked them. <i>"References available on request"</i> is fine, and saves a line.</p></div><p>Start from the template, which follows this layout:</p>' + fcard('Graduate CV template.docx', 49213) + fcard('Example CV, BCom Accounting.pdf', 211340)}]},
   {id:2, group:'Interview preparation', format:'article', title:'Interview question bank', icon:'user', mins:18, blurb:'Forty questions graduate panels actually ask, grouped by what they are testing.',
-   body:['Every graduate interview tests three things: can you do the work, will you fit the team, and will you still be here in two years.','Prepare four stories you can tell in two minutes each: a time you fixed something, a time you worked with someone difficult, a time you were wrong, and a time you led without being in charge.','Ask two questions at the end. The best ones are about what the first six months look like and how the team decides what to work on.']},
+   body:['Every graduate interview tests three things: can you do the work, will you fit the team, and will you still be here in two years.'],
+   pages:[
+    {title:'How graduate interviews work', html:'<p>Every graduate interview, from a bank to an engineering firm, is testing <b>three things</b>. Knowing which one a question is really asking makes it far easier to answer.</p><ol><li><b>Can you do the work?</b> Your degree says you can learn. They want evidence you can apply it.</li><li><b>Will you fit the team?</b> How you work with people, and how you handle being wrong.</li><li><b>Will you still be here in two years?</b> Why this firm, and why this role.</li></ol><div class="callout tip"><span class="ct">Tip</span><p>Ask the recruiter <b>who will be on the panel</b> and how long it runs. It is a normal question, and it tells you whether to expect a technical grilling or a conversation.</p></div><p>Most panels are two or three people, 45 minutes, with time at the end for <span style="background:#FBF1D8">your own questions</span>.</p>'},
+    {title:'Your four stories', html:'<p>Prepare <b>four stories</b> you can tell in two minutes each. Almost every behavioural question can be answered with one of them.</p><figure><img src="' + IMG_STAR + '" alt="The STAR method: Situation, Task, Action, Result, with Action highlighted"><figcaption>Tell each story in this order. Spend most of the time on the <b>Action</b>.</figcaption></figure><table><thead><tr><th>Story</th><th>What it shows</th><th>Questions it answers</th></tr></thead><tbody><tr><td>A time you fixed something</td><td>You can do the work</td><td>"Tell us about a problem you solved"</td></tr><tr><td>Working with someone difficult</td><td>You fit a team</td><td>"Describe a conflict"</td></tr><tr><td>A time you were wrong</td><td>You learn</td><td>"Tell us about a failure"</td></tr><tr><td>Leading without being in charge</td><td>You take initiative</td><td>"When did you show leadership?"</td></tr></tbody></table><div class="callout example"><span class="ct">Example</span><p><i>"In my third-year group project (<b>S</b>), our data model failed two weeks before hand-in (<b>T</b>). I rebuilt it over a weekend and walked the team through it on Monday (<b>A</b>). We submitted on time and got 78% (<b>R</b>)."</i></p></div>'},
+    {title:'The questions they ask', html:'<h3>About you</h3><ul><li>Walk us through your CV.</li><li>Why did you choose your degree?</li><li>What are you proudest of from your studies?</li></ul><h3>About the work</h3><ul><li>Why this firm, and not our competitors?</li><li>What do you think the first six months in this role look like?</li><li>Tell us about a project where you used what you studied.</li></ul><h3>The tricky ones</h3><ul><li><b>"What is your biggest weakness?"</b> <span style="color:#5A6878"><i>Name a real one and what you are doing about it.</i></span></li><li><b>"Where do you see yourself in five years?"</b> <span style="color:#5A6878"><i>Growing in their field, not running your own business.</i></span></li><li><b>"Do you have any questions for us?"</b> <span style="color:#A8372A">Never say no.</span></li></ul><blockquote>The best graduates we hire ask about the work, not the perks. I remember the one who asked how we decide what to build next.</blockquote>'},
+    {title:'After the interview', html:'<div class="callout important"><span class="ct">Important</span><p>Send a short thank-you email <b>within 48 hours</b>. Very few graduates do, so it is noticed.</p></div><p>Use the template, and change at least one line to something you actually spoke about.</p>' + fcard('Thank-you email template.docx', 18744) + '<h3>While you wait</h3><ul><li>Update the application in <b>My applications</b> when you hear back.</li><li>Write down the questions you were asked while you still remember them.</li><li>Keep applying. One interview is not a plan.</li></ul><hr><p>Next, practise for the online tests with the <span style="color:#2362B4;font-weight:600">Numerical assessment guide</span>.</p>'}]},
   {id:3, group:'Cover letters', format:'article', title:'Graduate cover letter', icon:'send', mins:8, blurb:'A three-paragraph structure you can fill in for any application in twenty minutes.',
    body:['Paragraph one: the role you are applying for and the one thing about the organisation that made you apply. Be specific; a line anyone could have written reads as a template.','Paragraph two: the evidence. Two examples from your degree or your vacation work that match what the advert asked for.','Paragraph three: what you want to learn and when you are available. Close politely and stop.']},
   {id:4, group:'Assessments and psychometric tests', format:'article', title:'Numerical assessment guide', icon:'brief', mins:15, blurb:'What the online tests measure and how to practise without paying for a course.',
@@ -1034,7 +1265,8 @@ let RESOURCES = [
    body:['Arrive early. The first twenty minutes are the only time recruiters are not three deep.','Have one sentence ready: your degree, your year, and the kind of work you are after. That is the whole introduction.','Ask for a name and a next step, not a job. Follow up within two days, referencing something you actually spoke about.']},
   {id:6, group:'Workplace readiness', format:'article', title:'Workplace readiness', icon:'checkC', mins:14, blurb:'The first ninety days in a graduate role, and the habits that make them go well.',
    body:['Write down what you are told in your first week. Nobody expects you to remember it; everybody notices when you ask twice.','Find the person who has been there two years longer than you and ask them how things really work.','Set up a monthly check-in with your manager yourself. Waiting to be managed is the most common graduate mistake.']},
-  {id:7, group:'CV tips and templates', format:'document', url:'https://careers.moshal.example/templates/graduate-cv.docx', title:'One-page graduate CV template', icon:'download', mins:3, blurb:'A Word template in the layout the CV toolkit describes. Download it and fill in your own details.',
+  {id:7, group:'CV tips and templates', format:'document', title:'One-page graduate CV template', icon:'download', mins:3, blurb:'A Word template in the layout the CV toolkit describes. Download it and fill in your own details.',
+   files:[{name:'Graduate CV template.docx', size:49213}, {name:'Example CV, BCom Accounting.pdf', size:211340}, {name:'Action verbs for your CV.xlsx', size:15820}],
    body:['Open the template in Word or Google Docs, save a copy, and replace every grey line with your own details. Delete any section you have nothing for rather than leaving it empty.']},
   {id:8, group:'Assessments and psychometric tests', format:'video', url:'https://careers.moshal.example/videos/psychometric-tests', title:'What psychometric tests measure', icon:'checkC', mins:9, blurb:'A nine-minute recorded talk from the careers team on verbal, numerical and personality tests.',
    body:['Recorded at the August assessment clinic. Watch it before your first online test, then try the numerical assessment guide for practice.']}
@@ -1065,20 +1297,37 @@ function annNorm(e){
   return e;
 }
 let NOTIFS = [
+  {id:5, text:'<b>Portal offline for an update</b> on 11 Oct at 06:00.', when:'1 hour ago', unread:true, go:() => nav('events')},
+  {id:4, text:'New announcement: <b>CV Masterclass</b>, online on 15 Oct.', when:'This morning', unread:true, go:() => nav('events')},
   {id:1, text:'<b>Graduate Data Analyst</b> at Karoo Analytics closes in 11 days.', when:'2 hours ago', unread:true, go:() => openJob(4)},
   {id:2, text:'Heard back from <b>CapeBridge</b>? Update your application.', when:'Yesterday', unread:true, go:() => nav('applications')},
   {id:3, text:'New resource: <b>Interview question bank</b>.', when:'3 days ago', unread:false, go:() => openResource(2)}
 ];
 /* Champions publish straight to scholars. A listing reaches an admin only when a scholar reports it or the nightly link check fails. */
+const L = (id, title, org, status, applied, posted, closes, days, more) => Object.assign({id, title, org, status, applied, posted, closes, days}, more || {});
 const MINE_OF = {champion:[
-  {id:1, title:'Graduate Software Engineer', org:'TechNova', status:'live', applied:14, posted:'2 Oct 2026', closes:'30 Oct 2026'},
-  {id:2, title:'Business Analyst Internship', org:'FutureLab', status:'live', applied:9, posted:'24 Sep 2026', closes:'15 Nov 2026'},
-  {id:3, title:'Finance Graduate Analyst', org:'CapeBridge', status:'broken', applied:3, posted:'12 Sep 2026', closes:'31 Oct 2026', check:'404 Not Found on 3 nights running'}
+  L(1, 'Graduate Software Engineer', 'TechNova', 'live', 14, '2 Oct 2026', '30 Oct 2026', 15),
+  L(2, 'Business Analyst Internship', 'FutureLab', 'live', 9, '24 Sep 2026', '15 Nov 2026', 31),
+  L(3, 'Finance Graduate Analyst', 'CapeBridge', 'broken', 3, '12 Sep 2026', '31 Oct 2026', 16, {check:'404 Not Found on 3 nights running'}),
+  L(4, 'Mining Engineering Bursary', 'Sibanye Resources', 'broken', 0, '20 Sep 2026', '20 Nov 2026', 36, {check:'The site did not answer on 3 nights running'}),
+  L(5, 'Cloud Engineer Graduate', 'TechNova', 'live', 6, '5 Oct 2026', '19 Oct 2026', 4),
+  L(6, 'UX Design Internship', 'Spaza Digital', 'live', 2, '6 Oct 2026', '17 Oct 2026', 2),
+  L(7, 'Quantity Surveying Vacation Work', 'Drakensberg Structures', 'live', 5, '30 Sep 2026', '6 Dec 2026', 52),
+  L(8, 'Investment Banking Winter School', 'CapeBridge', 'live', 11, '18 Sep 2026', '', null),
+  L(9, 'Chemical Engineering Graduate', 'Sasol Futures', 'live', 7, '15 Sep 2026', '28 Nov 2026', 44),
+  L(10, 'Software Testing Internship', 'FutureLab', 'live', 3, '8 Oct 2026', '12 Nov 2026', 28),
+  L(11, 'Audit Trainee Programme 2027', 'Kruger and Partners', 'live', 19, '1 Sep 2026', '31 Jan 2027', 108),
+  L(12, 'Data Engineering Graduate', 'TechNova', 'live', 8, '9 Oct 2026', '30 Nov 2026', 46),
+  L(13, 'Spring Coding Bootcamp', 'TechNova', 'live', 22, '1 Aug 2026', '30 Sep 2026', -15),
+  L(14, 'Tax Vacation Work', 'Kruger and Partners', 'live', 4, '10 Aug 2026', '5 Oct 2026', -10),
+  L(15, 'Graduate Actuarial Analyst', 'Baobab Life', 'live', 12, '28 Jul 2026', '12 Sep 2026', -33),
+  L(16, 'Product Management Internship', 'Spaza Digital', 'unpublished', 1, '3 Sep 2026', '30 Oct 2026', 15, {reason:'The role has been filled'}),
+  L(17, 'Junior Web Developer', 'FutureLab', 'unpublished', 0, '25 Aug 2026', '20 Oct 2026', 5)
 ],
   recruiter:[
-    {id:21, title:'Graduate Data Analyst', org:'Karoo Analytics', status:'live', applied:11, posted:'4 Oct 2026', closes:'24 Oct 2026'},
-    {id:22, title:'Actuarial Science Bursary 2027', org:'Baobab Life', status:'live', applied:6, posted:'1 Oct 2026', closes:'18 Oct 2026'},
-    {id:23, title:'Digital Marketing Intern', org:'Spaza Digital', status:'live', applied:4, posted:'28 Sep 2026', closes:'26 Oct 2026'}
+    L(21, 'Graduate Data Analyst', 'Karoo Analytics', 'live', 11, '4 Oct 2026', '24 Oct 2026', 9),
+    L(22, 'Actuarial Science Bursary 2027', 'Baobab Life', 'live', 6, '1 Oct 2026', '18 Oct 2026', 3),
+    L(23, 'Digital Marketing Intern', 'Spaza Digital', 'live', 4, '28 Sep 2026', '26 Oct 2026', 11)
   ]};
 /* Each poster sees only their own listings; the programme team acts on everyone's. */
 const mine = () => MINE_OF[S.role] || (MINE_OF[S.role] = []);
@@ -1251,10 +1500,14 @@ const pill = (cls, text) => '<span class="pill ' + cls + '"><i></i>' + text + '<
 const BOOK = I('<path d="M6 4h12v17l-6-4-6 4z"/>');
 const ini = org => { const w = org.replace(/[^\p{L}\p{N}\s]/gu, ' ').trim().split(/\s+/); return (w.length > 1 ? w[0][0] + w[1][0] : w[0].slice(0, 2)).toUpperCase(); };
 const BURGER = I('<path d="M4 7h16M4 12h16M4 17h16"/>');
+/* One rule for what a search matches, so home suggestions and Job listings always agree. */
+const matchesQ = (o, q) => !q || (o.title + ' ' + o.org + ' ' + o.desc + ' ' + fieldsOf(o).join(' ')).toLowerCase().includes(q.toLowerCase());
+const html = t => String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;');
+const mark = (t, q) => { q = (q || '').trim(); if (!q) return html(t); const i = t.toLowerCase().indexOf(q.toLowerCase()); return i < 0 ? html(t) : html(t.slice(0, i)) + '<mark>' + html(t.slice(i, i + q.length)) + '</mark>' + html(t.slice(i + q.length)); };
 function jobRow(o){
   const soon = !!o.closes && o.days <= 14;
-  return '<article class="jc"><button class="open" onclick="openJob(' + o.id + ')" aria-label="Open ' + o.title + '"><span class="av">' + ini(o.org) + '</span><span class="t"><b>' + o.title + '</b><span>' + o.org + ' · ' + o.loc + ' · ' + o.type + (S.role === 'admin' && audienceNote(o) ? ' · <em class="aud-note">' + audienceNote(o) + '</em>' : '') + '</span></span>' +
-    (o.applied ? '<span class="w done">' + ICO.check + stageLabel(o) + '</span>' : '<span class="w' + (soon ? ' soon' : '') + '">' + (!o.closes ? 'No closing date' : soon ? 'Closes in ' + o.days + ' days' : 'Closes ' + o.closes) + '</span>') + '</button>' +
+  return '<article class="jc"><button class="open" onclick="openJob(' + o.id + ')" aria-label="Open ' + o.title + '"><span class="av">' + ini(o.org) + '</span><span class="t"><b>' + (S.view === 'opps' ? mark(o.title, S.q) : o.title) + '</b><span>' + (S.view === 'opps' ? mark(o.org, S.q) : o.org) + ' · ' + o.loc + ' · ' + o.type + (S.role === 'admin' && audienceNote(o) ? ' · <em class="aud-note">' + audienceNote(o) + '</em>' : '') + '</span></span>' +
+    (o.applied ? '<span class="w done">' + ICO.check + stageLabel(o) + '</span>' : '<span class="w' + (soon ? ' soon' : '') + '">' + (!o.closes ? 'No closing date' : soon ? ICO.clock + 'Closes in ' + o.days + ' days' : 'Closes ' + o.closes) + '</span>') + '</button>' +
     '<button class="sv" data-id="' + o.id + '" aria-pressed="' + o.saved + '" aria-label="' + (o.saved ? 'Remove from saved' : 'Save') + '" onclick="event.stopPropagation();toggleSave(' + o.id + ')">' + BOOK + '</button></article>';
 }
 const jobList = (list, emptyHtml) => list.length ? '<div class="jcards">' + list.map(jobRow).join('') + '</div>' : '<div class="card empty">' + emptyHtml + '</div>';
@@ -1288,7 +1541,7 @@ function publishEvent(){
   if (prev) { Object.assign(prev, fields); annNorm(prev); S.editEv = null; S.evTab = prev.past ? 'past' : 'upcoming'; logIt('edited <b>' + prev.title + '</b>', 'content'); nav('events'); toast('Saved. Scholars see the update now.'); return; }
   const e = annNorm({id:Date.now(), by:ROLES[S.role].name, ...fields}); EVENTS.push(e);
   logIt((e.scheduled ? 'scheduled' : 'posted') + ' <b>' + e.title + '</b>', 'content');
-  S.evTab = e.past ? 'past' : 'upcoming'; nav('events'); toast(e.scheduled ? 'Scheduled. Scholars see it from ' + e.publishOn.slice(8) + ' ' + MONTHS[+e.publishOn.slice(5, 7) - 1].toLowerCase() + '.' : 'Published. It is on every scholar’s home page.');
+  S.evTab = e.past ? 'past' : 'upcoming'; nav('events'); toast(e.scheduled ? 'Scheduled. Scholars see it from ' + e.publishOn.slice(8) + ' ' + MONTHS[+e.publishOn.slice(5, 7) - 1].toLowerCase() + '.' : 'Published. Scholars are told in their notifications.');
 }
 function editEvent(id){ S.editEv = id; nav('postevent'); }
 function cancelEvent(id){ const e = EVENTS.find(x => x.id === id); EVENTS = EVENTS.filter(x => x.id !== id); logIt('cancelled <b>' + e.title + '</b>', 'content'); nav('events'); toast('Cancelled. It no longer shows for scholars.'); }
@@ -1305,15 +1558,15 @@ V.overview = () => {
     '<div class="page-head only-m"><div><h1>Your next chapter starts here</h1><p class="lead">Opportunities selected for scholars</p></div>' + journeyChip() + '</div>' +
     '<section class="hero"><h2 class="only-d">Find the opportunity that’s right for you</h2><p class="only-d">Internships, graduate programmes and bursaries, shared by career champions.</p>' +
     '<h2 class="only-m">Explore your future</h2><p class="only-m">Graduate roles, internships and career support</p>' +
-    '<form class="hero-search only-d" onsubmit="event.preventDefault();S.q=document.getElementById(\'hq\').value;nav(\'opps\')"><span class="search">' + ICO.search + '<input id="hq" placeholder="" aria-label="Search job listings, employers or fields of study" value="' + S.q + '" onfocus="ghostStop(true)" onkeydown="ghostStop(true)" oninput="ghostStop(true)" onblur="ghostResume()"><span class="ghost" aria-hidden="true"></span></span><button type="submit">Search</button></form>' +
-    '<button class="hero-go only-m" onclick="nav(\'opps\')">Browse job listings' + ICO.chevR + '</button></section>' + annBoard() +
+    '<form class="hero-search only-d" onsubmit="event.preventDefault();searchFromHome()"><span class="search">' + ICO.search + '<input id="hq" placeholder="" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="hsug" aria-label="Search job listings, employers or fields of study" value="' + attr(S.q) + '" autocomplete="off" onfocus="ghostStop(true);suggest()" onkeydown="ghostStop(true);suggestKey(event)" oninput="ghostStop(true);suggest()" onblur="setTimeout(closeSuggest,120);ghostResume()"><span class="ghost" aria-hidden="true"></span><div class="sugg" id="hsug" role="listbox" hidden></div></span><button type="submit">Search</button></form>' +
+    '<button class="hero-go only-m" onclick="nav(\'opps\')">Browse job listings' + ICO.chevR + '</button></section>' +
     '<div class="page-head"><h2 style="margin:0">Recommended for you</h2><div class="acts"><button class="btn btn-ghost btn-sm" onclick="nav(\'opps\')">See all ' + ICO.chevR + '</button></div></div>' +
     jobList(rec, '');
 };
 const CLOSE_WINDOWS = [[0, 'Any closing date'], [7, 'Closes within 7 days'], [30, 'Closes within 30 days']];
 V.opps = () => {
   if (staff()) return V.listings();
-  let list = forMe(OPPS).filter(o => (!S.q || (o.title + ' ' + o.org + ' ' + o.desc + ' ' + fieldsOf(o).join(' ')).toLowerCase().includes(S.q.toLowerCase())) &&
+  let list = forMe(OPPS).filter(o => matchesQ(o, S.q) &&
     (!S.field || fieldsOf(o).includes(S.field)) && (!S.loc || o.loc === S.loc) && (!S.type || o.type === S.type) && (!S.close || o.days <= S.close));
   list = list.slice().sort((a, b) => S.sort === 'closing' ? a.days - b.days : S.sort === 'newest' ? a.age - b.age || b.id - a.id : a.title.localeCompare(b.title));
   const count = (key, v) => forMe(OPPS).filter(o => key === 'field' ? fieldsOf(o).includes(v) : o[key] === v).length;
@@ -1324,7 +1577,7 @@ V.opps = () => {
   if (S.type) chips.push([S.type, "S.type='';render()"]);
   if (S.close) chips.push([CLOSE_WINDOWS.find(w => w[0] === S.close)[1], 'S.close=0;render()']);
   return '<div class="page-head" data-role><h1>Job listings</h1><span class="n">' + list.length + ' of ' + forMe(OPPS).length + '</span>' + (canPost() ? '<div class="acts"><button class="btn btn-primary btn-sm" onclick="S.edit=null;nav(\'submit\')">' + ICO.plus + 'Post a listing</button></div>' : '') + '</div>' +
-    '<div class="toolbar"><label class="search-wide">' + ICO.search + '<input id="oq" placeholder="Search jobs, employers or keywords" value="' + S.q + '" oninput="S.q=this.value;renderList()">' + (S.q ? '<button class="clear" aria-label="Clear search" onclick="S.q=\'\';render()">×</button>' : '') + '</label>' +
+    '<div class="toolbar"><label class="search-wide jobq">' + ICO.search + '<input id="oq" placeholder="Search jobs, employers or keywords" value="' + S.q + '" oninput="S.q=this.value;renderList()">' + (S.q ? '<button class="clear" aria-label="Clear search" onclick="S.q=\'\';renderList()">×</button>' : '') + '</label>' +
     dropdown('f-field', 'Field of study', [['', 'All fields of study']].concat(FIELDS_OPT.map(f => [f, f, count('field', f)])), S.field, 'S.field=%v;S.open=null;render()', true) +
     dropdown('f-loc', 'Location', [['', 'Anywhere']].concat(LOCS.map(l => [l, l, count('loc', l)])), S.loc, 'S.loc=%v;S.open=null;render()', true) +
     dropdown('f-type', 'Type', [['', 'All types']].concat(OPP_TYPES.map(t => [t, t, count('type', t)])), S.type, 'S.type=%v;S.open=null;render()', true) +
@@ -1361,7 +1614,7 @@ V.applications = () => {
       : '<div class="card empty"><b>No applications yet</b><span>When you apply to an opportunity it shows up here so you can track it.</span><button class="btn btn-primary" onclick="nav(\'opps\')">Browse opportunities</button></div>');
 };
 const RCATS = ['CV tips and templates', 'Interview preparation', 'Cover letters', 'Assessments and psychometric tests', 'Networking', 'Workplace readiness'];
-const FORMATS = [['article', 'Article'], ['document', 'Document'], ['video', 'Video'], ['link', 'Link']];
+const FORMATS = [['article', 'Article'], ['document', 'Files'], ['video', 'Video'], ['link', 'Link']];
 const formatLabel = r => (FORMATS.find(f => f[0] === (r.format || 'article')) || FORMATS[0])[1];
 V.resources = () => {
   const admin = staff();
@@ -1373,6 +1626,8 @@ V.resources = () => {
 };
 const coverHtml = (r, cls) => r.cover ? '<span class="' + cls + '" style="background-image:url(&quot;' + attr(r.cover) + '&quot;)" role="img" aria-label="Cover image"></span>' : '<span class="' + cls + ' dflt" aria-hidden="true"><b>' + attr((r.title || 'R').trim().charAt(0).toUpperCase()) + '</b></span>';
 const resourceHtml = r => r.html || r.body.map(p => '<p>' + p + '</p>').join('');
+/* An article is one or more pages, each with a title (shown in the contents) and its own content. */
+const resourcePages = r => r.pages && r.pages.length ? r.pages : [{title:'', html:resourceHtml(r)}];
 function clean(html){
   const t = document.createElement('template'); t.innerHTML = html;
   t.content.querySelectorAll('script,style,link,meta,object,embed').forEach(e => e.remove());
@@ -1381,10 +1636,66 @@ function clean(html){
   return t.innerHTML;
 }
 const embedFor = url => { const y = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|shorts\/|embed\/))([\w-]{6,})/); if (y) return '<iframe src="https://www.youtube.com/embed/' + y[1] + '" allowfullscreen loading="lazy"></iframe>'; const v = url.match(/vimeo\.com\/(\d+)/); if (v) return '<iframe src="https://player.vimeo.com/video/' + v[1] + '" allowfullscreen loading="lazy"></iframe>'; if (/\.(mp4|webm)(\?|$)/i.test(url)) return '<video controls src="' + attr(url) + '"></video>'; return ''; };
-function rt(cmd, val){ const ed = document.getElementById('r4'); if (!ed) return; ed.focus(); document.execCommand(cmd, false, val || null); }
-function rtLink(){ const u = prompt('Link address'); if (u) rt('createLink', u); }
-function rtImageUrl(){ const u = prompt('Image address'); if (u) rt('insertHTML', '<img src="' + attr(u) + '" alt="">'); }
-function rtImageFile(input){ const f = input.files && input.files[0]; if (!f) return; const rd = new FileReader(); rd.onload = () => rt('insertHTML', '<img src="' + rd.result + '" alt="">'); rd.readAsDataURL(f); input.value = ''; }
+/* The editor remembers where the cursor was, so a prompt or a colour pick puts things back in the right place. */
+let RT_RANGE = null;
+document.addEventListener('selectionchange', () => { const ed = document.getElementById('r4'), s = window.getSelection(); if (ed && s.rangeCount && ed.contains(s.anchorNode)) RT_RANGE = s.getRangeAt(0).cloneRange(); });
+function rt(cmd, val){
+  const ed = document.getElementById('r4'); if (!ed) return; ed.focus();
+  if (RT_RANGE && ed.contains(RT_RANGE.startContainer)) { const s = window.getSelection(); s.removeAllRanges(); s.addRange(RT_RANGE); }
+  try { document.execCommand('styleWithCSS', false, cmd === 'foreColor' || cmd === 'hiliteColor'); } catch (e) {}
+  document.execCommand(cmd, false, val || null);
+}
+function rtLink(){ const u = prompt('Link address (https://…)'); if (u) rt('createLink', u); }
+/* Rich articles (PROPOSED, docs/rich-content.md). Colours are the brand palette only, all readable on white. */
+const TX = [['Default', '#2B3C50'], ['Navy', '#16385C'], ['Blue', '#2362B4'], ['Green', '#3F7A14'], ['Amber', '#6E4E00'], ['Red', '#A8372A'], ['Grey', '#5A6878']];
+const HL = [['No highlight', '#FFFFFF'], ['Blue', '#E9F1FB'], ['Green', '#ECF6E2'], ['Amber', '#FBF1D8'], ['Red', '#FBE9E6']];
+const palHtml = k => '<div class="pal" role="menu" aria-label="' + (k === 'tx' ? 'Text colour' : 'Highlight') + '"><span class="lab">' + (k === 'tx' ? 'Text colour' : 'Highlight') + '</span>' +
+  (k === 'tx' ? TX : HL).map(([n, h]) => '<button type="button" role="menuitem" title="' + n + '" aria-label="' + n + '" style="background:' + h + '" onmousedown="event.preventDefault()" onclick="S.pal=null;rt(\'' + (k === 'tx' ? 'foreColor' : 'hiliteColor') + '\',\'' + h + '\');renderPal()"></button>').join('') + '</div>';
+function togglePal(k){ S.pal = S.pal === k ? null : k; renderPal(); }
+function renderPal(){ document.querySelectorAll('.rtpop').forEach(p => { const open = p.querySelector('.pal'); if (S.pal === p.dataset.k && !open) p.insertAdjacentHTML('beforeend', palHtml(p.dataset.k)); else if (S.pal !== p.dataset.k && open) open.remove(); }); }
+function rtBox(kind){ if (!kind) return; rt('insertHTML', '<div class="callout ' + kind + '"><span class="ct">' + ({tip:'Tip', important:'Important', example:'Example', note:'Note'})[kind] + '</span><p>Write it here.</p></div><p><br></p>'); }
+function rtTable(){ rt('insertHTML', '<table><thead><tr><th>Heading</th><th>Heading</th><th>Heading</th></tr></thead><tbody><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr></tbody></table><p><br></p>'); }
+function rtVideo(){ const u = prompt('YouTube or Vimeo link'); if (!u) return; const e = embedFor(u.trim()); if (!e || /<video/.test(e)) { toast('Use a YouTube or Vimeo link, so it plays in place.'); return; } rt('insertHTML', e + '<p><br></p>'); }
+/* Files: any kind a scholar can use, up to 25 MB, except programs and scripts. */
+const FILE_MAX_MB = 25, BLOCKED = /\.(exe|msi|bat|cmd|com|scr|pif|ps1|vbs|vbe|js|mjs|jse|wsf|jar|sh|apk|dll|app|hta|lnk|html?|svg)$/i;
+const FILE_KIND = {pdf:'PDF', doc:'WORD', docx:'WORD', odt:'WORD', rtf:'WORD', xls:'EXCEL', xlsx:'EXCEL', csv:'CSV', ods:'EXCEL', ppt:'SLIDES', pptx:'SLIDES', odp:'SLIDES', png:'IMAGE', jpg:'IMAGE', jpeg:'IMAGE', webp:'IMAGE', gif:'IMAGE', zip:'ZIP', txt:'TEXT', mp3:'AUDIO', m4a:'AUDIO', wav:'AUDIO'};
+const fileKind = n => FILE_KIND[(n.split('.').pop() || '').toLowerCase()] || 'FILE';
+const KIND_WORD = {PDF:'PDF', WORD:'Word document', EXCEL:'Excel spreadsheet', CSV:'CSV spreadsheet', SLIDES:'PowerPoint', IMAGE:'Image', ZIP:'Zip folder', TEXT:'Text file', AUDIO:'Audio', FILE:'File'};
+const fileCard = (f, action) => '<div class="file" contenteditable="false"><span class="ft">' + fileKind(f.name) + '</span><span class="fx"><b>' + attr(f.name) + '</b><span>' + KIND_WORD[fileKind(f.name)] + ' · ' + fmtMB(f.size) + '</span></span>' + action + '</div>';
+const fileOk = f => {
+  if (BLOCKED.test(f.name)) { toast(f.name + ' can’t be uploaded: programs and scripts are blocked to keep scholars safe.'); return false; }
+  if (f.size > FILE_MAX_MB * 1048576) { toast(f.name + ' is ' + fmtMB(f.size) + '. Files can be up to ' + FILE_MAX_MB + ' MB.'); return false; }
+  return true;
+};
+function rtFile(input){ const f = input.files && input.files[0]; input.value = ''; if (!f || !fileOk(f)) return; rt('insertHTML', fileCard({name:f.name, size:f.size}, '<button type="button" class="btn btn-ghost btn-sm">Download</button>') + '<p><br></p>'); toast('Added ' + f.name + '. Scholars can download it from this page.'); }
+const filesHtml = d => '<div class="fchips" id="fch">' + d.files.map((f, i) => fileCard(f, '<button type="button" class="btn btn-ghost btn-sm" onclick="fileRemove(' + i + ')">Remove</button>')).join('') + '</div>';
+function filesAdd(input){ [...(input.files || [])].filter(fileOk).forEach(f => S.draft.files.push({name:f.name, size:f.size})); input.value = ''; const c = document.getElementById('fch'); if (c) c.outerHTML = filesHtml(S.draft); }
+function fileRemove(i){ S.draft.files.splice(i, 1); const c = document.getElementById('fch'); if (c) c.outerHTML = filesHtml(S.draft); }
+/* Pages: the draft keeps every page while you move between them; the other fields are kept across re-renders. */
+function draftFor(r){
+  const key = r ? r.id : 'new';
+  if (!S.draft || S.draft.key !== key) S.draft = {key, cur:0, fv:{}, files:r ? (r.files || []).map(f => ({...f})) : [], pages:r ? resourcePages(r).map(p => ({title:p.title || '', html:p.html})) : [{title:'', html:''}]};
+  return S.draft;
+}
+function pgKeep(){
+  const d = S.draft; if (!d) return;
+  const ed = document.getElementById('r4'), t = document.getElementById('pgt');
+  if (ed) d.pages[d.cur].html = clean(ed.innerHTML);
+  if (t) d.pages[d.cur].title = t.value.trim();
+  ['r0', 'r1', 'r6', 'r7', 'r3', 'r2'].forEach(id => { const e = document.getElementById(id); if (e) d.fv[id] = e.value; });
+}
+function pgGo(i){ pgKeep(); S.draft.cur = i; render(); }
+function pgAdd(){ pgKeep(); const d = S.draft; if (d.pages.length === 1 && !d.pages[0].title) d.pages[0].title = 'Introduction'; d.pages.push({title:'', html:''}); d.cur = d.pages.length - 1; render(); setTimeout(() => { const t = document.getElementById('pgt'); if (t) t.focus(); }, 0); }
+function pgMove(dir){ pgKeep(); const d = S.draft, j = d.cur + dir; if (j < 0 || j >= d.pages.length) return; [d.pages[d.cur], d.pages[j]] = [d.pages[j], d.pages[d.cur]]; d.cur = j; render(); }
+function pgDelete(){ const d = S.draft; if (d.pages.length < 2 || !confirm('Delete page ' + (d.cur + 1) + ', “' + (d.pages[d.cur].title || 'Untitled page') + '”? Its content is removed.')) return; d.pages.splice(d.cur, 1); d.cur = Math.max(0, d.cur - 1); render(); }
+function pgTitle(input){ S.draft.pages[S.draft.cur].title = input.value; const b = document.querySelector('.pgtabs [aria-selected="true"]'); if (b) b.textContent = (S.draft.cur + 1) + '. ' + (input.value.trim() || 'Untitled page'); }
+function rtImageFile(input){
+  const f = input.files && input.files[0]; input.value = ''; if (!f) return;
+  if (!/^image\/(png|jpeg|webp|gif)$/.test(f.type)) { toast('Use a PNG, JPEG, WebP or GIF image.'); return; }
+  if (f.size > 5 * 1048576) { toast('Images can be up to 5 MB. This one is ' + fmtMB(f.size) + '.'); return; }
+  const alt = prompt('Describe the image for scholars who use a screen reader', '');
+  const rd = new FileReader(); rd.onload = () => rt('insertHTML', '<figure><img src="' + rd.result + '" alt="' + attr(alt || '') + '"><figcaption>Add a caption, or delete this line</figcaption></figure><p><br></p>'); rd.readAsDataURL(f);
+}
 /* Videos upload to the hub's own storage; the prototype keeps them in the browser for this session only. */
 const VIDEO_MAX_MB = 500;
 const fmtMB = b => b >= 1048576 ? Math.round(b / 1048576) + ' MB' : Math.max(1, Math.round(b / 1024)) + ' KB';
@@ -1398,49 +1709,81 @@ function setCover(v){ S.cover = v || ''; const c = document.getElementById('cov'
 function coverFile(input){ const f = input.files && input.files[0]; if (!f) return; const rd = new FileReader(); rd.onload = () => { setCover(rd.result); const u = document.getElementById('r5'); if (u) u.value = ''; }; rd.readAsDataURL(f); }
 V.postres = () => {
   const r = S.editRes ? RESOURCES.find(x => x.id === S.editRes) : null;
-  if (S.coverFor !== (r ? r.id : 'new')) { S.cover = r ? (r.cover || '') : ''; S.video = r ? (r.video || null) : null; S.coverFor = r ? r.id : 'new'; }
+  if (S.coverFor !== (r ? r.id : 'new')) { S.cover = r ? (r.cover || '') : ''; S.video = null; S.coverFor = r ? r.id : 'new'; S.draft = null; }
+  const d = draftFor(r), v = (id, dflt) => id in d.fv ? d.fv[id] : dflt;
   const f = (id, label, ph, req, type, val) => '<div class="field" id="w-' + id + '"><label for="' + id + '">' + label + (req ? '<i class="req" aria-hidden="true">*</i>' : '') + '</label><input id="' + id + '" type="' + (type || 'text') + '" placeholder="' + ph + '" value="' + attr(val) + '"' + (req ? ' aria-required="true"' : '') + '><div class="err">This one is needed</div></div>';
   const tb = (label, cmd, val, title) => '<button type="button" class="rtb" title="' + (title || label) + '" aria-label="' + (title || label) + '" onmousedown="event.preventDefault()" onclick="rt(\'' + cmd + '\'' + (val ? ',\'' + val + '\'' : '') + ')">' + label + '</button>';
   return '<div class="page-head" data-role><h1>' + (r ? 'Edit resource' : 'Post a resource') + '</h1></div>' +
     '<form class="card form" onsubmit="event.preventDefault();publishResource()"><div class="grid2">' +
-    f('r0', 'Title', 'Interview question bank', true, 'text', r && r.title) +
-    '<div class="field" id="w-r1"><label for="r1">Category</label><select id="r1">' + RCATS.map(g => '<option' + (r && r.group === g ? ' selected' : '') + '>' + g + '</option>').join('') + '</select></div>' +
-    '<div class="field" id="w-r6"><label for="r6">Format</label><select id="r6">' + FORMATS.map(([k, l]) => '<option value="' + k + '"' + ((r && r.format || 'article') === k ? ' selected' : '') + '>' + l + '</option>').join('') + '</select></div>' +
-    '<div class="field" id="w-r7"><label for="r7">Link to the document, video or page</label><input id="r7" type="url" placeholder="https://drive.moshal.example/cv-template.docx" value="' + attr(r && r.url) + '"><div class="err">Documents, videos and links need a full https:// address, or upload the video</div><div class="hint">Leave empty for an article written below.</div>' +
-      '<div class="vidup" id="vid">' + videoChip() + '</div></div>' +
-    '<div class="field wide" id="w-r3"><label for="r3">One-line summary<i class="req" aria-hidden="true">*</i></label><input id="r3" aria-required="true" placeholder="What a scholar gets from reading it" value="' + attr(r && r.blurb) + '"><div class="err">This one is needed</div></div>' +
+    f('r0', 'Title', 'Interview question bank', true, 'text', v('r0', r && r.title)) +
+    '<div class="field" id="w-r1"><label for="r1">Category</label><select id="r1">' + RCATS.map(g => '<option' + (v('r1', r && r.group) === g ? ' selected' : '') + '>' + g + '</option>').join('') + '</select></div>' +
+    '<div class="field" id="w-r6"><label for="r6">Format</label><select id="r6">' + FORMATS.map(([k, l]) => '<option value="' + k + '"' + (v('r6', r && r.format || 'article') === k ? ' selected' : '') + '>' + l + '</option>').join('') + '</select></div>' +
+    '<div class="field" id="w-r7"><label for="r7">Link</label><input id="r7" type="url" placeholder="https://www.youtube.com/watch?v=…" value="' + attr(v('r7', r && r.url)) + '"><div class="err">A video needs a YouTube or Vimeo link, a link needs a full https:// address, and files need at least one file or a link</div><div class="hint">For a video (YouTube or Vimeo, played in place) or a page elsewhere. Leave empty for an article or uploaded files.</div></div>' +
+    '<div class="field wide" id="w-r8"><label>Files</label><div><label class="btn btn-ghost btn-sm filebtn">' + ICO.plus + 'Upload files<input type="file" multiple onchange="filesAdd(this)"></label></div><div class="hint">Anything scholars can use: PDF, Word, Excel, PowerPoint, images, zip and more, up to ' + FILE_MAX_MB + ' MB each. Programs and scripts can’t be uploaded. Files show at the top of the resource, ready to download.</div>' + filesHtml(d) + '</div>' +
+    '<div class="field wide" id="w-r3"><label for="r3">One-line summary<i class="req" aria-hidden="true">*</i></label><input id="r3" aria-required="true" placeholder="What a scholar gets from reading it" value="' + attr(v('r3', r && r.blurb)) + '"><div class="err">This one is needed</div></div>' +
     '<div class="field wide"><label>Cover image</label><div class="coverrow"><span id="cov">' + coverHtml({cover:S.cover, title:r && r.title}, 'cover') + '</span><div class="coverctl"><input id="r5" type="url" placeholder="Paste an image address" value="' + attr(S.cover && !S.cover.startsWith('data:') ? S.cover : '') + '" onchange="setCover(this.value.trim())"><div class="r"><label class="btn btn-ghost btn-sm filebtn">Upload an image<input type="file" accept="image/*" onchange="coverFile(this)"></label><button type="button" class="btn btn-ghost btn-sm" onclick="setCover(\'\');document.getElementById(\'r5\').value=\'\'">Use the default</button></div><div class="hint">Without one, scholars see the default cover with the title’s initial.</div></div></div></div>' +
     '<div class="field wide" id="w-r4"><label>The article<i class="req" aria-hidden="true">*</i></label>' +
-    '<div class="rtbar" role="toolbar" aria-label="Formatting"><select aria-label="Paragraph style" onmousedown="event.stopPropagation()" onchange="rt(\'formatBlock\',this.value);this.selectedIndex=0"><option value="">Style</option><option value="p">Paragraph</option><option value="h2">Heading</option><option value="h3">Subheading</option><option value="blockquote">Quote</option></select>' +
+    '<div class="pgtabs" role="tablist" aria-label="Pages">' + d.pages.map((p, i) => '<button type="button" role="tab" aria-selected="' + (i === d.cur) + '" onclick="pgGo(' + i + ')">' + (i + 1) + '. ' + attr(p.title || (d.pages.length > 1 ? 'Untitled page' : 'Page 1')) + '</button>').join('') + '<button type="button" class="add" onclick="pgAdd()">+ Add page</button></div>' +
+    (d.pages.length > 1
+      ? '<div class="pgrow"><input id="pgt" aria-label="Page title" placeholder="Page title, shown in the contents" value="' + attr(d.pages[d.cur].title) + '" oninput="pgTitle(this)"><button type="button" class="btn btn-ghost btn-sm" onclick="pgMove(-1)"' + (d.cur ? '' : ' disabled') + '>Move earlier</button><button type="button" class="btn btn-ghost btn-sm" onclick="pgMove(1)"' + (d.cur < d.pages.length - 1 ? '' : ' disabled') + '>Move later</button><button type="button" class="btn btn-ghost btn-sm danger" onclick="pgDelete()">Delete page</button></div>'
+      : '<p class="edhint" style="margin:0 0 8px">A long guide reads better in pages: scholars get a contents list and Next and Previous.</p>') +
+    '<div class="rtbar sticky" role="toolbar" aria-label="Formatting"><select aria-label="Text style" onmousedown="event.stopPropagation()" onchange="rt(\'formatBlock\',this.value);this.selectedIndex=0"><option value="">Style</option><option value="p">Paragraph</option><option value="h2">Heading 1</option><option value="h3">Heading 2</option><option value="h4">Heading 3</option><option value="blockquote">Quote</option></select>' +
     '<i class="sep"></i>' +
-    tb('<b>B</b>', 'bold', '', 'Bold') + tb('<i>I</i>', 'italic', '', 'Italic') + tb('<u>U</u>', 'underline', '', 'Underline') + '<i class="sep"></i>' + tb('• List', 'insertUnorderedList', '', 'Bulleted list') + tb('1. List', 'insertOrderedList', '', 'Numbered list') + '<i class="sep"></i>' +
-    '<button type="button" class="rtb" onmousedown="event.preventDefault()" onclick="rtLink()">Link</button><label class="rtb filebtn">Image<input type="file" accept="image/*" onchange="rtImageFile(this)"></label><button type="button" class="rtb" onmousedown="event.preventDefault()" onclick="rtImageUrl()">Image by link</button><i class="sep"></i>' + tb('Clear', 'removeFormat', '', 'Clear formatting') + '</div>' +
-    '<div id="r4" class="editor rich" contenteditable="true" aria-required="true" data-placeholder="Write it here. Use the toolbar for headings, images and video.">' + (r ? resourceHtml(r) : '') + '</div><div class="err">This one is needed</div></div>' +
-    f('r2', 'Read time in minutes', 'Worked out from the length if left blank', false, 'number', r && r.mins) + audienceField('res:' + (r ? r.id : 'new'), r && r.years) +
+    tb('<b>B</b>', 'bold', '', 'Bold') + tb('<i>I</i>', 'italic', '', 'Italic') + tb('<u>U</u>', 'underline', '', 'Underline') + tb('<s>S</s>', 'strikeThrough', '', 'Strikethrough') +
+    '<span class="rtpop" data-k="tx"><button type="button" class="rtb" title="Text colour" aria-label="Text colour" aria-haspopup="menu" onmousedown="event.preventDefault()" onclick="togglePal(\'tx\')"><b style="border-bottom:3px solid var(--brand);line-height:1">A</b></button></span>' +
+    '<span class="rtpop" data-k="hl"><button type="button" class="rtb" title="Highlight" aria-label="Highlight" aria-haspopup="menu" onmousedown="event.preventDefault()" onclick="togglePal(\'hl\')"><span style="background:var(--warn-soft);padding:1px 4px;border-radius:3px">ab</span></button></span>' +
+    '<i class="sep"></i>' + tb('• List', 'insertUnorderedList', '', 'Bulleted list') + tb('1. List', 'insertOrderedList', '', 'Numbered list') + '<i class="sep"></i>' +
+    '<button type="button" class="rtb" onmousedown="event.preventDefault()" onclick="rtLink()">Link</button>' +
+    '<label class="rtb filebtn" title="Upload an image">Image<input type="file" accept="image/png,image/jpeg,image/webp,image/gif" onchange="rtImageFile(this)"></label>' +
+    '<button type="button" class="rtb" onmousedown="event.preventDefault()" onclick="rtVideo()">Video</button>' +
+    '<label class="rtb filebtn" title="Attach a file to download">File<input type="file" onchange="rtFile(this)"></label>' +
+    '<button type="button" class="rtb" onmousedown="event.preventDefault()" onclick="rtTable()">Table</button>' +
+    '<select aria-label="Add a box" onmousedown="event.stopPropagation()" onchange="rtBox(this.value);this.selectedIndex=0"><option value="">Box</option><option value="tip">Tip</option><option value="important">Important</option><option value="example">Example</option><option value="note">Note</option></select>' +
+    tb('―', 'insertHorizontalRule', '', 'Divider') + '<i class="sep"></i>' + tb('Undo', 'undo', '', 'Undo') + tb('Redo', 'redo', '', 'Redo') + tb('Clear', 'removeFormat', '', 'Clear formatting') + '</div>' +
+    '<div id="r4" class="editor rich" contenteditable="true" aria-required="true" aria-label="The article' + (d.pages.length > 1 ? ', page ' + (d.cur + 1) : '') + '" data-placeholder="Write here. Use Style for headings, and the toolbar for colour, images, video, files, tables and boxes.">' + d.pages[d.cur].html + '</div><div class="err">This one is needed</div></div>' +
+    f('r2', 'Read time in minutes', 'Worked out from all pages if left blank', false, 'number', v('r2', r && r.mins)) + audienceField('res:' + (r ? r.id : 'new'), r && r.years) +
     '</div><div class="form-foot"><span class="dup ok">' + ICO.checkC + (r ? 'Saves straight away' : 'Goes live straight away') + '</span><div class="r"><button type="button" class="btn btn-ghost" onclick="' + (r ? 'S.editRes=null;openResource(' + r.id + ')' : 'nav(\'resources\')') + '">Cancel</button><button class="btn btn-primary" type="submit">' + (r ? ICO.check + 'Save changes' : ICO.send + 'Publish') + '</button></div></div></form>';
 };
 function publishResource(){
   const val = id => ((document.getElementById(id) || {}).value || '').trim();
-  const ed = document.getElementById('r4'), html = ed ? clean(ed.innerHTML) : '', text = ed ? ed.innerText.trim() : '';
-  const hasBody = !!text || /<(img|iframe|video)/i.test(html);
+  pgKeep();
+  const d = S.draft, textOf = h => { const t = document.createElement('div'); t.innerHTML = h; return t.innerText.trim(); };
+  // A page counts when it has words, a picture, a video, a table or a file; empty pages are dropped.
+  const pages = d.pages.filter(p => textOf(p.html) || /<(img|iframe|table|hr)|class="file/i.test(p.html)).map((p, i) => ({title:p.title.trim() || 'Page ' + (i + 1), html:p.html}));
+  const text = pages.map(p => textOf(p.html)).join('\n\n');
   let bad = false;
   const format = val('r6') || 'article', url = val('r7');
-  [['r0', val('r0')], ['r3', val('r3')], ['r4', hasBody || format !== 'article' ? 'ok' : ''], ['r7', format === 'article' || (format === 'video' && S.video) || /^https:\/\/\S+\.\S+/.test(url) ? 'ok' : '']].forEach(([id, v]) => { const w = document.getElementById('w-' + id); if (w) w.classList.toggle('bad', !v); if (!v) bad = true; });
-  if (bad) { toast(format === 'article' ? 'Add a title, a summary and the article.' : 'Add a title, a summary and the link.'); return; }
+  const linkOk = format === 'article' || (format === 'video' ? !!embedFor(url) && !/\.(mp4|webm)/i.test(url) : format === 'document' ? d.files.length > 0 || /^https:\/\/\S+\.\S+/.test(url) : /^https:\/\/\S+\.\S+/.test(url));
+  [['r0', val('r0')], ['r3', val('r3')], ['r4', pages.length || format !== 'article' ? 'ok' : ''], ['r7', linkOk ? 'ok' : '']].forEach(([id, ok]) => { const w = document.getElementById('w-' + id); if (w) w.classList.toggle('bad', !ok); if (!ok) bad = true; });
+  if (bad) { toast(format === 'article' ? 'Add a title, a summary and the article.' : format === 'document' ? 'Add a title, a summary and at least one file.' : 'Add a title, a summary and the link.'); return; }
   const body = text.split(/\n\s*\n/).map(p => p.trim()).filter(Boolean);
   const mins = Math.max(1, parseInt(val('r2'), 10) || Math.ceil(text.split(/\s+/).length / 200));
-  const fields = {group:val('r1'), format, url, title:val('r0'), mins, blurb:val('r3'), body, html, cover:S.cover || '', video:format === 'video' ? S.video : null, years:pickedYears(S.editRes ? (RESOURCES.find(x => x.id === S.editRes) || {}).years : [])};
-  S.coverFor = null;
+  const fields = {group:val('r1'), format, url, title:val('r0'), mins, blurb:val('r3'), body, html:pages.length === 1 ? pages[0].html : '', pages:pages.length > 1 ? pages : null, files:d.files, cover:S.cover || '', video:null, years:pickedYears(S.editRes ? (RESOURCES.find(x => x.id === S.editRes) || {}).years : [])};
+  S.coverFor = null; S.draft = null;
   if (S.editRes) { const r = RESOURCES.find(x => x.id === S.editRes); Object.assign(r, fields); S.editRes = null; openResource(r.id); toast('Saved. Scholars see the update now.'); return; }
   RESOURCES.push({id:Date.now(), icon:'book', by:ROLES[S.role].name, ...fields});
   nav('resources'); toast('Published. Scholars can read it now.');
 }
 V.res = () => {
   const r = RESOURCES.find(x => x.id === S.res);
-  return '<button class="btn btn-ghost btn-sm" style="margin-bottom:18px" onclick="nav(\'resources\')">← Back to resources</button>' +
-    '<article class="card article">' + (r.cover ? coverHtml(r, 'cover') : '') + '<span class="kind">' + r.group + ' · ' + r.mins + ' min read</span><h1>' + r.title + '</h1>' + (r.video ? '<div class="resgo rich"><video controls preload="metadata" src="' + attr(r.video.src) + '"></video></div>' : '') + (r.url && !r.video ? '<div class="resgo">' + (r.format === 'video' && embedFor(r.url) ? '<div class="rich">' + embedFor(r.url) + '</div>' : '<a class="btn btn-primary" href="' + attr(r.url) + '" target="_blank" rel="noopener">' + (r.format === 'document' ? ICO.download + 'Download the document' : r.format === 'video' ? 'Watch the video' + ICO.ext : 'Open the page' + ICO.ext) + '</a>') + '</div>' : '') + '<div class="rich">' + resourceHtml(r) + '</div>' +
-    '<div class="foot">' + (canManage(r) ? '<button class="btn btn-primary" onclick="editResource(' + r.id + ')">Edit</button><button class="btn btn-ghost danger" onclick="removeResource(' + r.id + ')">Remove</button>' : '') + '<button class="btn btn-ghost" onclick="nav(\'resources\')">All resources</button></div></article>';
+  const pages = resourcePages(r), multi = pages.length > 1;
+  S.resPage = S.resPage || {};
+  const i = Math.min(S.resPage[r.id] || 0, pages.length - 1), p = pages[i];
+  const files = (r.files || []).length ? '<div class="resfiles">' + r.files.map(f => fileCard(f, '<button class="btn btn-primary btn-sm" onclick="toast(\'Downloading ' + esc(attr(f.name)) + '\')">' + ICO.download + 'Download</button>')).join('') + '</div>' : '';
+  const go = r.url ? '<div class="resgo">' + (r.format === 'video' && embedFor(r.url) ? '<div class="rich">' + embedFor(r.url) + '</div>' : '<a class="btn btn-primary" href="' + attr(r.url) + '" target="_blank" rel="noopener">' + (r.format === 'document' ? ICO.download + 'Open the file' : r.format === 'video' ? 'Watch the video' + ICO.ext : 'Open the page' + ICO.ext) + '</a>') + '</div>' : '';
+  const head = (i === 0 && r.cover ? coverHtml(r, 'cover') : '') + '<span class="kind">' + r.group + ' · ' + r.mins + ' min read' + (multi ? ' · ' + pages.length + ' pages' : '') + '</span><h1>' + r.title + '</h1>' + (i === 0 ? go + files : '');
+  const foot = '<div class="foot">' + (canManage(r) ? '<button class="btn btn-primary" onclick="editResource(' + r.id + ')">Edit</button><button class="btn btn-ghost danger" onclick="removeResource(' + r.id + ')">Remove</button>' : '') + '<button class="btn btn-ghost" onclick="nav(\'resources\')">All resources</button></div>';
+  const back = '<button class="btn btn-ghost btn-sm" style="margin-bottom:18px" onclick="nav(\'resources\')">← Back to resources</button>';
+  if (!multi) return back + '<article class="card article">' + head + '<div class="rich">' + p.html + '</div>' + foot + '</article>';
+  const pnav = '<nav class="pnav" aria-label="Pages">' + (i > 0 ? '<button onclick="resPage(' + r.id + ',' + (i - 1) + ')"><span>← Previous</span><b>' + attr(pages[i - 1].title) + '</b></button>' : '') +
+    (i < pages.length - 1 ? '<button class="nx" onclick="resPage(' + r.id + ',' + (i + 1) + ')"><span>Next →</span><b>' + attr(pages[i + 1].title) + '</b></button>' : '<button class="nx" onclick="nav(\'resources\')"><span>You’ve reached the end</span><b>Back to the content library</b></button>') + '</nav>';
+  return back + '<div class="reader"><nav class="toc" aria-label="Contents"><h2>Contents</h2><ol>' + pages.map((q, j) => '<li><button' + (j === i ? ' aria-current="page"' : '') + ' onclick="resPage(' + r.id + ',' + j + ')"><span>' + (j + 1) + '</span>' + attr(q.title) + '</button></li>').join('') + '</ol></nav>' +
+    '<article class="card article">' + head +
+    '<select class="toc-m" aria-label="Go to page" onchange="resPage(' + r.id + ',+this.value)">' + pages.map((q, j) => '<option value="' + j + '"' + (j === i ? ' selected' : '') + '>Page ' + (j + 1) + ' of ' + pages.length + ': ' + attr(q.title) + '</option>').join('') + '</select>' +
+    '<div class="pgmeta"><span>Page ' + (i + 1) + ' of ' + pages.length + '</span></div><div class="pgbar" aria-hidden="true"><i style="width:' + Math.round((i + 1) / pages.length * 100) + '%"></i></div>' +
+    '<h2 class="pgt">' + attr(p.title) + '</h2><div class="rich">' + p.html + '</div>' + pnav + foot + '</article></div>';
 };
+function resPage(id, j){ S.resPage = S.resPage || {}; S.resPage[id] = j; render(); window.scrollTo(0, 0); }
 V.postevent = () => {
   const e = S.editEv ? EVENTS.find(x => x.id === S.editEv) : null;
   const f = (id, label, ph, req, type, val, hint) => '<div class="field" id="w-' + id + '"><label for="' + id + '">' + label + (req ? '<i class="req" aria-hidden="true">*</i>' : '') + '</label><input id="' + id + '" type="' + (type || 'text') + '" placeholder="' + ph + '" value="' + attr(val) + '"' + (req ? ' aria-required="true"' : '') + '><div class="err">This one is needed</div>' + (hint ? '<div class="hint">' + hint + '</div>' : '') + '</div>';
@@ -1454,7 +1797,7 @@ V.postevent = () => {
     '<div class="field wide"><label for="e4">Short description</label><textarea id="e4" placeholder="What happens, who it is for, what to bring.">' + attr(e && e.about) + '</textarea></div>' +
     f('e9', 'Hide after', '', false, 'date', e && e.expires, 'Empty means it hides the day after the date above.') +
     (staff() ? f('e10', 'Publish on', '', false, 'date', e && e.publishOn, 'Empty publishes now. A later date schedules it.') +
-      '<div class="field wide"><label class="check"><input id="e11" type="checkbox"' + (e && e.pinned ? ' checked' : '') + '> Pin to the top of every home page</label><div class="hint">For urgent items. Pinned announcements show before everything else.</div></div>' : '') +
+      '<div class="field wide"><label class="check"><input id="e11" type="checkbox"' + (e && e.pinned ? ' checked' : '') + '> Pin to the top of Announcements</label><div class="hint">For urgent items. Pinned announcements show before everything else.</div></div>' : '') +
     audienceField('ev:' + (e ? e.id : 'new'), e && e.years) +
     '</div><div class="form-foot"><span class="dup ok">' + ICO.checkC + (e ? 'Saves straight away' : 'Goes live on the publish date') + '</span><div class="r"><button type="button" class="btn btn-ghost" onclick="nav(\'events\')">Cancel</button><button class="btn btn-primary" type="submit">' + (e ? ICO.check + 'Save changes' : ICO.send + 'Publish') + '</button></div></div></form>';
 };
@@ -1465,7 +1808,7 @@ V.events = () => {
     '<p class="sub">Training, surveys, career events and notices, soonest first. Anything in the next 7 days is marked, and each one moves to Past by itself once it is over.</p>' +
     '<div class="chipset catf" role="group" aria-label="Category">' + [['', 'All', all.length]].concat(ANN_CATS.map(([k, l]) => [k, l, all.filter(e => e.cat === k).length])).map(([k, l, n]) => '<button aria-pressed="' + ((S.acat || '') === k) + '" onclick="S.acat=\'' + k + '\';render()">' + l + ' <span class="c">' + n + '</span></button>').join('') + '</div>' +
     '<div class="tabs" role="tablist">' + [['upcoming', 'Upcoming', evs.filter(e => !e.past).length], ['past', 'Past', evs.filter(e => e.past).length]].map(([k, l, n]) => '<button role="tab" aria-selected="' + (S.evTab === k) + '" onclick="S.evTab=\'' + k + '\';render()">' + l + ' · ' + n + '</button>').join('') + '</div>' +
-    '<div class="events">' + list.map(annCard).join('') + (list.length ? '' : '<div class="card empty"><b>Nothing here' + (S.evTab === 'past' ? ' yet' : '') + '</b><span>' + (admin ? 'Post an announcement and scholars see it on their home page.' : 'New announcements appear here and on your home page.') + '</span></div>') + '</div>';
+    '<div class="events">' + list.map(annCard).join('') + (list.length ? '' : '<div class="card empty"><b>Nothing here' + (S.evTab === 'past' ? ' yet' : '') + '</b><span>' + (admin ? 'Post an announcement and scholars are told in their notifications.' : 'New announcements appear here and in your notifications.') + '</span></div>') + '</div>';
 };
 V.submit = () => {
   const o = S.edit ? byId(S.edit) : null;
@@ -1498,22 +1841,45 @@ function previewListing(){
   const o = {title:val('f0').trim() || 'Job title', org:val('f1').trim() || 'Employer', loc:val('f3'), type:val('f6'), saved:false, applied:false, ...closeInfo(val('f4'))};
   el.innerHTML = jobRow(o).replace(/<button/g, '<span').replace(/<\/button>/g, '</span>').replace(/ onclick="[^"]*"/g, '');
 }
-V.subs = () => '<div class="page-head" data-role><h1>My listings</h1><span class="n">' + mine().length + '</span><div class="acts"><button class="btn btn-primary btn-sm" onclick="S.edit=null;nav(\'submit\')">' + ICO.plus + 'Post a listing</button></div></div>' + impactCard() +
-  (mine().some(l => l.status === 'broken') ? '<div class="notice bad">' + ICO.link + 'A link stopped working, so that listing is hidden from scholars until you update it.</div>' : '') +
-  (mine().length ? '' : '<div class="card empty"><b>Nothing listed yet</b><span>Your listings, who applied and the nightly link check all show up here.</span></div>') +
-  '<div class="rows">' + mine().map(l => { const o = OPPS.find(x => x.title === l.title); return '<article class="card row"><div class="body"><h3>' + l.title + '</h3><div class="meta">' + l.org + ' · posted ' + l.posted + ' · closes ' + l.closes + ' · ' + l.applied + ' applied' + (l.check ? ' · ' + l.check : '') + '</div></div><div class="side">' +
-    (l.status === 'live' ? pill('live', 'Live') : l.status === 'broken' ? pill('broken', 'Link broken') : pill('off', 'Removed')) +
-    (o && l.status !== 'unpublished' ? '<button class="btn btn-ghost btn-sm" onclick="editListing(' + o.id + ')">Edit</button>' : '') +
-    (l.status === 'broken' ? '<button class="btn btn-primary btn-sm" onclick="fixLink(' + l.id + ')">Fix link</button>' : l.status === 'live' ? '<button class="btn btn-ghost btn-sm" onclick="setListing(' + l.id + ',\'unpublished\')">Remove</button>' : '<button class="btn btn-ghost btn-sm" onclick="setListing(' + l.id + ',\'live\')">Publish again</button>') + '</div></article>'; }).join('') + '</div>';
+/* My listings: what needs fixing on top, live listings in one table, closed and removed folded away. */
+const myTabOf = l => l.status === 'broken' ? 'fix' : l.status === 'unpublished' ? 'removed' : l.days !== null && l.days < 0 ? 'closed' : 'live';
+const MY_PAGE = 10;
+V.subs = () => {
+  const all = mine(), q = (S.mq || '').toLowerCase(), hit = l => !q || (l.title + ' ' + l.org).toLowerCase().includes(q);
+  const fix = all.filter(l => myTabOf(l) === 'fix' && hit(l));
+  const live = all.filter(l => myTabOf(l) === 'live' && hit(l)).sort((a, b) => (a.days ?? 1e9) - (b.days ?? 1e9));
+  const past = all.filter(l => ['closed', 'removed'].includes(myTabOf(l)) && hit(l)).sort((a, b) => b.id - a.id);
+  const shown = live.slice(0, S.myMore || MY_PAGE), left = live.length - shown.length, found = fix.length + live.length + past.length, openPast = S.myPast || (!!q && past.length > 0);
+  const where = [[fix.length, 'to fix'], [live.length, 'live'], [past.length, 'closed or removed']].filter(([n]) => n).map(([n, w]) => n + ' ' + w).join(', ');
+  const edit = l => { const o = OPPS.find(x => x.title === l.title); return '<button class="btn btn-ghost btn-sm" onclick="' + (o ? 'editListing(' + o.id + ')' : 'toast(\'Opens the listing form.\')') + '">Edit</button>'; };
+  const name = l => '<b class="nm">' + mark(l.title, S.mq) + '</b><br><span class="sm">' + mark(l.org, S.mq) + ' · posted ' + l.posted + '</span>';
+  const head = cols => '<thead><tr>' + cols.map((c, i) => '<th' + (i > 1 ? ' class="num"' : '') + '>' + c + '</th>').join('') + '</tr></thead>';
+  return '<div class="page-head" data-role><h1>My listings</h1><span class="n">' + all.length + '</span><div class="acts"><button class="btn btn-primary btn-sm" onclick="S.edit=null;nav(\'submit\')">' + ICO.plus + 'Post a listing</button></div></div>' + impactCard() +
+    (all.length ? '' : '<div class="card empty"><b>Nothing listed yet</b><span>Your listings, who applied and the nightly link check all show up here.</span></div>') +
+    (fix.length ? '<section class="card fixcard"><div class="fh">' + ICO.link + '<div><b>' + fix.length + ' link' + (fix.length === 1 ? '' : 's') + ' stopped working</b><span>Scholars can\'t see ' + (fix.length === 1 ? 'this listing' : 'these listings') + ' until you update the link.</span></div></div>' +
+      fix.map(l => '<div class="fr"><div>' + name(l) + '<span class="why">' + l.check + '</span></div><button class="btn btn-primary btn-sm" onclick="askFixLink(' + l.id + ')">Fix link</button></div>').join('') + '</section>' : '') +
+    (all.length > MY_PAGE ? '<div class="mine-q"><label class="search-wide"><span class="sr">Search my listings</span>' + ICO.search + '<input id="mq" placeholder="Search title or employer" autocomplete="off" value="' + attr(S.mq || '') + '" oninput="S.mq=this.value;S.myMore=0;renderMine()" onkeydown="if(event.key===\'Escape\'&&this.value){S.mq=\'\';renderMine()}">' +
+      (q ? '<button class="clear" aria-label="Clear search" onclick="S.mq=\'\';renderMine()">×</button>' : '') + '</label>' +
+      '<p class="mine-n" aria-live="polite">' + (q && found ? found + ' of ' + all.length + ' match · ' + where : '') + '</p></div>' : '') +
+    (q && !found ? '<div class="card empty"><b>Nothing matches “' + html(S.mq) + '”</b><span>Search by a word in the title or the employer\'s name.</span><button class="btn" onclick="S.mq=\'\';renderMine()">Clear search</button></div>' : '') +
+    (all.length && (!q || live.length) ? '<div class="card tablewrap" id="mlist"><table class="rt compact">' + head(['Live listing', 'Closes', 'Applied', '<span class="sr">Actions</span>']) + '<tbody>' +
+      shown.map(l => '<tr><td>' + name(l) + '</td><td>' + (l.closes || 'No closing date') + (l.days !== null && closesChip(l.days) ? '<br>' + closesChip(l.days) : '') + '</td><td class="num">' + l.applied + '</td><td class="num"><span class="tacts">' + edit(l) + '<button class="btn btn-ghost btn-sm" onclick="setListing(' + l.id + ',\'unpublished\')">Remove</button></span></td></tr>').join('') +
+      '</tbody></table>' + (live.length ? '' : '<div class="empty sm"><b>' + (q ? 'No live listings match' : 'Nothing live right now') + '</b><span>' + (q ? 'Try a broader search.' : 'Post a listing and it reaches scholars the same day.') + '</span></div>') + '</div>' +
+      (left > 0 ? '<div class="morebar"><button class="btn btn-ghost btn-sm" onclick="S.myMore=(S.myMore||MY_PAGE)+MY_PAGE;render()">Show ' + Math.min(MY_PAGE, left) + ' more</button></div>' : '') : '') +
+    (past.length ? '<section class="card pastcard"><button class="pasth" aria-expanded="' + openPast + '" onclick="S.myPast=!' + openPast + ';render()">' + ICO.chev + '<b>Closed and removed</b><span class="pn">' + past.length + '</span><span class="ph">Kept for your records. Scholars can\'t see these.</span></button>' +
+      (openPast ? '<div class="tablewrap"><table class="rt compact">' + head(['Listing', 'What happened', 'Applied', '<span class="sr">Actions</span>']) + '<tbody>' +
+        past.map(l => { const closed = myTabOf(l) === 'closed'; return '<tr><td>' + name(l) + '</td><td class="sm' + (l.reason ? ' bad' : '') + '">' + (closed ? 'Closed ' + l.closes : l.reason ? 'Removed by the programme team: ' + l.reason : 'You removed it') + '</td><td class="num">' + l.applied + '</td><td class="num">' + (closed ? edit(l) : '<button class="btn btn-ghost btn-sm" onclick="setListing(' + l.id + ',\'live\')">Publish again</button>') + '</td></tr>'; }).join('') +
+        '</tbody></table></div>' : '') + '</section>' : '');
+};
 V.queue = () => '<div class="page-head" data-role><h1>Flagged listings</h1>' + (FLAGS.length ? '<span class="n">' + FLAGS.length + ' to check</span>' : '') + '</div>' +
   '<p class="sub">Live listings land here when a scholar reports one or the nightly link check fails.</p>' +
-  (FLAGS.length ? '<div class="rows">' + FLAGS.map(f => '<article class="card row"><div class="body"><h3>' + f.title + '</h3><div class="meta">' + f.org + ' · posted by ' + f.by + ' · ' + f.when + '</div><div style="margin-top:10px">' + pill(f.src === 'link' ? 'broken' : 'warn', f.why) + '</div></div>' +
+  (FLAGS.length ? '<div class="rows">' + FLAGS.map(f => '<article class="card row"><div class="body"><h3>' + f.title + '</h3><div class="meta">' + f.org + ' · posted by ' + f.by + ' · ' + f.when + '</div><div style="margin-top:8px">' + pill(f.src === 'link' ? 'broken' : 'warn', f.why) + '</div></div>' +
     '<div class="side"><button class="btn btn-ghost btn-sm" onclick="resolveFlag(' + f.id + ',false)">Dismiss</button><button class="btn btn-danger btn-sm" onclick="resolveFlag(' + f.id + ',true)">Remove</button></div></article>').join('') + '</div>'
     : '<div class="card empty">' + ICO.checkC + '<b>Nothing flagged</b><span>Reported listings and broken links will show up here.</span></div>');
 /* ---------- moderation ---------- */
 const linkOf = o => o.url || 'https://careers.' + o.org.toLowerCase().replace(/\s/g, '') + '.example/' + o.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 const normLink = u => String(u || '').trim().toLowerCase().replace(/^https?:\/\/(www\.)?/, '').replace(/[?#].*$/, '').replace(/\/+$/, '');
-const closesChip = days => days < 0 ? pill('off', 'Expired · hidden') : days <= 7 ? pill('warn', days === 0 ? 'Closes today' : 'Closes in ' + days + ' day' + (days === 1 ? '' : 's')) : '';
+const closesChip = days => days < 0 ? pill('off', 'Expired · hidden') : days <= 7 ? pill('soon', days === 0 ? 'Closes today' : 'Closes in ' + days + ' day' + (days === 1 ? '' : 's')) : '';
 
 /* ---------- admin overview ---------- */
 const longDate = iso => new Date(iso + 'T12:00:00').toLocaleDateString('en-ZA', {weekday:'long', day:'numeric', month:'long'});
@@ -1530,15 +1896,16 @@ const newestRow = o => '<article class="card row mod"><div class="body"><h3><but
 V.console = () => {
   const admin = S.role === 'admin', u = ROLES[S.role];
   const live = OPPS.filter(o => o.days >= 0), soon = live.filter(o => o.days <= 7).length, expired = OPPS.filter(o => o.days < 0).length;
-  const att = [['queue', 'Flagged listings', FLAGS.length, 'bad', 'Scholar reports and broken links'],
-    ['opps', 'Expired, still stored', expired, 'warn', 'Hidden from scholars; remove when ready']];
+  const att = [["nav('queue')", FLAGS.length, 'bad', 'listing flagged by a scholar or the link check', 'listings flagged by scholars or the link check'],
+    ["S.lsTab='expired';nav('listings')", expired, 'warn', 'expired listing still stored, hidden from scholars', 'expired listings still stored, hidden from scholars']];
+  const todo = att.filter(a => a[1] > 0);
   const champs = CHAMPS(), posting = champs.filter(c => c.weeks[3]).length;
   const kpi = (l, v, s) => '<div class="kpi"><span>' + l + '</span><b>' + v + '</b>' + (s ? '<small>' + s + '</small>' : '') + '</div>';
   const roleCount = r => USERS.filter(x => x.role === r && x.status === 'active').length + (r === 'scholar' ? STU_COUNT - 1 : 0);
   return '<div class="page-head" data-role><div><h1>Overview</h1><p class="lead">' + u.sub + ' · ' + longDate(TODAY_ISO) + '</p></div><div class="acts">' +
     (admin ? '<button class="btn btn-ghost btn-sm" onclick="inviteUser()">' + ICO.user + 'Invite people</button>' : '') +
     '<button class="btn btn-primary btn-sm" onclick="S.editEv=null;nav(\'postevent\')">' + ICO.plus + 'Post an announcement</button></div></div>' +
-    '<h2 class="eyebrow-h">Needs attention</h2><div class="att">' + att.map(([k, l, n, tone, sub]) => '<button class="attn ' + (n ? 't-' + tone : 'clear') + '" onclick="nav(\'' + k + '\')"><span class="l">' + l + '</span><b>' + n + '</b><span class="s">' + (n ? sub : 'All clear') + '</span></button>').join('') + '</div>' +
+    '<h2 class="eyebrow-h">Needs attention</h2><ul class="todo">' + (todo.length ? todo.map(([go, n, tone, one, many]) => '<li><b class="t-' + tone + '">' + n + '</b><span class="w">' + (n === 1 ? one : many) + '</span><button class="btn btn-ghost btn-sm" onclick="' + go + '">Review</button></li>').join('') : '<li class="none">Nothing needs attention.</li>') + '</ul>' +
     '<div class="kpis">' + kpi('Live listings', live.length, soon + ' close in 7 days') + kpi('Posted in the last 7 days', OPPS.filter(o => o.age <= 7).length, 'Live as soon as they are posted') +
     kpi('Champions who posted this week', posting + ' of ' + champs.length, 'The goal is all of them') + kpi('Clicks to employers', OPPS.reduce((a, o) => a + o.clicks, 0).toLocaleString('en-ZA'), 'Last 30 days') + '</div>' +
     '<div class="pgrid"><section class="card pnl wide"><div class="ph"><h2>Newest listings</h2><button class="lnk" onclick="nav(\'listings\')">All job listings' + ICO.chevR + '</button></div>' +
@@ -1557,11 +1924,11 @@ const avatarOf = (name, role) => { const st = STAGES[ROLES[role].stage]; return 
 const userPill = st => st === 'active' ? pill('live', 'Active') : st === 'invited' ? pill('', 'Invited') : pill('broken', 'Suspended');
 V.users = () => {
   const q = (S.uq || '').toLowerCase(), list = USERS.filter(x => (!S.urole || x.role === S.urole) && (!q || (x.name + ' ' + x.email + ' ' + x.org).toLowerCase().includes(q)));
-  return '<div class="page-head" data-role><h1>Users and roles</h1><span class="n">' + USERS.length + ' accounts</span><div class="acts"><button class="btn btn-primary btn-sm" onclick="inviteUser()">' + ICO.plus + 'Invite people</button></div></div>' +
-    '<div class="notice info">' + ICO.user.replace('<svg', '<svg aria-hidden="true"') + '<span>Sign-in is by invitation, with a university, partner or Moshal email; single sign-on is still to be confirmed. Scholar details stay inside the programme: partner recruiters only ever see totals.</span></div>' +
-    '<div class="roles">' + ['scholar', 'champion', 'exco', 'recruiter', 'admin'].map(r => '<button class="rcard" aria-pressed="' + (S.urole === r) + '" onclick="S.urole=S.urole===\'' + r + '\'?\'\':\'' + r + '\';render()"><span class="rdot" style="background:' + STAGES[ROLES[r].stage].bg + '"></span><b>' + ROLE_LABEL[r] + '</b><span class="c">' + USERS.filter(x => x.role === r).length + '</span><span class="w">' + ROLE_CAN[r] + '</span></button>').join('') + '</div>' +
+  return '<div class="page-head" data-role><h1>Users and roles</h1><span class="n">' + USERS.length + ' accounts</span><div class="acts"><button class="btn btn-ghost btn-sm" onclick="S.imp=null;nav(\'import\')">' + ICO.user + 'Import scholars</button><button class="btn btn-primary btn-sm" onclick="inviteUser()">' + ICO.plus + 'Invite people</button></div></div>' +
+    '<p class="sub">Sign-in is by invitation with a university, partner or Moshal email. Partner recruiters only ever see totals.</p>' +
+    '<div class="tabs ufilter" role="tablist" aria-label="Role">' + [['', 'Everyone', USERS.length]].concat(['scholar', 'champion', 'exco', 'recruiter', 'admin'].map(r => [r, ROLE_LABEL[r], USERS.filter(x => x.role === r).length])).map(([r, l, n]) => '<button role="tab" title="' + (r ? ROLE_CAN[r] : 'Every account') + '" aria-selected="' + ((S.urole || '') === r) + '" onclick="S.urole=\'' + r + '\';render()">' + l + ' · ' + n + '</button>').join('') + '</div>' +
     '<div class="toolbar"><label class="search-wide">' + ICO.search + '<input id="uq" placeholder="Search by name, email or institution" value="' + attr(S.uq || '') + '" oninput="S.uq=this.value;render();const i=document.getElementById(\'uq\');i.focus();i.setSelectionRange(i.value.length,i.value.length)"></label>' +
-    (S.urole ? '<span class="fchip">' + ROLE_LABEL[S.urole] + '<button aria-label="Show every role" onclick="S.urole=\'\';render()">×</button></span>' : '') + '</div>' +
+    '</div>' +
     '<div class="card tablewrap"><table class="rt"><thead><tr><th>Person</th><th>Role</th><th>Institution</th><th>Status</th><th>Last active</th><th class="num"><span class="sr">Actions</span></th></tr></thead><tbody>' +
     list.map(x => { const i = USERS.indexOf(x), me = x.name === ROLES[S.role].name;
       return '<tr><td><span class="who">' + avatarOf(x.name, x.role) + '<span><span class="nm">' + x.name + '</span><br><span class="sm">' + x.email + '</span></span></span></td>' +
@@ -1575,6 +1942,119 @@ function setUserRole(i, r){ S.dlg = null; const x = USERS[i]; const was = x.role
 function setUserStatus(i, st){ const x = USERS[i]; x.status = st; x.seen = st === 'suspended' ? 'Suspended today' : 'Reactivated today'; logIt((st === 'suspended' ? 'suspended' : 'reactivated') + ' <b>' + x.name + '</b>', 'user'); render(); toast(st === 'suspended' ? x.name + ' can no longer sign in.' : x.name + ' can sign in again.'); }
 function resendInvite(i){ USERS[i].seen = 'Invited today'; render(); toast('Invite sent again to ' + USERS[i].email + '.'); }
 function inviteUser(){ S.dlg = {kind:'invite'}; render(); setTimeout(() => { const f = document.getElementById('iv-email'); if (f) f.focus(); }, 0); }
+
+/* Import scholars (PROPOSED, docs/scholar-import.md): a CSV in, every row checked and shown, then one personal
+   invitation each, sent a few a second. Nobody gets a shared or default password. */
+const IMP_UNIS = {UCT:['myuct.ac.za', 'uct.ac.za'], Wits:['students.wits.ac.za', 'wits.ac.za'], UP:['tuks.co.za', 'up.ac.za'], Stellenbosch:['sun.ac.za'], UKZN:['stu.ukzn.ac.za', 'ukzn.ac.za'], UJ:['student.uj.ac.za', 'uj.ac.za'], Rhodes:['campus.ru.ac.za', 'ru.ac.za'], UWC:['myuwc.ac.za', 'uwc.ac.za']};
+const IMP_COLS = ['First name', 'Surname', 'Email', 'University', 'Year of study', 'Expected graduation year'];
+const IMP_YEAR = 2026, IMP_MAX = 2000;
+const IMP_EXAMPLE = 'First name,Surname,Email,University,Year of study,Expected graduation year,ID number\n' + [
+  'Thandeka,Ndlovu,thandeka.ndlovu@myuct.ac.za,UCT,2,2028,', 'Lwazi,Khumalo,lwazi.khumalo@students.wits.ac.za,Wits,3,2027,', 'Aisha,Moosa,aisha.moosa@stu.ukzn.ac.za,UKZN,4,2026,',
+  'Pieter,van Wyk,pieter.vanwyk@sun.ac.za,Stellenbosch,1,2029,', 'Naledi,Sithole,naledi.sithole@student.uj.ac.za,UJ,2,2028,', 'Kabelo,Mokoena,kabelo.mokoena@tuks.co.za,UP,3,2027,',
+  'Cassidy,Rinquest,Cassidy.Rinquest@myuct.ac.za,UCT,3,2027,', 'Zanele,Mthembu,zanele.mthembu@ru.ac.za,Rhodes,2,2028,', 'Lwazi,Khumalo,lwazi.khumalo@students.wits.ac.za,Wits,3,2027,',
+  'Sam,Peters,sam.peters@gmail.com,UWC,2,2028,', 'Megan,Botha,megan.botha@uct.ac.za,University of Cape Town,3,2027,', 'Sizwe,Zulu,sizwe.zulu@stu.ukzn.ac.za,UKZN,3,2023,', 'Ruth,Daniels,ruth.daniels@myuwc.ac.za,UWC,,2028,'
+].join('\n');
+let IMPORTS = [
+  {when:'3 Oct 2026', by:'Leah Isaacs', file:'uct-2026-intake.csv', invited:184, joined:171, bounced:0},
+  {when:'12 Sep 2026', by:'Leah Isaacs', file:'wits-up-second-years.csv', invited:240, joined:226, bounced:2}
+];
+function impParse(text){
+  text = text.replace(/^﻿/, '');
+  const first = text.split(/\r?\n/)[0], delim = (first.match(/;/g) || []).length > (first.match(/,/g) || []).length ? ';' : ',';
+  const lines = []; let row = [], cell = '', q = false;
+  for (let i = 0; i < text.length; i++) { const c = text[i];
+    if (q) { if (c === '"') { if (text[i + 1] === '"') { cell += '"'; i++; } else q = false; } else cell += c; }
+    else if (c === '"') q = true;
+    else if (c === delim) { row.push(cell); cell = ''; }
+    else if (c === '\n' || c === '\r') { if (c === '\r' && text[i + 1] === '\n') i++; row.push(cell); lines.push(row); row = []; cell = ''; }
+    else cell += c; }
+  if (cell || row.length) { row.push(cell); lines.push(row); }
+  const raw = lines.shift() || [], head = raw.map(h => h.trim().toLowerCase());
+  const col = names => head.findIndex(h => names.includes(h));
+  const at = {first:col(['first name', 'name']), last:col(['surname', 'last name']), email:col(['email', 'email address']), uni:col(['university', 'institution']), year:col(['year of study', 'year']), grad:col(['expected graduation year', 'graduation year'])};
+  const missing = IMP_COLS.filter((c, i) => Object.values(at)[i] < 0), used = Object.values(at);
+  const ignored = head.map((h, i) => used.includes(i) || !h ? null : raw[i].trim()).filter(Boolean);
+  const rows = lines.filter(r => r.some(c => c.trim())).map(r => ({first:(r[at.first] || '').trim(), last:(r[at.last] || '').trim(), email:r[at.email] || '', uniText:(r[at.uni] || '').trim(), year:(r[at.year] || '').trim(), grad:(r[at.grad] || '').trim()}));
+  return {rows, missing, ignored};
+}
+function impCheck(rows){
+  const seen = {};
+  return rows.map((r, i) => {
+    const n = i + 2, email = r.email.trim().toLowerCase(), uni = Object.keys(IMP_UNIS).find(u => u.toLowerCase() === r.uniText.toLowerCase()), y = +r.year, g = +r.grad;
+    let err = '';
+    if (!r.first || !r.last) err = 'Add their first name and surname.';
+    else if (!/^[^@\s]+@[^@\s]+\.[a-z]{2,}$/.test(email)) err = 'This is not an email address.';
+    else if (!uni) err = 'Unknown university “' + r.uniText + '”. Use one of ' + Object.keys(IMP_UNIS).join(', ') + '.';
+    else if (!IMP_UNIS[uni].some(d => email.endsWith('@' + d))) err = 'Use their ' + uni + ' email (' + IMP_UNIS[uni].map(d => '@' + d).join(' or ') + ').';
+    else if (!r.year) err = 'Add their year of study.';
+    else if (!(y >= 1 && y <= 6)) err = 'Year of study must be 1 to 6.';
+    else if (!(g >= IMP_YEAR && g <= IMP_YEAR + 6)) err = 'Expected graduation year must be ' + IMP_YEAR + ' to ' + (IMP_YEAR + 6) + '.';
+    else if (seen[email]) err = 'The same email as row ' + seen[email] + '.';
+    let state = err ? 'fix' : 'ready';
+    if (!err) { seen[email] = n; const u = USERS.find(x => x.email === email); if (u) state = u.status === 'invited' ? 'invited' : 'exists'; }
+    return {...r, n, email, uni, state, err};
+  });
+}
+function impLoad(name, text){
+  const p = impParse(text);
+  if (p.missing.length) { S.imp = {step:'upload', error:'This file has no ' + p.missing.join(', ') + ' column. Start from the template.'}; render(); return; }
+  if (p.rows.length > IMP_MAX) { S.imp = {step:'upload', error:'This file has ' + p.rows.length + ' scholars. Split it into files of up to ' + IMP_MAX.toLocaleString('en-ZA') + '.'}; render(); return; }
+  if (!p.rows.length) { S.imp = {step:'upload', error:'This file has no scholars in it, only the column names.'}; render(); return; }
+  S.imp = {step:'preview', file:name, rows:impCheck(p.rows), ignored:p.ignored, tab:'all'}; render(); window.scrollTo(0, 0);
+}
+function impFile(input){
+  const f = input.files && input.files[0]; if (!f) return;
+  if (f.size > 1024 * 1024) { S.imp = {step:'upload', error:'Files can be up to 1 MB. Split it into smaller files.'}; render(); return; }
+  const rd = new FileReader(); rd.onload = () => impLoad(f.name, String(rd.result)); rd.readAsText(f);
+}
+function impDownload(name, rows){
+  const q = v => { const s = String(v == null ? '' : v); return '"' + (/^[=+\-@]/.test(s) ? "'" + s : s).replace(/"/g, '""') + '"'; };
+  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([rows.map(r => r.map(q).join(',')).join('\n')], {type:'text/csv'})); a.download = name; a.click(); toast('Downloaded ' + name);
+}
+const impTemplate = () => impDownload('moshal-scholars-template.csv', [IMP_COLS, ['Thandeka', 'Ndlovu', 'thandeka.ndlovu@myuct.ac.za', 'UCT', 2, 2028]]);
+const impFixes = () => impDownload('scholars-to-fix.csv', [IMP_COLS.concat('What to fix')].concat(S.imp.rows.filter(r => r.state === 'fix').map(r => [r.first, r.last, r.email, r.uniText, r.year, r.grad, r.err])));
+function impSend(){
+  const I = S.imp, ready = I.rows.filter(r => r.state === 'ready');
+  ready.forEach(r => USERS.push({name:r.first + ' ' + r.last, email:r.email, role:'scholar', org:r.uni, status:'invited', seen:'Invited today'}));
+  IMPORTS.unshift({when:'Today', by:ROLES[S.role].name, file:I.file, invited:ready.length, joined:0, bounced:0});
+  logIt('imported <b>' + ready.length + ' scholars</b> from ' + attr(I.file) + ' and sent each an invitation', 'user');
+  S.imp = {step:'done', file:I.file, total:ready.length, sent:0}; syncNav(); render(); window.scrollTo(0, 0);
+  clearInterval(window.impTimer);
+  window.impTimer = setInterval(() => { const J = S.imp; if (!J || J.step !== 'done') return clearInterval(window.impTimer);
+    J.sent = Math.min(J.total, J.sent + 1); const fill = document.getElementById('imp-fill'), cnt = document.getElementById('imp-count');
+    if (fill) fill.style.width = Math.round(J.sent / J.total * 100) + '%'; if (cnt) cnt.textContent = J.sent + ' of ' + J.total + ' sent' + (J.sent === J.total ? '. All done.' : '');
+    if (J.sent === J.total) clearInterval(window.impTimer); }, 400);
+}
+V.import = () => {
+  const I = S.imp || (S.imp = {step:'upload'});
+  const head = '<div class="page-head" data-role><h1>Import scholars</h1><div class="acts"><button class="btn btn-ghost btn-sm" onclick="nav(\'users\')">Users and roles</button></div></div>';
+  if (I.step === 'upload') return head +
+    '<div class="card imp-card"><h2>Choose a CSV file</h2><p>One scholar per row, with these columns: ' + IMP_COLS.join(', ') + '. Save it from Excel or Google Sheets as CSV. Up to ' + IMP_MAX.toLocaleString('en-ZA') + ' scholars a file.</p>' +
+    (I.error ? '<div class="notice bad">' + ICO.alert + '<span>' + attr(I.error) + '</span></div>' : '') +
+    '<div class="imp-acts"><label class="btn btn-primary">' + ICO.plus + 'Choose a CSV file<input type="file" accept=".csv,text/csv" hidden onchange="impFile(this)"></label><button class="btn btn-ghost" onclick="impTemplate()">' + ICO.download + 'Download the template</button><button class="btn btn-ghost" onclick="impLoad(\'example-scholars.csv\', IMP_EXAMPLE)">Try the example file</button></div>' +
+    '<div class="notice info" style="margin:0">' + ICO.user + '<span>Nothing is sent until you have checked every row. Each scholar then gets their own sign-in link by email that works once and expires in 14 days; nobody gets a shared or default password. Only the columns above are read: anything else in the file, such as an ID number, is ignored and never stored.</span></div></div>' +
+    '<div class="card tablewrap"><table class="rt compact"><thead><tr><th>Imported</th><th>File</th><th>By</th><th class="num">Invited</th><th class="num">Joined</th><th class="num">Not delivered</th><th class="num"><span class="sr">Actions</span></th></tr></thead><tbody>' +
+    IMPORTS.map(x => '<tr><td>' + x.when + '</td><td>' + attr(x.file) + '</td><td>' + x.by + '</td><td class="num">' + x.invited + '</td><td class="num">' + x.joined + '</td><td class="num">' + x.bounced + '</td><td class="num">' + (x.invited - x.joined > 0 ? '<button class="btn btn-ghost btn-sm" onclick="toast(\'Reminder sent to the ' + (x.invited - x.joined) + ' who have not joined yet.\')">Remind ' + (x.invited - x.joined) + '</button>' : '') + '</td></tr>').join('') +
+    '</tbody></table></div>';
+  if (I.step === 'preview') {
+    const R = I.rows, c = s => R.filter(r => r.state === s).length, ready = c('ready'), skipped = c('exists') + c('invited'), fix = c('fix');
+    const show = R.filter(r => I.tab === 'all' || (I.tab === 'skip' ? r.state === 'exists' || r.state === 'invited' : r.state === I.tab));
+    const pill = r => r.state === 'ready' ? '<span class="pill live"><i></i>Ready</span>' : r.state === 'exists' ? '<span class="pill off"><i></i>Already a member</span>' : r.state === 'invited' ? '<span class="pill off"><i></i>Already invited</span>' : '<span class="pill broken"><i></i>Needs fixing</span><br><span class="imp-err">' + attr(r.err) + '</span>';
+    const tab = (k, l, n) => '<button role="tab" aria-selected="' + (I.tab === k) + '" onclick="S.imp.tab=\'' + k + '\';render()">' + l + ' · ' + n + '</button>';
+    return head + '<p class="muted" style="margin:-10px 0 16px">' + attr(I.file) + ' · ' + R.length + ' rows checked. Nothing has been sent yet.</p>' +
+      (I.ignored.length ? '<div class="notice warn">' + ICO.alert + '<span>Ignored the column' + (I.ignored.length > 1 ? 's ' : ' ') + I.ignored.map(h => '“' + attr(h) + '”').join(', ') + ': the hub only keeps the columns it needs, so it was not read or stored.</span></div>' : '') +
+      '<div class="imp-sum"><div class="s ok"><b>' + ready + '</b><span>Ready to invite</span></div><div class="s"><b>' + skipped + '</b><span>Already on the hub: skipped, nobody is invited twice</span></div><div class="s bad"><b>' + fix + '</b><span>Need fixing: correct them in the file and import it again</span></div></div>' +
+      '<div class="tabs" role="tablist">' + tab('all', 'All', R.length) + tab('ready', 'Ready', ready) + tab('skip', 'Skipped', skipped) + tab('fix', 'Need fixing', fix) + '</div>' +
+      '<div class="card tablewrap"><table class="rt compact"><thead><tr><th class="num">Row</th><th>Scholar</th><th>University</th><th>Year</th><th>Status</th></tr></thead><tbody>' +
+      show.map(r => '<tr><td class="num">' + r.n + '</td><td><span class="nm">' + attr(r.first + ' ' + r.last) + '</span><br><span class="sm">' + attr(r.email) + '</span></td><td>' + attr(r.uni || r.uniText) + '</td><td>' + attr(r.year ? 'Year ' + r.year : '') + (r.grad ? '<br><span class="sm">Graduates ' + attr(r.grad) + '</span>' : '') + '</td><td>' + pill(r) + '</td></tr>').join('') +
+      '</tbody></table>' + (show.length ? '' : '<div class="empty sm"><b>Nothing here</b><span>Pick another tab.</span></div>') + '</div>' +
+      '<div class="imp-foot"><button class="btn btn-ghost" onclick="S.imp=null;render()">Choose another file</button>' + (fix ? '<button class="btn btn-ghost" onclick="impFixes()">' + ICO.download + 'Download the ' + fix + ' to fix</button>' : '') +
+      (ready ? '<button class="btn btn-primary" onclick="impSend()">' + ICO.send + 'Invite ' + ready + ' scholar' + (ready === 1 ? '' : 's') + '</button>' : '') + '</div>';
+  }
+  return head + '<div class="card imp-card"><h2>' + I.total + ' invitations on their way</h2><p>They go out a few a second so university mail servers accept them. You can leave this page: sending carries on, and anything not delivered shows here and in Users and roles.</p>' +
+    '<div class="imp-bar"><span id="imp-fill" style="width:' + Math.round(I.sent / Math.max(1, I.total) * 100) + '%"></span></div><p id="imp-count" class="sm" style="margin:0 0 16px">' + I.sent + ' of ' + I.total + ' sent</p>' +
+    '<div class="imp-acts" style="margin:0"><button class="btn btn-primary" onclick="S.urole=\'scholar\';S.uq=\'\';nav(\'users\')">See them in Users and roles</button><button class="btn btn-ghost" onclick="S.imp=null;render()">Import another file</button></div></div>';
+};
 /* Invitation-only sign-in: universities, partners and the programme's own domain. */
 const allowedEmail = (e, role) => role === 'recruiter' ? /^[^@\s]+@[^@\s]+\.[a-z]{2,}$/i.test(e) : /^[^@\s]+@([a-z0-9-]+\.)*(ac\.za|moshal\.org)$/i.test(e);
 function sendInvite(){
@@ -1633,7 +2113,7 @@ function annCard(e){
     '<h3>' + e.title + '</h3><span class="meta">' + e.when + ' · ' + e.who + (staff() && audienceNote(e) ? ' · <em class="aud-note">' + audienceNote(e) + '</em>' : '') + (staff() && e.expires ? ' · hides after ' + e.expires.slice(8) + ' ' + MONTHS[+e.expires.slice(5, 7) - 1].toLowerCase() : '') + '</span><span class="meta" style="margin-top:6px">' + e.about + '</span>' +
     '<span class="anacts">' + act + manage + '</span></span></article>';
 }
-function togglePin(id){ const e = EVENTS.find(x => x.id === id); e.pinned = !e.pinned; logIt((e.pinned ? 'pinned' : 'unpinned') + ' <b>' + e.title + '</b>', 'content'); render(); toast(e.pinned ? 'Pinned. It shows first on every home page.' : 'Unpinned.'); }
+function togglePin(id){ const e = EVENTS.find(x => x.id === id); e.pinned = !e.pinned; logIt((e.pinned ? 'pinned' : 'unpinned') + ' <b>' + e.title + '</b>', 'content'); render(); toast(e.pinned ? 'Pinned. It shows first in Announcements.' : 'Unpinned.'); }
 function addToCalendar(id){
   const e = EVENTS.find(x => x.id === id), [h, m] = (e.time || '09:00').split(':'), start = e.date.replace(/-/g, '') + 'T' + h + m + '00';
   const end = e.date.replace(/-/g, '') + 'T' + String(Math.min(23, +h + 1)).padStart(2, '0') + m + '00';
@@ -1643,11 +2123,6 @@ function addToCalendar(id){
   toast('Calendar file downloaded. Open it to add ' + e.title + ' to your phone.');
 }
 /* The home board: pinned first, then the soonest, never more than four. */
-function annBoard(){
-  const list = forMe(EVENTS).filter(e => !e.past).sort(annOrder).slice(0, 4);
-  if (!list.length) return '';
-  return '<section class="board"><div class="page-head"><h2 style="margin:0">Announcements</h2><div class="acts"><button class="btn btn-ghost btn-sm" onclick="nav(\'events\')">All announcements ' + ICO.chevR + '</button></div></div><div class="annlist grid">' + list.map(annMini).join('') + '</div></section>';
-}
 /* ---------- stage cards ---------- */
 function journeyChip(){
   const u = ROLES[S.role]; if (u.stage === 'program') return '';
@@ -1656,7 +2131,7 @@ function journeyChip(){
 }
 const ordinal = n => n === 1 ? 'st' : n === 2 ? 'nd' : n === 3 ? 'rd' : 'th';
 function impactCard(){
-  const live = mine().filter(l => l.status === 'live').length, applied = mine().reduce((a, l) => a + l.applied, 0);
+  const live = mine().filter(l => myTabOf(l) === 'live').length, applied = mine().reduce((a, l) => a + l.applied, 0);
   if (!mine().length) return '<section class="card impact first"><div class="l"><span class="t">Post your first listing</span><span class="n">A listing you post reaches ' + STU_COUNT + ' scholars the same day, and you can see who applied from here.</span></div><div class="r"><button class="btn btn-primary" onclick="S.edit=null;nav(\'submit\')">' + ICO.plus + 'Post a listing</button></div></section>';
   return '<section class="card impact"><div class="l"><span class="t">' + (S.role === 'recruiter' ? 'Hiring with the Moshal Program as Karoo Analytics' : 'Giving back as an Alumni career champion') + '</span><span class="n">Every listing you post reaches ' + STU_COUNT + ' scholars the same day.</span></div><div class="r"><div><b>' + live + '</b><span>live listing' + (live === 1 ? '' : 's') + '</span></div><div><b>' + applied + '</b><span>scholars applied</span></div></div></section>';
 }
@@ -1728,6 +2203,29 @@ function publishListing(){
 }
 function editListing(id){ S.edit = id; nav('submit'); }
 function fixLink(id){ const l = mine().find(x => x.id === id); l.status = 'live'; delete l.check; FLAGS = FLAGS.filter(f => f.title !== l.title); syncNav(); render(); toast('Link updated. The listing is live again.'); }
+/* My listings search: redraw, keep the cursor where it was, and let the rows settle in. */
+function renderMine(){
+  const i = document.getElementById('mq'), at = i ? [i.selectionStart, i.selectionEnd] : null;
+  render();
+  const n = document.getElementById('mq'); if (n) { n.focus(); const e = n.value.length; n.setSelectionRange(at ? Math.min(at[0], e) : e, at ? Math.min(at[1], e) : e); }
+  document.querySelectorAll('#mlist tbody, .fixcard, .pastcard tbody').forEach(el => { el.classList.remove('fresh'); void el.offsetWidth; el.classList.add('fresh'); });
+}
+/* Fix link: the new link is opened before it is saved. Only a link that works puts the listing back in front of scholars. */
+function askFixLink(id){ S.dlg = {kind:'fixlink', id}; render(); setTimeout(() => document.getElementById('fx')?.focus(), 0); }
+function checkFixLink(){
+  const l = mine().find(x => x.id === S.dlg.id), v = (document.getElementById('fx').value || '').trim();
+  if (!/^https?:\/\/[^\s.]+\.[^\s]+$/.test(v)) { S.dlg.err = 'Paste the full link, starting with https://'; S.dlg.val = v; render(); return; }
+  if (v === l.url) { S.dlg.err = 'That is the link that stopped working. Paste the new one.'; S.dlg.val = v; render(); return; }
+  S.dlg.val = v; S.dlg.err = null; S.dlg.busy = true; render();
+  setTimeout(() => {
+    if (!S.dlg || S.dlg.kind !== 'fixlink') return;
+    S.dlg.busy = false;
+    if (/404|dead|gone/.test(v)) { S.dlg.err = 'That link doesn\'t open either (404 Not Found). Check it on the employer\'s site and try again.'; render(); return; }
+    l.url = v; l.status = 'live'; delete l.check; FLAGS = FLAGS.filter(f => f.title !== l.title); S.dlg = null; syncNav(); render();
+    toast(/blocked/.test(v) ? 'Saved. The site blocks automatic checks, so we\'ll keep checking it nightly.' : 'The link works. Your listing is live again.');
+  }, 900);
+}
+function removeFromFix(){ const id = S.dlg.id; S.dlg = null; setListing(id, 'unpublished'); }
 function setListing(id, st){ const l = mine().find(x => x.id === id); l.status = st; syncNav(); render(); toast(st === 'live' ? 'Published again.' : 'Removed. Scholars can no longer see it.'); }
 function resolveFlag(id, unpub){ const f = FLAGS.find(x => x.id === id); logIt((unpub ? 'removed' : 'dismissed a report on') + ' <b>' + f.title + '</b>', 'listing'); FLAGS = FLAGS.filter(x => x.id !== id); if (unpub) { const l = allMine().find(x => x.title === f.title); if (l) l.status = 'unpublished'; OPPS = OPPS.filter(o => o.title !== f.title); } syncNav(); render(); toast(unpub ? 'Removed, and the champion was told why.' : 'Flag dismissed. The listing stays live.'); }
 
@@ -1785,6 +2283,13 @@ function dialog(){
       '<div class="pb"><p style="margin:0">We will add this to <b>My applications</b> as <b>Applied</b> and open the employer’s page in a new tab. Finish your application there, and come back to update it if you get an offer.</p>' +
       '<div class="notice info" style="margin:0">' + ICO.link + '<span>careers.' + o.org.toLowerCase().replace(/\s/g, '') + '.example</span></div></div>' +
       '<div class="pf"><button class="btn btn-ghost" onclick="closeDlg()">Cancel</button><button class="btn btn-primary" onclick="confirmApply()">Continue' + ICO.ext + '</button></div></div></div>'; }
+  if (S.dlg.kind === 'fixlink') { const l = mine().find(x => x.id === S.dlg.id), d = S.dlg;
+    return '<div class="xmask" onclick="if(event.target===this)closeDlg()"><div class="xdlg fixdlg" role="dialog" aria-modal="true" aria-labelledby="fx-h"><div class="xh"><span id="fx-h">Fix the link</span><button class="xclose" aria-label="Close" onclick="closeDlg()">×</button></div>' +
+      '<div class="pb"><p class="of">' + l.title + ' · ' + l.org + '</p>' +
+      '<div class="was">' + ICO.link + '<div><span class="u">' + (l.url || linkOf({title:l.title, org:l.org})) + '</span><span class="why">' + l.check + '</span></div></div>' +
+      '<div class="field' + (d.err ? ' invalid' : '') + '"><label for="fx">New link<i class="req" aria-hidden="true">*</i></label><input id="fx" type="url" placeholder="https://" value="' + attr(d.val || '') + '" aria-required="true"' + (d.err ? ' aria-invalid="true" aria-describedby="fx-err"' : '') + (d.busy ? ' disabled' : '') + ' onkeydown="if(event.key===\'Enter\')checkFixLink()"><div class="err" id="fx-err">' + (d.err || '') + '</div>' +
+      '<div class="hint">We open the link before saving. Your listing goes back to scholars as soon as it works.</div></div></div>' +
+      '<div class="pf"><button class="btn btn-ghost danger" style="margin-right:auto" onclick="removeFromFix()">Job closed? Remove it</button><button class="btn btn-ghost" onclick="closeDlg()">Cancel</button><button class="btn btn-primary" onclick="checkFixLink()"' + (d.busy ? ' disabled aria-busy="true"' : '') + '>' + (d.busy ? 'Checking the link…' : 'Check and save') + '</button></div></div></div>'; }
   const o = byId(S.dlg.id);
   return '<div class="xmask" onclick="if(event.target===this)closeDlg()"><div class="xdlg" role="dialog" aria-modal="true" aria-label="Report listing"><div class="xh"><span>Report this listing</span><button class="xclose" aria-label="Close" onclick="closeDlg()">×</button></div>' +
     '<div class="pb"><p style="margin:0;font-size:14px;color:var(--muted)">' + o.title + ' · ' + o.org + '</p><div class="field"><label for="rwhy">What is wrong with it?</label><select id="rwhy"><option>Link broken or closed</option><option>Looks suspicious</option></select></div></div>' +
@@ -1792,27 +2297,67 @@ function dialog(){
 }
 /* The empty search field shows a ghost typing example searches: calm cadence, blinking caret, a phrase at a time. Focus or a keystroke stops it. */
 const GHOST_PHRASES = ['Graduate programme in Cape Town', 'Actuarial science bursary', 'Engineering internship', 'Data analyst'];
-const G = {timer:null, phrase:0, pos:0, deleting:false, stopped:false};
+const G = {timer:null, phrase:0, pos:0, deleting:false, stopped:false, done:false};
+const GHOST_REST = 'Search roles, employers or fields of study';
 const ghostEl = () => document.querySelector('.hero-search .ghost');
 const ghostInput = () => document.getElementById('hq');
 function ghostStep(){
   const el = ghostEl(), input = ghostInput(); if (!el || !input) return;
   if (G.stopped || document.activeElement === input || input.value) { el.textContent = ''; return; }
   const text = GHOST_PHRASES[G.phrase];
-  if (!G.deleting) { G.pos++; el.innerHTML = text.slice(0, G.pos) + '<i></i>'; if (G.pos >= text.length) { G.deleting = true; G.timer = setTimeout(ghostStep, 1800); return; } G.timer = setTimeout(ghostStep, 55 + Math.random() * 45); }
-  else { G.pos--; el.innerHTML = text.slice(0, G.pos) + '<i></i>'; if (G.pos <= 0) { G.deleting = false; G.phrase = (G.phrase + 1) % GHOST_PHRASES.length; G.timer = setTimeout(ghostStep, 700); return; } G.timer = setTimeout(ghostStep, 26); }
+  if (!G.deleting) { G.pos++; el.innerHTML = text.slice(0, G.pos) + '<i></i>'; if (G.pos >= text.length) { G.deleting = true; G.timer = setTimeout(ghostStep, 2600); return; } G.timer = setTimeout(ghostStep, 75 + Math.random() * 40); }
+  else { G.pos--; el.innerHTML = text.slice(0, G.pos) + '<i></i>'; if (G.pos <= 0) { G.deleting = false; G.phrase = (G.phrase + 1) % GHOST_PHRASES.length;
+    if (G.phrase === 0) { G.done = true; el.textContent = ''; input.placeholder = GHOST_REST; return; }
+    G.timer = setTimeout(ghostStep, 900); return; } G.timer = setTimeout(ghostStep, 22); }
 }
 function ghostStart(delay){
   clearTimeout(G.timer); const el = ghostEl(), input = ghostInput(); if (!el || !input) return;
   if (matchMedia('(prefers-reduced-motion:reduce)').matches) { input.placeholder = 'Search job listings, employers or fields of study'; el.textContent = ''; return; }
+  if (G.done) { el.textContent = ''; input.placeholder = GHOST_REST; return; }
   if (!input.value && document.activeElement !== input) G.stopped = false;
   if (G.stopped || input.value || document.activeElement === input) { el.textContent = ''; input.placeholder = 'Search job listings, employers or fields of study'; return; }
   input.placeholder = ''; el.innerHTML = '<i></i>'; G.pos = 0; G.deleting = false; G.timer = setTimeout(ghostStep, delay || 900);
 }
 function ghostStop(byUser){ clearTimeout(G.timer); const el = ghostEl(), input = ghostInput(); if (el) el.textContent = ''; if (input) input.placeholder = 'Search job listings, employers or fields of study'; if (byUser) G.stopped = true; }
-function ghostResume(){ const input = ghostInput(); if (!input || input.value) return; G.stopped = false; clearTimeout(G.timer); G.timer = setTimeout(() => ghostStart(0), 2500); }
+/* Home suggestions: from two letters, the four closest-closing matches and how many there are in all. */
+const SG = {at:-1, list:[]};
+function suggest(){
+  const i = document.getElementById('hq'), box = document.getElementById('hsug'); if (!i || !box) return;
+  const q = i.value.trim();
+  if (q.length < 2) { closeSuggest(); return; }
+  const all = forMe(OPPS).filter(o => matchesQ(o, q)).sort((a, b) => a.days - b.days);
+  SG.list = all.slice(0, 4); SG.at = -1; SG.total = all.length; SG.q = q;
+  box.innerHTML = all.length
+    ? '<div class="sh">' + all.length + ' listing' + (all.length === 1 ? '' : 's') + ' match</div>' + SG.list.map((o, k) => '<button type="button" role="option" id="sg' + k + '" class="so" onmousedown="event.preventDefault()" onclick="openJob(' + o.id + ')"><span class="av">' + ini(o.org) + '</span><span class="st"><b>' + mark(o.title, q) + '</b><span>' + mark(o.org, q) + ' · ' + o.type + '</span></span><span class="sc">' + (!o.closes ? '' : o.days <= 14 ? 'Closes in ' + o.days + ' days' : 'Closes ' + o.closes) + '</span></button>').join('') +
+      '<button type="button" class="sall" onmousedown="event.preventDefault()" onclick="searchFromHome()">See all ' + all.length + ' for “' + html(q) + '”' + ICO.chevR + '</button>'
+    : '<div class="snone"><b>Nothing matches “' + html(q) + '” yet</b><span>Try a field like Engineering, or an employer.</span></div>';
+  box.hidden = false; i.setAttribute('aria-expanded', 'true');
+}
+function closeSuggest(){ const b = document.getElementById('hsug'), i = document.getElementById('hq'); if (b) b.hidden = true; if (i) { i.setAttribute('aria-expanded', 'false'); i.removeAttribute('aria-activedescendant'); } SG.at = -1; }
+function suggestKey(e){
+  const box = document.getElementById('hsug'); if (!box || box.hidden) return;
+  if (e.key === 'Escape') { closeSuggest(); return; }
+  if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp' && e.key !== 'Enter') return;
+  if (e.key === 'Enter') { if (SG.at >= 0) { e.preventDefault(); openJob(SG.list[SG.at].id); } return; }
+  e.preventDefault(); const n = SG.list.length; if (!n) return;
+  SG.at = e.key === 'ArrowDown' ? (SG.at + 1) % n : (SG.at - 1 + n) % n;
+  box.querySelectorAll('.so').forEach((b, k) => b.classList.toggle('on', k === SG.at));
+  document.getElementById('hq').setAttribute('aria-activedescendant', 'sg' + SG.at);
+}
+/* Home search to Job listings: the search box moves into its place at the top, the rest cross-fades, and the cursor stays in the box. */
+function searchFromHome(){
+  const q = (document.getElementById('hq').value || '').trim(); ghostStop(true); closeSuggest();
+  const go = () => { S.q = q; nav('opps'); const i = document.getElementById('oq'); if (i) { i.focus(); i.setSelectionRange(i.value.length, i.value.length); } };
+  if (!document.startViewTransition || matchMedia('(prefers-reduced-motion:reduce)').matches) { go(); return; }
+  document.startViewTransition(go);
+}
+function ghostResume(){ const input = ghostInput(); if (!input || input.value || G.done) { if (input && !input.value) input.placeholder = GHOST_REST; return; } G.stopped = false; clearTimeout(G.timer); G.timer = setTimeout(() => ghostStart(0), 2500); }
+// Desktop: once the page scrolls, a solid bar sits behind the bell and account so content never shows through them.
+window.addEventListener('scroll', () => document.getElementById('chrome').classList.toggle('scrolled', window.scrollY > 0), { passive: true });
 function render(){
   const app = document.querySelector('.app'); app.classList.toggle('auth', !S.auth);
+  // The staff console's quieter look (the .console styles) applies to Exco and Admin pages only.
+  document.body.classList.toggle('console', S.auth && (S.role === 'admin' || S.role === 'exco') && PAGE_ROLE[S.view] === 'admin');
   if (!S.auth) { document.getElementById('chrome').innerHTML = ''; document.getElementById('main').innerHTML = V.login(); document.getElementById('dlg').innerHTML = ''; setTimeout(() => { const f = document.getElementById('li-email'); if (f) (f.value ? document.querySelector('.login-form .btn') : f).focus(); }, 0); return; }
   document.getElementById('chrome').innerHTML = topbar();
   const main = document.getElementById('main');
@@ -1827,7 +2372,13 @@ function render(){
   if (S.view === 'admin' && typeof placeRef === 'function') setTimeout(placeRef, 0);
   placePops();
 }
-function renderList(){ const el = document.getElementById('olist'); if (el) render(); }
+/* Live results: redraw, then put the cursor back exactly where it was, so typing never stops. */
+function renderList(){
+  const i = document.getElementById('oq'), at = i ? [i.selectionStart, i.selectionEnd] : null;
+  render();
+  const n = document.getElementById('oq'); if (n && at) { n.focus(); n.setSelectionRange(at[0], at[1]); }
+  const l = document.getElementById('olist'); if (l) { l.classList.remove('fresh'); void l.offsetWidth; l.classList.add('fresh'); }
+}
 
 /* ---- Reporting: example data (deterministic) ---- */
 const INST = [
@@ -2262,13 +2813,17 @@ const roleOfName = n => /Lisa Mtshali/.test(n || '') ? 'recruiter' : CHAMP_NAMES
 const roleGroup = r => r === 'admin' || r === 'exco' ? 'team' : r;
 
 /* ---------- shared report state, filters and pieces ---------- */
-const A = {period:30, field:'', uni:'', role:'', split:'field', eng:'v', quiet:14, month:1, region:'', grain:'month', chartKey:null};
+const A = {period:30, field:'', uni:'', role:'', champ:'', act:'', split:'field', eng:'v', month:1, region:'', grain:'month', chartKey:null};
 const A_PERIODS = [[30, 'Last 30 days'], [90, 'Last 90 days'], [365, 'Last 12 months']];
 const A_ROLES = [['champion', 'Career champions'], ['recruiter', 'Partner recruiters'], ['team', 'Programme team']];
 const sumArr = a => a.reduce((t, x) => t + x, 0);
 const uniIdx = () => A.uni ? INST.findIndex(i => i[0] === A.uni) : -1;
 const eng = (p, k) => uniIdx() < 0 ? sumArr(p[k]) : p[k][uniIdx()];
-const postsIn = (lo, hi) => LISTING_LOG.filter(p => p.d >= lo && p.d < hi && (!A.field || p.field === A.field) && (!A.role || roleGroup(p.role) === A.role));
+/* A champion is active when they posted at least once in the chosen period (and field, if one is set). */
+const champActive = n => LISTING_LOG.some(p => p.by === n && inA(p.d) && (!A.field || p.field === A.field));
+const champSet = () => CHAMP_NAMES.filter(n => (!A.champ || n === A.champ) && (!A.act || (A.act === 'active') === champActive(n)));
+const postsIn = (lo, hi) => { const only = A.champ || A.act ? champSet() : null;
+  return LISTING_LOG.filter(p => p.d >= lo && p.d < hi && (!A.field || p.field === A.field) && (!A.role || roleGroup(p.role) === A.role) && (!only || only.includes(p.by))); };
 const aWin = () => A.period === 'custom' && A.range ? {lo:daysAgo(A.range.to), hi:daysAgo(A.range.from) + 1} : {lo:0, hi:A.period};
 const inA = d => { const w = aWin(); return d >= w.lo && d < w.hi; };
 const aPosts = () => { const w = aWin(); return postsIn(w.lo, w.hi); };
@@ -2282,6 +2837,7 @@ function aFilters(opts){
     (opts.region ? pick('a-reg', 'Region', REGIONS.map(r => [r, r]), A.region, 'region') : '') +
     pick('a-uni', 'University', INST.map(([k, n]) => [k, n]), A.uni, 'uni') +
     (opts.role ? pick('a-role', 'Posted by', A_ROLES, A.role, 'role') : '') +
+    (opts.champ ? '<i class="vsep"></i>' + pick('a-champ', 'Champion', CHAMP_NAMES.map(n => [n, n]), A.champ, 'champ') + pick('a-act', 'Champion status', [['active', 'Active'], ['inactive', 'Not active']], A.act, 'act') : '') +
     (opts.note ? '<span class="mlab">' + opts.note + '</span>' : '') + '</div>';
 }
 function aPeriodDD(){
@@ -2292,7 +2848,7 @@ function aPeriodDD(){
 }
 function setARange(){ const f = document.getElementById('apf').value, t = document.getElementById('apt').value; if (!f || !t) { toast('Pick both dates.'); return; } A.range = f <= t ? {from:f, to:t} : {from:t, to:f}; A.period = 'custom'; S.open = null; render(); }
 function aWrap(view, html){
-  const key = JSON.stringify([view, A.period, A.range, A.field, A.uni, A.role, A.split, A.eng, A.quiet, A.month, A.region, A.grain, R.view, TARGETS]), still = key === A.chartKey && S.lastView === view;
+  const key = JSON.stringify([view, A.period, A.range, A.field, A.uni, A.role, A.split, A.eng, A.champ, A.act, A.month, A.region, A.grain, R.view, TARGETS]), still = key === A.chartKey && S.lastView === view;
   A.chartKey = key; if (!still) setTimeout(countUp, 0);
   return '<div class="rp' + (still ? ' still' : '') + '">' + html + '</div>';
 }
@@ -2321,29 +2877,42 @@ const monthCols = count => MONTHS_BACK().slice(0, 12).reverse().map((m, i) => ({
 function listingsCsv(){
   const rows = [['Posted', 'Title', 'Employer', 'Field of study', 'Type', 'Location', 'Posted by', 'Role', 'Outcome', 'Views', 'Saves', 'Clicks']]
     .concat(aPosts().sort((a, b) => a.d - b.d).map(p => [isoAgo(p.d), p.title, p.org, p.field, p.type, p.loc, p.by, A_ROLES.find(r => r[0] === roleGroup(p.role))[1], p.outcome, eng(p, 'v'), eng(p, 's'), eng(p, 'c')]));
-  const q = v => '"' + String(v).replace(/"/g, '""') + '"', name = 'listings-' + aPeriodWord().replace(/[^\w]+/g, '-').toLowerCase() + (A.field ? '-' + A.field.toLowerCase().replace(/[^a-z]+/g, '-') : '') + (A.uni ? '-' + A.uni.toLowerCase() : '') + '.csv';
+  const q = v => '"' + String(v).replace(/"/g, '""') + '"', name = 'listings-' + aPeriodWord().replace(/[^\w]+/g, '-').toLowerCase() + (A.champ ? '-' + A.champ.toLowerCase().replace(/[^a-z]+/g, '-') : '') + (A.act ? '-' + (A.act === 'active' ? 'active' : 'not-active') + '-champions' : '') + (A.field ? '-' + A.field.toLowerCase().replace(/[^a-z]+/g, '-') : '') + (A.uni ? '-' + A.uni.toLowerCase() : '') + '.csv';
   const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([rows.map(r => r.map(q).join(',')).join('\n')], {type:'text/csv'})); a.download = name; a.click();
   toast('Downloaded ' + name);
 }
 function champStats(){
-  return CHAMP_NAMES.map(n => {
-    const mine = LISTING_LOG.filter(p => p.by === n && (!A.field || p.field === A.field)), inP = mine.filter(p => inA(p.d));
+  return champSet().map(n => {
+    const mine = LISTING_LOG.filter(p => p.by === n && (!A.field || p.field === A.field)), inP = mine.filter(p => inA(p.d)), live = inP.filter(p => p.outcome === 'live');
     const weeks = [3, 2, 1, 0].map(w => mine.filter(p => p.d >= w * 7 && p.d < w * 7 + 7).length);
     const last = mine.length ? Math.min(...mine.map(p => p.d)) : null, rate = k => pct(inP.filter(p => p.outcome === k).length, inP.length);
-    return {n, weeks, posts:inP.length, last, removed:rate('removed'), dup:rate('duplicate')};
+    return {n, weeks, posts:inP.length, active:inP.length > 0, last, views:live.reduce((t, p) => t + eng(p, 'v'), 0), clicks:live.reduce((t, p) => t + eng(p, 'c'), 0), removed:rate('removed'), dup:rate('duplicate')};
   });
 }
+/* The champions summary: who is active in the period, against the weekly target, and how their listings do. */
 function champPanel(){
-  const rows = champStats(), quiet = rows.filter(c => c.last === null || c.last >= A.quiet);
+  const rows = champStats(), all = CHAMP_NAMES.filter(n => !A.champ || n === A.champ), act = all.filter(champActive).length, onTarget = rows.filter(c => c.weeks[3] >= TARGETS.weekly).length;
   const wk = c => '<span class="weeks" aria-label="Weekly posts, oldest first: ' + c.weeks.join(', ') + '">' + c.weeks.map(x => '<i class="' + (x >= TARGETS.weekly ? 'on' : x ? 'part' : '') + '" title="' + x + ' posted"></i>').join('') + '</span>';
   const lastTxt = c => c.last === null ? 'Never' : c.last === 0 ? 'Today' : c.last + 'd ago';
-  return '<section class="card wide champs"><div class="card-head"><h2>Career champions</h2><span class="acts">Not posted in ' +
-      aSeg('quiet', [[7, '7 days'], [14, '14 days'], [30, '30 days']]).replace(/A\.quiet='(\d+)'/g, 'A.quiet=$1') + '</span></div>' +
-    take('Target ' + TARGETS.weekly + ' a week; squares are the last four weeks, oldest first. ' + (quiet.length ? '<b>' + quiet.length + ' of ' + rows.length + '</b> have not posted in ' + A.quiet + ' days: ' + quiet.map(c => c.n).join(', ') : 'Every champion posted in the last ' + A.quiet + ' days')) +
-    '<div class="tablewrap"><table class="rt"><thead><tr><th>Champion</th><th>This week</th><th>Weekly posts</th><th class="num">Posted</th><th class="num">Removed</th><th class="num">Duplicates</th><th>Last posted</th></tr></thead><tbody>' +
-    rows.map(c => '<tr class="' + (quiet.includes(c) ? 'quiet' : '') + '"><td><span class="who">' + avatarOf(c.n, 'champion') + '<span class="nm">' + c.n + '</span></span></td><td>' + '<span class="pill ' + (c.weeks[3] >= TARGETS.weekly ? 'live' : 'off') + '"><i></i>' + c.weeks[3] + ' of ' + TARGETS.weekly + '</span></td><td>' + wk(c) + '</td>' +
-      '<td class="num">' + c.posts + '</td><td class="num">' + (c.posts ? c.removed + '%' : '–') + '</td><td class="num">' + (c.posts ? c.dup + '%' : '–') + '</td><td>' + lastTxt(c) + '</td></tr>').join('') +
+  const chip = (v, label, n) => '<button class="kl' + (A.act === v ? ' on' : '') + '" onclick="A.act=A.act===\'' + v + '\'?\'\':\'' + v + '\';render()">' + label + '<b>' + n + '</b></button>';
+  return '<section class="card wide champs"><div class="card-head"><h2>Career champions</h2><span class="kls">' + chip('active', 'Active', act) + chip('inactive', 'Not active', all.length - act) + '</span></div>' +
+    take('<b>' + act + ' of ' + all.length + '</b> posted in the ' + aPeriodWord() + ' · <b>' + onTarget + '</b> on target this week (' + TARGETS.weekly + ' a week) · squares are the last four weeks, oldest first') +
+    '<div class="tablewrap"><table class="rt"><thead><tr><th>Champion</th><th>Status</th><th>Weekly posts</th><th class="num">Posted</th><th class="num">Views</th><th class="num">Clicks</th><th class="num">Removed</th><th class="num">Duplicates</th><th>Last posted</th></tr></thead><tbody>' +
+    (rows.length ? rows.map(c => '<tr class="' + (c.active ? '' : 'quiet') + '"><td><button class="who lnk" onclick="A.champ=A.champ===\'' + c.n + '\'?\'\':\'' + c.n + '\';render()" title="Show only ' + c.n + '">' + avatarOf(c.n, 'champion') + '<span class="nm">' + c.n + '</span></button></td>' +
+      '<td>' + pill(c.active ? 'live' : 'off', c.active ? 'Active' : 'Not active') + '</td><td>' + wk(c) + '</td><td class="num">' + c.posts + '</td><td class="num">' + fmtN(c.views) + '</td><td class="num">' + fmtN(c.clicks) + '</td>' +
+      '<td class="num">' + (c.posts ? c.removed + '%' : '–') + '</td><td class="num">' + (c.posts ? c.dup + '%' : '–') + '</td><td>' + lastTxt(c) + '</td></tr>').join('')
+      : '<tr><td colspan="9" class="sm" style="text-align:center;padding:24px">No champions match these filters.</td></tr>') +
     '</tbody></table></div></section>';
+}
+/* Pills for every Listings report filter that is set, with the number of listings they leave. */
+function aStory(n){
+  const chip = (label, undo) => '<span class="chip">' + label + '<button aria-label="Remove ' + label + '" onclick="' + undo + ';render()">×</button></span>', parts = [];
+  if (A.champ) parts.push(chip(A.champ, "A.champ=''"));
+  if (A.act) parts.push(chip(A.act === 'active' ? 'Active champions' : 'Not active champions', "A.act=''"));
+  if (A.role) parts.push(chip(A_ROLES.find(r => r[0] === A.role)[1], "A.role=''"));
+  if (A.field) parts.push(chip(A.field, "A.field=''"));
+  if (A.uni) parts.push(chip(INST.find(x => x[0] === A.uni)[1], "A.uni=''"));
+  return '<div class="story"><span>Showing</span>' + parts.join('') + '<span class="cnt"><b>' + n + '</b> listings · ' + aPeriodWord() + '</span></div>';
 }
 V.insights = () => {
   const posts = aPosts(), prev = typeof A.period === 'number' && A.period < 365 ? postsIn(A.period, A.period * 2) : null, live = posts.filter(p => p.outcome === 'live');
@@ -2368,8 +2937,8 @@ V.insights = () => {
   const top = k => live.slice().sort((a, b) => eng(b, k) - eng(a, k)).slice(0, 5);
   const topRows = k => { const t = top(k), m = Math.max(1, ...t.map(p => eng(p, k))); return brows(t.map((p, i) => ({k:p.title + '<span class="sm"> · ' + p.org + '</span>', w:pct(eng(p, k), m), v:fmtN(eng(p, k)), i}))); };
   return aWrap('insights', '<div class="page-head"><h1>Listings report</h1><button class="iconbtn" title="Export these listings" aria-label="Export CSV" onclick="listingsCsv()">' + RICO.download + '</button></div>' +
-    aFilters({role:true, note:A.uni ? 'University applies to views, saves and clicks' : ''}) +
-    '<div class="kts">' + aTile('Listings posted', posts.length, chg) + aTile('Views', views, aPeriodWord()) + aTile('Saves', saves, pct(saves, views) + '% of views') + aTile('Clicks to employers', clicks, pct(clicks, views) + '% of views') + '</div>' +
+    aFilters({role:true, champ:true, note:A.uni ? 'University applies to views, saves and clicks' : ''}) + aStory(posts.length) +
+    '<div class="kts">' + aTile('Listings posted', posts.length, chg) + aTile('Views', views, aPeriodWord()) + aTile('Saves', saves, pct(saves, views) + '% of views') + aTile('Clicks to employers', clicks, pct(clicks, views) + '% of views') + '</div>' + champPanel() +
     '<div class="dg">' + barTrend('Listings posted each ' + (yr ? 'month' : 'week'), 'lp', cols, avg, 'average ' + avg, '<b>' + cols[11].n + '</b> this ' + (yr ? 'month' : 'week') + ' · average ' + avg) +
       '<section class="card">' + chead('What was posted', 'ls') + '<div class="segrow">' + aSeg('split', [['field', 'Field'], ['type', 'Type'], ['loc', 'Location'], ['org', 'Employer']]) + '</div>' +
         (R.view.ls ? tview([SPLIT[A.split][0], 'Listings'], splitRows) : brows(splitRows.map(([k, n], i) => ({k, w:pct(n, splitMax), v:n, act:A.split === 'field' ? "A.field='" + resc(k) + "';render()" : ''})))) + '</section></div>' +
@@ -2388,7 +2957,7 @@ V.insights = () => {
     '<div class="dg">' +
       '<section class="card">' + chead('Most viewed', 'mv') + (R.view.mv ? tview(['Listing', 'Employer', 'Views'], top('v').map(p => [p.title, p.org, eng(p, 'v')])) : topRows('v')) + '</section>' +
       '<section class="card">' + chead('Most saved', 'ms') + (R.view.ms ? tview(['Listing', 'Employer', 'Saves'], top('s').map(p => [p.title, p.org, eng(p, 's')])) : topRows('s')) + '</section>' +
-    '</div>' + champPanel());
+    '</div>');
 };
 
 /* ---------- Content report: the library and the announcement board ---------- */
@@ -2497,7 +3066,7 @@ const namesGate = pool => '<section class="card names gate"><div class="card-hea
 
 const sb = document.getElementById('sb');
 sb.addEventListener('navigate', e => nav(e.detail.key));
-const PAGE_ROLE = {submit:'champion', subs:'champion', queue:'admin', admin:'admin', postres:'admin', postevent:'admin', console:'admin', users:'admin', insights:'admin', programme:'admin', content:'admin', log:'admin'};
+const PAGE_ROLE = {import:'admin', submit:'champion', subs:'champion', queue:'admin', admin:'admin', postres:'admin', postevent:'admin', console:'admin', users:'admin', insights:'admin', programme:'admin', content:'admin', log:'admin'};
 const title = (t, n) => '<div class="page-head' + (PAGE_ROLE[S.view] !== undefined ? (PAGE_ROLE[S.view] ? ' r-' + PAGE_ROLE[S.view] : '') : ' r-scholar') + '"><h1>' + t + '</h1>' + (n ? '<span class="n">' + n + '</span>' : '') + '</div>';
 document.addEventListener('click', () => { if (S.open) { S.open = null; render(); } });
 document.addEventListener('keydown', e => {
